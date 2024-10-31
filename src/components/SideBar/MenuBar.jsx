@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import PlusIcon from "@icons/PlusIcon";
 import ListIcon from "@icons/ListIcon";
 import GroupIcon from "@icons/GroupIcon";
-import ExportIcon from "@icons/ExportIcon";
+import FileExportIcon from "@icons/FileExportIcon";
 import { usePath } from "@contexts/PathContext";
 
 export default function MenuBar() {
@@ -134,7 +134,7 @@ export default function MenuBar() {
     },
     {
       key: "4",
-      icon: <ExportIcon />,
+      icon: <FileExportIcon />,
       label: "Sale Proposal",
       children: [
         { key: "41", label: "Option 1" },
