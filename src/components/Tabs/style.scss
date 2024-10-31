@@ -1,0 +1,14 @@
+.baseTab {
+  min-width: 243px;
+  min-height: 48px;
+  color: #6f7489;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.selected {
+  color: #dc818d;
+  background-color: #fce5e7;
+}
