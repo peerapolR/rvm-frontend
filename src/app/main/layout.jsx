@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
-import "./globals.css";
+// import "./globals.css";
 import { Inter } from "next/font/google";
 import { Header, Content } from "antd/es/layout/layout";
 import { Layout } from "antd";
-import ContextProvider from "@contexts/UserAuthContext";
+// import ContextProvider from "@contexts/UserAuthContext";
 import PathProvider from "@contexts/PathContext";
 import AntdConfigProvider from "@provider/AntdConfigProvider";
 import SideBar from "@components/SideBar";
@@ -31,9 +31,19 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className} style={{ fontFamily: "LINESeedSans" }}>
-        <ContextProvider>
-          {children}
-        </ContextProvider>
+        <AntdConfigProvider>
+          <PathProvider>
+            <Layout>
+              <SideBar />
+              <Layout>
+                <HeaderBar />
+                <IngredientProvider>
+                  <Content>{children}</Content>
+                </IngredientProvider>
+              </Layout>
+            </Layout>
+          </PathProvider>
+        </AntdConfigProvider>
       </body>
     </html>
   );

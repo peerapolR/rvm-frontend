@@ -1,148 +1,105 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Dropdown, Form, Input, Select, Table, Pagination } from "antd";
 import EditIcon from "@icons/EditIcon";
 import SubMenuIcon from "@icons/SubMenuIcon";
+import BasePagination from "@components/Pagination";
 
-const columns = [
-  {
-    title: "Active Ingredient",
-    dataIndex: "activeIngredient",
-    key: "activeIngredient",
-    width: "60%",
-  },
-  {
-    title: "Dosage (mg)",
-    dataIndex: "dosage",
-    key: "dosage",
-    width: "12%",
-  },
-  {
-    title: "Status",
-    dataIndex: "status",
-    key: "status",
-    width: "10%",
-    render: (text) => <div>{text}</div>,
-  },
-  {
-    title: "Create Date",
-    dataIndex: "createDate",
-    key: "createDate",
-    width: "10%",
-  },
-  {
-    title: "Manage",
-    dataIndex: "manage",
-    key: "manage",
-    render: () => (
-      <div className="flex">
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            console.log("edit");
-          }}
-        >
-          <EditIcon />
-        </div>
-        <div
-          className="pl-5 cursor-pointer"
-          onClick={() => {
-            console.log("sub menu");
-          }}
-        >
-          <SubMenuIcon />
-        </div>
-      </div>
-    ),
-  },
-];
+import formatDate from "@functions/formatDate";
+
+import { useIngredientCTX } from "@contexts/IngredientContext";
 
 export default function IngredientContainer() {
-  const dataSource = [
+  const router = useRouter();
+  const ctx = useIngredientCTX();
+  const { ingredient } = ctx;
+
+  const columns = [
     {
-      key: "1",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
+      title: "Active Ingredient",
+      dataIndex: "ingredient_name",
+      key: "ingredient_name",
+      width: "60%",
     },
     {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
+      title: "Dosage (mg)",
+      dataIndex: "dose_min",
+      key: "dose_min",
+      width: "12%",
+      render: (text, record) => (
+        <>
+          {text} - {record.dose_max}
+        </>
+      ),
     },
     {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
+      title: "Status",
+      dataIndex: "ingredient_status",
+      key: "ingredient_status",
+      width: "10%",
+      render: (text) => (
+        <div className="relative">
+          <span
+            className={`absolute h-[8px] w-[8px] rounded-full ${
+              text === "draft"
+                ? "bg-gray-500"
+                : text === "publish"
+                ? "bg-green-500"
+                : "bg-red-500"
+            }  top-1.5`}
+          />
+          <p className="first-letter:capitalize ml-5">{text}</p>
+        </div>
+      ),
     },
     {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
+      title: "Create Date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      width: "10%",
+      render: (text) => <p>{formatDate(text)}</p>,
     },
     {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
-    },
-    {
-      key: "2",
-      activeIngredient: "Bioenergy RiaGev",
-      dosage: "20.00-230.00",
-      status: "Publish",
-      createDate: "20/07/24",
+      title: "Manage",
+      dataIndex: "_id",
+      key: "_id",
+      render: (text) => (
+        <div className="flex">
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              router.push(`/main/ingredient/ingredientDeatil/${text}`);
+            }}
+          >
+            <EditIcon />
+          </div>
+          <div
+            className="pl-5 cursor-pointer"
+            onClick={() => {
+              console.log("sub menu");
+            }}
+          >
+            <SubMenuIcon />
+          </div>
+        </div>
+      ),
     },
   ];
+
+  const [dataSource, setDataSource] = useState([]);
+
+  useEffect(() => {
+    let data = [];
+
+    if (ingredient && ingredient.length > 0) {
+      data = ingredient.map((i) => ({
+        ...i,
+        key: i._id,
+      }));
+      setDataSource(data);
+    }
+  }, [ingredient]);
+
   function onShowSizeChange(current, pageSize) {
     console.log(current, pageSize);
   }
@@ -152,15 +109,22 @@ export default function IngredientContainer() {
         dataSource={dataSource}
         columns={columns}
         loading={dataSource.length > 0 ? false : true}
-        pagination={{
-          defaultCurrent: 1,
-          total: dataSource.length,
-          defaultPageSize: 10,
-        }}
+        pagination={false}
       />
       {/* <div className="px-3 py-5 flex justify-end">
         <Pagination  />
       </div> */}
+
+      <div className="flex justify-between px-6 py-[29.5px]">
+        <div className="text-[#14142A]">Total {dataSource.length} items</div>
+        <BasePagination
+          total={dataSource.length}
+          showTitle={false}
+          defaultCurrent={1}
+          showSizeChanger={false}
+          align="end"
+        />
+      </div>
     </div>
   );
 }

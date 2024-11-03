@@ -29,6 +29,7 @@ const config = {
         "revomed-secondary-dark": "#BA5865",
         "revomed-secondary-light1": "#FDAEB8",
         "revomed-secondary-light2": "#FFECEE",
+        "revomed-secondary-light3": "#fce5e7",
 
         "revomed-black": "#14142A",
         "revomed-white": "#FCFCFC",
