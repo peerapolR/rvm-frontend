@@ -8,10 +8,13 @@ import React, {
   useState,
   useEffect,
 } from "react";
+import { useRouter } from "next/navigation";
 
 const UserAuthContext = createContext(null);
 
 function UserAuthContextProvider({ children }) {
+  const router = useRouter();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +33,7 @@ function UserAuthContextProvider({ children }) {
     } else {
       setIsInvalidPassword(true);
     }
+    router.push("/main");
     setIsLoading(false);
   };
 

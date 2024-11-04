@@ -58,6 +58,7 @@ function IngredientContextProvider({ children }) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     setNewIngredient(defaultIngredient);
     fetchIngredient();
@@ -106,6 +107,47 @@ function IngredientContextProvider({ children }) {
     }
   };
 
+  const editIngredient = async () => {
+    try {
+      const res = await ingredientApi.updateIngredient({
+        ...newIngredient,
+        product_category: "supplement",
+        ingredient_status: "publish",
+      });
+
+      if (res?.status === 201 || res?.status === 200) {
+        setNewIngredient(defaultIngredient);
+        router.push("/main/ingredient");
+      } else {
+        console.error("Unexpected response:", res);
+      }
+    } catch (error) {
+      console.error("Error in editIngredient:", error);
+    }
+  };
+
+  const publishIngredient = async (_id) => {
+    try {
+      const res = await ingredientApi.pubIngredient(_id);
+      if (res.status === 200 || res.status === 201) {
+        router.push("/main/ingredient");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteIngredient = async (_id) => {
+    try {
+      const res = await ingredientApi.deleteIngredient(_id);
+      if (res.status === 200 || res.status === 201) {
+        router.push("/main/ingredient");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const value = {
     ingredient,
     setIngredient,
@@ -117,6 +159,9 @@ function IngredientContextProvider({ children }) {
     fetchIngredient,
     fetchIngredientById,
     ingredientById,
+    editIngredient,
+    publishIngredient,
+    deleteIngredient,
   };
   return (
     <IngredientContext.Provider value={value}>

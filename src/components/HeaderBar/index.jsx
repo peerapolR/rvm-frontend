@@ -26,9 +26,9 @@ export default function HeaderBar() {
       <div className="flex gap-4">
         <div className="flex flex-col text-end text-base">
           <div className="text-revomed-primary font-bold">
-            Chaianan Phattanakarn
+            Peerapol Rattanawongghun
           </div>
-          <div className="text-revomed-grey">Admin 001</div>
+          <div className="text-revomed-grey">Admin 000</div>
         </div>
         <Avatar size={48} icon={<UserOutlined />} />
       </div>

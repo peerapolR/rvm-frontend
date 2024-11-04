@@ -1,17 +1,50 @@
 import React, { useParams, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Popover } from "antd";
 
 import Title from "antd/es/typography/Title";
 import BackIcon from "@icons/BackIcon";
 import EditIcon from "@icons/EditIcon";
 import SubMenuIcon from "@icons/SubMenuIcon";
+import UnpubIcon from "@icons/UnpubIcon";
+import BinIcon from "@icons/BinIcon";
 
 import { useIngredientCTX } from "@contexts/IngredientContext";
 
 export default function Page({ _id }) {
   const router = useRouter();
   const ctx = useIngredientCTX();
-  const { fetchIngredientById, ingredientById: ingredient } = ctx;
+  const {
+    fetchIngredientById,
+    ingredientById: ingredient,
+    publishIngredient,
+    deleteIngredient,
+  } = ctx;
+
+  const content = (
+    <div className="rounded-lg w-[100px] mx-3">
+      <div
+        className="cursor-pointer flex"
+        onClick={() => {
+          publishIngredient(_id);
+        }}
+      >
+        <UnpubIcon />
+        <span className="text-revomed-primary text-base ml-1">
+          {ingredient.ingredient_status === "publish" ? "Unpublish" : "Publish"}
+        </span>
+      </div>
+      <div
+        className="cursor-pointer flex mt-3"
+        onClick={() => {
+          deleteIngredient(_id);
+        }}
+      >
+        <BinIcon />
+        <span className="text-revomed-red text-base ml-1">Delete</span>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     fetchIngredientById(_id);
@@ -68,19 +101,22 @@ export default function Page({ _id }) {
                 <div
                   className="cursor-pointer bg-revomed-primary-light2 rounded-lg p-2"
                   onClick={() => {
-                    router.push(`/main/ingredient/ingredientEdit/${ingredient._id}`);
+                    router.push(
+                      `/main/ingredient/ingredientEdit/${ingredient._id}`
+                    );
                   }}
                 >
                   <EditIcon />
                 </div>
-                <div
-                  className="ml-5 cursor-pointer bg-revomed-light-grey3 rounded-lg p-2"
-                  onClick={() => {
-                    console.log("sub menu");
-                  }}
+                <Popover
+                  content={content}
+                  trigger="click"
+                  placement="bottomRight"
                 >
-                  <SubMenuIcon />
-                </div>
+                  <div className="ml-2 cursor-pointer bg-revomed-light-grey3 rounded-lg p-2">
+                    <SubMenuIcon />
+                  </div>
+                </Popover>
               </div>
               <div>
                 <p className="text-revomed-primary">

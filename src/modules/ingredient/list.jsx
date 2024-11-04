@@ -1,9 +1,12 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Dropdown, Form, Input, Select, Table, Pagination } from "antd";
+import { Table, Popover } from "antd";
 import EditIcon from "@icons/EditIcon";
 import SubMenuIcon from "@icons/SubMenuIcon";
 import BasePagination from "@components/Pagination";
+import UnpubIcon from "@icons/UnpubIcon";
+import BinIcon from "@icons/BinIcon";
 
 import formatDate from "@functions/formatDate";
 
@@ -12,7 +15,36 @@ import { useIngredientCTX } from "@contexts/IngredientContext";
 export default function IngredientContainer() {
   const router = useRouter();
   const ctx = useIngredientCTX();
-  const { ingredient } = ctx;
+  const { ingredient, publishIngredient, deleteIngredient } = ctx;
+
+  const content = (text, status) => {
+    return (
+      <div className="rounded-lg w-[100px] mx-3">
+        <div
+          className="cursor-pointer flex"
+          onClick={() => {
+            publishIngredient(text);
+            window.location.reload();
+          }}
+        >
+          <UnpubIcon />
+          <span className="text-revomed-primary text-base ml-1">
+            {status.ingredient_status === "publish" ? "Unpublish" : "Publish"}
+          </span>
+        </div>
+        <div
+          className="cursor-pointer flex mt-3"
+          onClick={() => {
+            deleteIngredient(text);
+            window.location.reload();
+          }}
+        >
+          <BinIcon />
+          <span className="text-revomed-red text-base ml-1">Delete</span>
+        </div>
+      </div>
+    );
+  };
 
   const columns = [
     {
@@ -63,7 +95,7 @@ export default function IngredientContainer() {
       title: "Manage",
       dataIndex: "_id",
       key: "_id",
-      render: (text) => (
+      render: (text, record) => (
         <div className="flex">
           <div
             className="cursor-pointer"
@@ -73,14 +105,16 @@ export default function IngredientContainer() {
           >
             <EditIcon />
           </div>
-          <div
-            className="pl-5 cursor-pointer"
-            onClick={() => {
-              console.log("sub menu");
-            }}
+
+          <Popover
+            content={content(text, record)}
+            trigger="click"
+            placement="bottomRight"
           >
-            <SubMenuIcon />
-          </div>
+            <div className="pl-5 cursor-pointer">
+              <SubMenuIcon />
+            </div>
+          </Popover>
         </div>
       ),
     },
