@@ -28,6 +28,9 @@ export default function AntdConfigProvider({ children }) {
           Tabs: {
             cardBg: "#dedede",
           },
+          Breadcrumb: {
+            separatorColor: "#ABB1C1",
+          },
         },
       }}
     >

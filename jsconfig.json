@@ -26,7 +26,8 @@
       "@contexts/*": ["./src/contexts/*"],
       "@provider/*": ["./src/provider/*"],
       "@icons/*": ["./src/icons/*"],
-      "@modules/*": ["./src/modules/*"]
+      "@modules/*": ["./src/modules/*"],
+      "@public/*":["./public/*"]
     }
   },
   "include": ["next-env.d.js", "**/*.js", "**/*.jsx"],
