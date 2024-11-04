@@ -4,8 +4,10 @@ import Title from "antd/es/typography/Title";
 import React from "react";
 import FormSearch from "./formSearch";
 import FormulaContainer from "./list";
+import { useRouter } from "next/navigation";
 
 export default function FormulaList() {
+  const router = useRouter();
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -20,6 +22,7 @@ export default function FormulaList() {
             className="w-[185px] py-3 px-10 rounded-lg border-1 border-revomed-secondary bg-revomed-secondary text-white hover:bg-black"
             iconPosition="start"
             icon={<PlusIcon />}
+            onClick={() => router.push("/formula/newFormula")}
           >
             New Formula
           </BaseButton>
