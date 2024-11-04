@@ -66,13 +66,12 @@ export default function MenuBar() {
   // };
 
   const pathObj = {
-    77: "/formula",
-    88: "/ingredient",
+    1: "/main/proposal",
+    77: "/main/formula",
+    88: "/main/ingredient",
   };
 
   const handlePath = (e) => {
-    console.log(e);
-
     const selectedKey = e.key;
     const path = pathObj[selectedKey];
     if (path) {
@@ -154,7 +153,7 @@ export default function MenuBar() {
 
   return (
     <Menu
-      style={{ height: "1000px", fontSize: "16px", backgroundColor: "white" }}
+      style={{ fontSize: "16px", backgroundColor: "white" }}
       onClick={(e) => handlePath(e)}
       mode="inline"
       // defaultSelectedKeys={["231"]}

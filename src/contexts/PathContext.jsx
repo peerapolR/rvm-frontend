@@ -10,7 +10,7 @@ import {
 const PathContext = createContext(null);
 
 function PathProvider({ children }) {
-  const [header, setHeader] = useState("Revomend");
+  const [header, setHeader] = useState("");
   const [currentPage, setCurrentPage] = useState("");
 
   const value = {

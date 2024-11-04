@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BaseButton from "@components/BaseButton";
 import PlusIcon from "@icons/PlusIcon";
@@ -8,8 +8,18 @@ import Title from "antd/es/typography/Title";
 import FormSearch from "./formSearch";
 import IngredientContainer from "./list";
 
+import { useIngredientCTX } from "@contexts/IngredientContext";
+
 export default function Page() {
   const router = useRouter();
+
+  const ctx = useIngredientCTX();
+  const { fetchIngredient } = ctx;
+
+  useEffect(() => {
+    fetchIngredient();
+  }, []);
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
@@ -18,7 +28,7 @@ export default function Page() {
         </Title>
         <div className="flex gap-6">
           <BaseButton
-            className="w-[185px] py-3 px-10 border-1 border-revomed-primary rounded-lg text-revomed-primary"
+            className="w-[185px] py-3 px-10 border-1 border-revomed-primary rounded-lg text-revomed-primary cursor-not-allowed"
             iconPosition="start"
             icon={<ExportIcon />}
           >
@@ -29,7 +39,7 @@ export default function Page() {
             iconPosition="start"
             icon={<PlusIcon />}
             onClick={() => {
-              router.push("/ingredient/newIngredient");
+              router.push("/main/ingredient/newIngredient");
             }}
           >
             Ingredient
