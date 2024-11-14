@@ -28,7 +28,7 @@ axiosInstance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // localStorage.removeToken();
       //should have better solution when get 401 then return to login page
-      // window.location.replace(`${process.env.NEXT_PUBLIC_HOST}/login/admin`);
+      // window.location.replace(`${process.env.NEXT_PUBLIC_HOST}/login`);
     }
 
     return Promise.reject(error);

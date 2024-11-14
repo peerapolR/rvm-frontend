@@ -106,7 +106,10 @@ export default function FormSearch() {
       {/* Tabs Container */}
       <Tabs />
       {/* SearchContainer */}
-      <Form className="px-6 py-6 grid grid-cols-5 items-end" layout="inline">
+      <Form
+        className="px-6 py-6 grid grid-cols-5 items-end bg-revomed-white mb-1"
+        layout="inline"
+      >
         <Form.Item name="formulaNameLike" label="Search" layout="vertical">
           <Input
             placeholder="Search Formulation..."

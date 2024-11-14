@@ -9,6 +9,8 @@ import React, {
   useEffect,
 } from "react";
 import { useRouter } from "next/navigation";
+import * as userApi from "../api/user";
+import * as localStorage from "../services/localStorage";
 
 const UserAuthContext = createContext(null);
 
@@ -21,31 +23,90 @@ function UserAuthContextProvider({ children }) {
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
   const [isInvalidPassword, setIsInvalidPassword] = useState(false);
 
-  const click = () => {
-    setIsLoading(true);
-    if (username) {
-      setIsInvalidUsername(false);
-    } else {
-      setIsInvalidUsername(true);
+  const [user, setUser] = useState(null);
+  const [authUser, setAuthUser] = useState({});
+  const [accessToken, setAccessToken] = useState("");
+
+  const login = async () => {
+    try {
+      // e.preventDefault();
+      setIsLoading(true);
+
+      const res = await userApi.login(authUser);
+      if (res.data) {
+        setAccessToken(res.data.access_token);
+        setUser(res.data.data);
+      }
+    } catch (error) {
+      // toast.error("เข้าสู่ระบบไม่สำเร็จ");
+      console.log("เข้าสู่ระบบไม่สำเร็จ");
+    } finally {
+      setIsLoading(false);
     }
-    if (password) {
-      setIsInvalidPassword(false);
-    } else {
-      setIsInvalidPassword(true);
-    }
-    router.push("/main");
-    setIsLoading(false);
+    // router.push("/main");
   };
+
+  useEffect(() => {
+    // if (authUser.username) {
+    //   setIsInvalidUsername(false);
+    // } else {
+    //   setIsInvalidUsername(true);
+    // }
+    // if (authUser.password) {
+    //   setIsInvalidPassword(false);
+    // } else {
+    //   setIsInvalidPassword(true);
+    // }
+  }, [authUser]);
+
+  const logout = () => {
+    localStorage.removeToken();
+    setAccessToken("");
+    setUser(null);
+    setAuthUser(null);
+  };
+
+  const fetchUser = () => {
+    try {
+      userApi.getMe().then((res) => {
+        if (res.data.data) {
+          setUser(res.data.data);
+          return res.data.data;
+        } else {
+          router.push("/login");
+        }
+      });
+    } catch (err) {
+      router.push("/login");
+    }
+  };
+
+  useEffect(() => {
+    const initAccessToken = localStorage.getToken();
+
+    if (accessToken || initAccessToken) {
+      localStorage.setToken(accessToken || initAccessToken);
+
+      fetchUser();
+    } else {
+      localStorage.removeToken();
+      router.push("/login");
+    }
+  }, [accessToken]);
 
   const value = {
     username,
     setUsername,
     password,
     setPassword,
-    click,
+    login,
     isLoading,
     isInvalidUsername,
     isInvalidPassword,
+    logout,
+    fetchUser,
+    setAuthUser,
+    user,
   };
   return (
     <UserAuthContext.Provider value={value}>

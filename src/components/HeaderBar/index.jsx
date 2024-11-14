@@ -6,8 +6,12 @@ import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { usePath } from "@contexts/PathContext";
 
+import { useUserAuth } from "@contexts/UserAuthContext";
+
 export default function HeaderBar() {
   const { header } = usePath();
+
+  const { user } = useUserAuth();
 
   return (
     <Header
@@ -26,9 +30,9 @@ export default function HeaderBar() {
       <div className="flex gap-4">
         <div className="flex flex-col text-end text-base">
           <div className="text-revomed-primary font-bold">
-            Peerapol Rattanawongghun
+            {user?.firstName} {user?.lastName}
           </div>
-          <div className="text-revomed-grey">Admin 000</div>
+          <div className="text-revomed-grey">{user?.id}</div>
         </div>
         <Avatar size={48} icon={<UserOutlined />} />
       </div>
