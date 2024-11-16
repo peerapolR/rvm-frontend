@@ -27,11 +27,12 @@ export default function Tabs() {
     },
   ];
 
-  const TabPanel = (props) => {
-    const { id, label, selectedKey } = props;
+  const TabPanel = ({ id, label, selectedKey }) => {
     return (
       <div
-        className={selectedKey === id ? "baseTab selected" : "baseTab"}
+        className={`${
+          selectedKey === id ? "baseTab selected" : "baseTab"
+        } rounded-lg`}
         onClick={() => handleChangeTab(id)}
       >
         {label}
@@ -40,7 +41,7 @@ export default function Tabs() {
   };
 
   return (
-    <div className="grid grid-cols-4 px-6 py-4">
+    <div className="grid grid-cols-4 px-6 py-4 bg-revomed-white mb-1 rounded-t-lg">
       {tabItem.map((e) => {
         return (
           <TabPanel

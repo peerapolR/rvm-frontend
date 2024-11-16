@@ -9,10 +9,13 @@ import GroupIcon from "@icons/GroupIcon";
 import FileExportIcon from "@icons/FileExportIcon";
 import { usePath } from "@contexts/PathContext";
 
+import { useUserAuth } from "@contexts/UserAuthContext";
+
 export default function MenuBar() {
   const { setHeader } = usePath();
   const router = useRouter();
   const [stateOpenKeys, setStateOpenKeys] = useState([]);
+  const { logout } = useUserAuth();
 
   const onOpenChange = (openKeys) => {
     const currentOpenKey = openKeys.find(
@@ -74,8 +77,13 @@ export default function MenuBar() {
   const handlePath = (e) => {
     const selectedKey = e.key;
     const path = pathObj[selectedKey];
-    if (path) {
-      router.push(path);
+
+    if (e.key === "5") {
+      logout();
+    } else {
+      if (path) {
+        router.push(path);
+      }
     }
   };
 

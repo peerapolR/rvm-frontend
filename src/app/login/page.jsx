@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@nextui-org/input";
 
@@ -11,21 +12,28 @@ import Button from "@components/button";
 import { useUserAuth } from "@contexts/UserAuthContext";
 
 const Page = () => {
+  const router = useRouter();
   const {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    click,
+    login,
     isLoading,
     isInvalidUsername,
     isInvalidPassword,
+    setAuthUser,
+    user,
   } = useUserAuth();
 
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
+  const handleLogin = async () => {
+    await login();
+  };
+  useEffect(() => {
+    if (user) {
+      router.push("/main");
+    }
+  }, [user]);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-revomed-white w-[53rem] h-[31rem] rounded-2xl grid grid-cols-2 border">
@@ -62,8 +70,12 @@ const Page = () => {
               radius="sm"
               placeholder="กรุณาระบุชื่อผู้ใช้..."
               label="ชื่อผู้ใช้"
-              onValueChange={setUsername}
-              value={username}
+              onValueChange={(e) =>
+                setAuthUser((prev) => ({
+                  ...prev,
+                  username: e,
+                }))
+              }
               isInvalid={isInvalidUsername}
               errorMessage="Please enter a Username"
             />
@@ -71,8 +83,12 @@ const Page = () => {
               label="รหัสผ่าน"
               variant="bordered"
               placeholder="กรุณาระบุรหัสผ่าน..."
-              onValueChange={setPassword}
-              value={password}
+              onValueChange={(e) =>
+                setAuthUser((prev) => ({
+                  ...prev,
+                  password: e,
+                }))
+              }
               isInvalid={isInvalidPassword}
               errorMessage="Please enter a Password"
               endContent={
@@ -97,7 +113,8 @@ const Page = () => {
             <Button
               text="เข้าสู่ระบบ"
               isLoading={isLoading}
-              onClick={click}
+              onClick={handleLogin}
+              onKeyDown={(e) => (e.key === "Enter" ? handleLogin : "")}
               className="bg-revomed-secondary text-revomed-white"
             />
           </div>
