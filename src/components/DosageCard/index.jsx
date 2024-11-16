@@ -5,7 +5,7 @@ export default function DosageCard(props) {
   const [found, setFound] = useState(false);
 
   useEffect(() => {
-    setFound(() => selected?.includes(id));
+    setFound(() => (id === selected ? true : false));
   }, [selected]);
 
   return (

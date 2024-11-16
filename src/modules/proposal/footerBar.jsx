@@ -11,7 +11,7 @@ export default function FooterBar() {
       style={{ minWidth: "calc(100vw - 300px)" }}
     >
       <BaseButton className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white">
-        Cancle
+        Cancel
       </BaseButton>
       <BaseButton className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white">
         Next
