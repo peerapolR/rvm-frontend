@@ -10,7 +10,7 @@ import LockIcon from "@icons/LockIcon";
 import BinIcon from "@icons/BinIcon";
 
 export default function DosageForm(props) {
-  const { setFormulation, formulation, setIsOpen , setOpenDetail } = props;
+  const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState(0);
 
@@ -20,7 +20,7 @@ export default function DosageForm(props) {
 
   const handleDetail = (record) => {
     console.log(record);
-    setOpenDetail(true)
+    setOpenDetail(true);
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function DosageForm(props) {
         return (
           <div
             className="underline text-revomed-primary-light1 cursor-pointer"
-            onClick={()=>handleDetail(record)}
+            onClick={() => handleDetail(record)}
           >
             Detail
           </div>
@@ -128,7 +128,11 @@ export default function DosageForm(props) {
   const items = [
     {
       label: (
-        <div className="pt-4 px-6 pb-3" style={{ fontSize: "16px" }} onClick={()=>setIsOpen(true)}>
+        <div
+          className="pt-4 px-6 pb-3"
+          style={{ fontSize: "16px" }}
+          onClick={() => setIsOpen(true)}
+        >
           Master Active Ingredient
         </div>
       ),
@@ -136,7 +140,11 @@ export default function DosageForm(props) {
     },
     {
       label: (
-        <div className="pb-4 px-6 pt-3" style={{ fontSize: "16px" }} onClick={()=>setIsOpen(true)}>
+        <div
+          className="pb-4 px-6 pt-3"
+          style={{ fontSize: "16px" }}
+          onClick={() => setIsOpen(true)}
+        >
           Active Ingredient
         </div>
       ),
@@ -258,9 +266,12 @@ const EditableCell = (props) => {
           name={[String(rowKey), dataIndex]}
           rules={[
             {
-              min: 22,
-              max: 150,
-              message: "Dosage must between 22 and 150",
+              validator: async (_, value) => {
+                if (value < 22 || value > 150) {
+                  return Promise.reject(new Error('Value must be between 22 and 150'));
+                }
+                return Promise.resolve();
+              },
             },
           ]}
         >
