@@ -22,7 +22,7 @@ export default function FormulaList() {
             className="w-[185px] py-3 px-10 rounded-lg border-1 border-revomed-secondary bg-revomed-secondary text-white hover:bg-black"
             iconPosition="start"
             icon={<PlusIcon />}
-            onClick={() => router.push("/formula/newFormula")}
+            onClick={() => router.push("/main/formula/newFormula")}
           >
             New Formula
           </BaseButton>

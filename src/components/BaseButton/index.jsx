@@ -11,6 +11,7 @@ export default function BaseButton(props) {
     iconPosition = "end",
     className,
     onClick,
+    disabled = false,
   } = props;
   return (
     <Button
@@ -20,6 +21,7 @@ export default function BaseButton(props) {
       icon={icon}
       iconPosition={iconPosition}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </Button>

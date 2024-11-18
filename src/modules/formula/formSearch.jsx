@@ -2,7 +2,7 @@ import React from "react";
 import Tabs from "@components/Tabs";
 import { Dropdown, Form, Input, Select } from "antd";
 import BaseButton from "@components/BaseButton";
-import { SearchOutlined } from "@ant-design/icons";
+import SearchIcon from "@icons/SearchIcon";
 export default function FormSearch() {
   const optionType = [
     {
@@ -111,10 +111,7 @@ export default function FormSearch() {
         layout="inline"
       >
         <Form.Item name="formulaNameLike" label="Search" layout="vertical">
-          <Input
-            placeholder="Search Formulation..."
-            prefix={<SearchOutlined />}
-          />
+          <Input placeholder="Search Formulation..." prefix={<SearchIcon />} />
         </Form.Item>
         <Form.Item name="type" label="Type" layout="vertical">
           <Select options={optionType} defaultValue={"all"} />
