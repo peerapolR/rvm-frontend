@@ -17,7 +17,7 @@ export default function NewFormulaList() {
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-6" style={{ minHeight: "calc(100vh - 75px)" }}>
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-6 items-center">
           <LeftOutlined className="p-2 bg-revomed-primary-light2 text-revomed-primary" />

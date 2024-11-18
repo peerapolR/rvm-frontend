@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 export default function FormulaList() {
   const router = useRouter();
   return (
-    <div className="p-6">
+    <div className="p-6" style={{ minHeight: "calc(100vh - 75px)" }}>
       <div className="flex justify-between items-center mb-6">
         <Title level={4} style={{ color: "#004D7D" }}>
           Formula
