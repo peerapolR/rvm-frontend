@@ -1,9 +1,10 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import BaseButton from "../BaseButton";
+import ModalConfirm from "@components/ModalConfirm";
 
 export default function FooterBar(props) {
-  const { setPath, path } = props;
+  const { setPath, path, setConfirmOpen, confirmOpen } = props;
   const router = useRouter();
   return (
     <div className="min-h-20 bg-revomed-white mt-[11.5rem]">
@@ -19,15 +20,23 @@ export default function FooterBar(props) {
         ) : (
           <div className="flex items-center justify-center">
             <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
-            Cancel
-          </BaseButton>
+              Cancel
+            </BaseButton>
+            <ModalConfirm
+              type="cancel"
+              modalConfirm={confirmOpen}
+              setModalConfirm={setConfirmOpen}
+            />
           </div>
         )}
         <div className="flex gap-6 items-center">
           {path === "newFormula" ? (
             <>
               {" "}
-              <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
+              <BaseButton
+                className="p-3 text-revomed-secondary border-0 bg-revomed-white"
+                onClick={() => setConfirmOpen(true)}
+              >
                 Cancel
               </BaseButton>
               <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
@@ -36,10 +45,15 @@ export default function FooterBar(props) {
               <BaseButton
                 // disabled
                 className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
-                onClick={()=>setPath("summary")}
+                onClick={() => setPath("summary")}
               >
                 Next
               </BaseButton>
+              <ModalConfirm
+                type="save"
+                modalConfirm={confirmOpen}
+                setModalConfirm={setConfirmOpen}
+              />
             </>
           ) : (
             <>
@@ -47,15 +61,16 @@ export default function FooterBar(props) {
               <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
                 Save
               </BaseButton>
-              <BaseButton 
-              className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-1 bg-revomed-white border-revomed-secondary"
-               onClick={()=>setPath("newFormula")}>
+              <BaseButton
+                className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-1 bg-revomed-white border-revomed-secondary"
+                onClick={() => setPath("newFormula")}
+              >
                 Back
               </BaseButton>
               <BaseButton
                 // disabled
                 className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
-                // onClick={}
+                onClick={() => setConfirmOpen(true)}
               >
                 Publish
               </BaseButton>

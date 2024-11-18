@@ -17,6 +17,7 @@ export default function NewFormulaList() {
   const [formulation, setFormulation] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [form] = Form.useForm();
 
   const itemBreadCrumb = [
@@ -71,7 +72,7 @@ export default function NewFormulaList() {
       render: (text, record) => {
         return (
           <div
-            className="underline text-revomed-primary-light1"
+            className="underline text-revomed-primary-light1 cursor-pointer"
             onClick={() => handleDetail(record)}
           >
             Detail
@@ -103,9 +104,11 @@ export default function NewFormulaList() {
     setOpenDetail(true);
   };
 
-  useEffect(()=>{
-    setPath("newFormula")
-  },[path])
+  useEffect(() => {
+    if (!path) {
+      setPath("newFormula");
+    }
+  }, [path]);
 
   return (
     <div className="relative" style={{ minHeight: "calc(100vh - 72px)" }}>
@@ -130,10 +133,10 @@ export default function NewFormulaList() {
               formulation={formulation}
               setFormulation={setFormulation}
               setIsOpen={setIsOpen}
+              setOpenDetail={setOpenDetail}
             />
             <ModalIngredient isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
-          <FooterBar setPath={setPath} path={path} />
         </>
       ) : (
         <>
@@ -235,9 +238,14 @@ export default function NewFormulaList() {
               <div className="text-revomed-primary">30.00 THB</div>
             </div>
           </div>
-          <FooterBar setPath={setPath} path={path} />
         </>
       )}
+      <FooterBar
+        setPath={setPath}
+        path={path}
+        setConfirmOpen={setConfirmOpen}
+        confirmOpen={confirmOpen}
+      />
       <ModalDetail openDetail={openDetail} setOpenDetail={setOpenDetail} />
     </div>
   );

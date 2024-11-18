@@ -10,7 +10,7 @@ import LockIcon from "@icons/LockIcon";
 import BinIcon from "@icons/BinIcon";
 
 export default function DosageForm(props) {
-  const { setFormulation, formulation, setIsOpen } = props;
+  const { setFormulation, formulation, setIsOpen , setOpenDetail } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState(0);
 
@@ -20,6 +20,7 @@ export default function DosageForm(props) {
 
   const handleDetail = (record) => {
     console.log(record);
+    setOpenDetail(true)
   };
 
   useEffect(() => {
@@ -62,8 +63,8 @@ export default function DosageForm(props) {
       render: (text, record) => {
         return (
           <div
-            className="underline text-revomed-primary-light1"
-            onClick={handleDetail(record)}
+            className="underline text-revomed-primary-light1 cursor-pointer"
+            onClick={()=>handleDetail(record)}
           >
             Detail
           </div>
