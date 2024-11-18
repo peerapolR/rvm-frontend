@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import BaseButton from "../BaseButton";
 import ModalConfirm from "@components/ModalConfirm";
 
 export default function FooterBar(props) {
-  const { setPath, path, setConfirmOpen, confirmOpen } = props;
-  const router = useRouter();
+  const { setPath, path } = props;
+  const [modal ,setModal] =useState(
+    {
+      type : '',
+      isOpen : false
+    }
+  )
+  
+  const handleModal = ( type ) => {
+    setModal({
+      type,
+      isOpen: true
+    })
+  }
+
   return (
     <div className="min-h-20 bg-revomed-white mt-[11.5rem]">
       <div className="flex gap-5 justify-between mx-5 pt-4">
@@ -19,14 +32,10 @@ export default function FooterBar(props) {
           </div>
         ) : (
           <div className="flex items-center justify-center">
-            <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
+            <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white" onClick={() => handleModal("delete")}>
               Cancel
             </BaseButton>
-            <ModalConfirm
-              type="cancel"
-              modalConfirm={confirmOpen}
-              setModalConfirm={setConfirmOpen}
-            />
+            
           </div>
         )}
         <div className="flex gap-6 items-center">
@@ -35,11 +44,11 @@ export default function FooterBar(props) {
               {" "}
               <BaseButton
                 className="p-3 text-revomed-secondary border-0 bg-revomed-white"
-                onClick={() => setConfirmOpen(true)}
+                onClick={() => handleModal("delete")}
               >
                 Cancel
               </BaseButton>
-              <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
+              <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white" onClick={() => handleModal("save")}>
                 Save
               </BaseButton>
               <BaseButton
@@ -49,16 +58,12 @@ export default function FooterBar(props) {
               >
                 Next
               </BaseButton>
-              <ModalConfirm
-                type="save"
-                modalConfirm={confirmOpen}
-                setModalConfirm={setConfirmOpen}
-              />
+             
             </>
           ) : (
             <>
               {" "}
-              <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white">
+              <BaseButton className="p-3 text-revomed-secondary border-0 bg-revomed-white" onClick={() => handleModal("save")}>
                 Save
               </BaseButton>
               <BaseButton
@@ -70,7 +75,7 @@ export default function FooterBar(props) {
               <BaseButton
                 // disabled
                 className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
-                onClick={() => setConfirmOpen(true)}
+                onClick={() => handleModal("success")}
               >
                 Publish
               </BaseButton>
@@ -78,6 +83,12 @@ export default function FooterBar(props) {
           )}
         </div>
       </div>
+      <ModalConfirm
+        isOpen={modal.isOpen}
+        type={modal.type}
+        setModal={setModal}
+        onClick={()=>setModal({type : '' , isOpen:false})}
+      />
     </div>
   );
 }
