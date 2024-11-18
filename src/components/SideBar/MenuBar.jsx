@@ -70,8 +70,11 @@ export default function MenuBar() {
 
   const pathObj = {
     1: "/main/proposal",
-    77: "/main/formula",
-    88: "/main/ingredient",
+    2: "/main/myProposal",
+    331: "/main/formula",
+    332: "/main/ingredient",
+    41: "/main/pendingProposal",
+    42: "/main/allProposal",
   };
 
   const handlePath = (e) => {
@@ -104,39 +107,53 @@ export default function MenuBar() {
       label: "Formula & Ingredient",
       children: [
         {
-          key: "66",
+          key: "33",
           label: "Supplement",
           children: [
             {
-              key: "77",
+              key: "331",
               label: "Formula",
               icon: <DotIcon />,
             },
             {
-              key: "88",
+              key: "332",
               label: "All Ingredient",
               icon: <DotIcon />,
             },
           ],
         },
-        {
-          key: "32",
-          label: "Skin Care",
-          children: [
-            { key: "321", label: "Option 1" },
-            { key: "322", label: "Option 2" },
-            { key: "323", label: "Option 3" },
-          ],
-        },
-        {
-          key: "33",
-          label: "Cosmetic",
-          children: [
-            { key: "331", label: "Option 1" },
-            { key: "332", label: "Option 2" },
-            { key: "333", label: "Option 3" },
-          ],
-        },
+        // {
+        //   key: "34",
+        //   label: "Skin Care",
+        //   children: [
+        //     {
+        //       key: "341",
+        //       label: "Formula",
+        //       icon: <DotIcon />,
+        //     },
+        //     {
+        //       key: "342",
+        //       label: "All Ingredient",
+        //       icon: <DotIcon />,
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: "35",
+        //   label: "Cosmetic",
+        //   children: [
+        //     {
+        //       key: "351",
+        //       label: "Formula",
+        //       icon: <DotIcon />,
+        //     },
+        //     {
+        //       key: "352",
+        //       label: "All Ingredient",
+        //       icon: <DotIcon />,
+        //     },
+        //   ],
+        // },
       ],
     },
     {
@@ -144,10 +161,8 @@ export default function MenuBar() {
       icon: <FileExportIcon />,
       label: "Sale Proposal",
       children: [
-        { key: "41", label: "Option 1" },
-        { key: "42", label: "Option 2" },
-        { key: "43", label: "Option 3" },
-        { key: "44", label: "Option 4" },
+        { key: "41", label: "Pending Proposal" },
+        { key: "42", label: "All Proposal" },
       ],
     },
     {
