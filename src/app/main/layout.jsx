@@ -9,6 +9,7 @@ import AntdConfigProvider from "@provider/AntdConfigProvider";
 import SideBar from "@components/SideBar";
 import HeaderBar from "@components/HeaderBar";
 import IngredientProvider from "@contexts/IngredientContext";
+import FormulaProvider from "@contexts/FormulaContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -38,7 +39,9 @@ const RootLayout = ({ children }) => {
               <Layout>
                 <HeaderBar />
                 <IngredientProvider>
-                  <Content>{children}</Content>
+                  <FormulaProvider>
+                    <Content>{children}</Content>
+                  </FormulaProvider>
                 </IngredientProvider>
               </Layout>
             </Layout>

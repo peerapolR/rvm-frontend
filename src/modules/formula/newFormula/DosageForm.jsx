@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Title from "antd/es/typography/Title";
 import DosageCard from "@components/DosageCard";
 import { dosageItem } from "./mockData";
@@ -9,23 +9,39 @@ import SelectedBadgeWithIcon from "@components/SelectedBadgeWithIcon";
 import LockIcon from "@icons/LockIcon";
 import BinIcon from "@icons/BinIcon";
 
-export default function DosageForm(props) {
-  const { setFormulation, formulation, setIsOpen , setOpenDetail } = props;
-  const [form] = Form.useForm();
-  const [selected, setSelected] = useState(0);
+import { useFormulaCTX } from "@contexts/FormulaContext";
 
-  const handleDosageCard = (id) => {
+export default function DosageForm(props) {
+  const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
+
+  const ctx = useFormulaCTX();
+  const { handleFormulaChange, newFormula, setNewFormula, masterIngredient } =
+    ctx;
+
+  const [form] = Form.useForm();
+  const [selected, setSelected] = useState("");
+
+  const [dataSource, setDataSource] = useState([]);
+
+  useEffect(() => {
+    setDataSource(masterIngredient);
+  }, [masterIngredient]);
+
+  useEffect(() => {
+    console.log(dataSource);
+  }, [dataSource]);
+
+  const handleDosageCard = (name, id) => {
     setSelected(id);
+    setNewFormula(() => ({
+      ...newFormula,
+      dosage_form: name,
+    }));
   };
 
   const handleDetail = (record) => {
-    console.log(record);
-    setOpenDetail(true)
+    setOpenDetail(true);
   };
-
-  useEffect(() => {
-    console.log(selected);
-  }, [selected]);
 
   const column = [
     {
@@ -47,13 +63,13 @@ export default function DosageForm(props) {
     },
     {
       title: "Active Ingredients",
-      dataIndex: "ingredients",
-      key: "ingredients",
+      dataIndex: "ingredient_name",
+      key: "ingredient_name",
     },
     {
       title: "Dosage (mg)",
-      dataIndex: "dosage",
-      key: "dosage",
+      dataIndex: "dose_clinical",
+      key: "dose_clinical",
       editable: true,
     },
     {
@@ -62,23 +78,16 @@ export default function DosageForm(props) {
       key: "",
       render: (text, record) => {
         return (
-          <div
-            className="underline text-revomed-primary-light1 cursor-pointer"
-            onClick={()=>handleDetail(record)}
-          >
-            Detail
-          </div>
-        );
-      },
-    },
-    {
-      title: "",
-      dataIndex: "",
-      key: "delete",
-      render: () => {
-        return (
-          <div>
-            <BinIcon className="text-revomed-primary" />
+          <div className="flex">
+            <div
+              className="underline text-revomed-primary-light1 cursor-pointer"
+              onClick={() => handleDetail(record)}
+            >
+              Detail
+            </div>
+            <div>
+              <BinIcon className="text-revomed-primary ml-5" />
+            </div>
           </div>
         );
       },
@@ -102,23 +111,23 @@ export default function DosageForm(props) {
     };
   });
 
-  const dataSource = [
-    {
-      id: 1,
-      ingredients: "Bioenergy RiaGev",
-      dosage: "0",
-    },
-    {
-      id: 2,
-      ingredients: "Grape Skin Extract - Resveratrol 98%",
-      dosage: "0",
-    },
-    {
-      id: 3,
-      ingredients: "Pycnogenol - French Maritime Pine Bark Extract",
-      dosage: "0",
-    },
-  ];
+  // const dataSource = [
+  //   {
+  //     id: 1,
+  //     ingredients: "Bioenergy RiaGev",
+  //     dosage: "0",
+  //   },
+  //   {
+  //     id: 2,
+  //     ingredients: "Grape Skin Extract - Resveratrol 98%",
+  //     dosage: "0",
+  //   },
+  //   {
+  //     id: 3,
+  //     ingredients: "Pycnogenol - French Maritime Pine Bark Extract",
+  //     dosage: "0",
+  //   },
+  // ];
 
   const handleSelectedBadge = (name) => {
     const result = formulation.filter((e) => e !== name);
@@ -128,7 +137,11 @@ export default function DosageForm(props) {
   const items = [
     {
       label: (
-        <div className="pt-4 px-6 pb-3" style={{ fontSize: "16px" }} onClick={()=>setIsOpen(true)}>
+        <div
+          className="pt-4 px-6 pb-3"
+          style={{ fontSize: "16px" }}
+          onClick={() => setIsOpen(true)}
+        >
           Master Active Ingredient
         </div>
       ),
@@ -136,7 +149,11 @@ export default function DosageForm(props) {
     },
     {
       label: (
-        <div className="pb-4 px-6 pt-3" style={{ fontSize: "16px" }} onClick={()=>setIsOpen(true)}>
+        <div
+          className="pb-4 px-6 pt-3"
+          style={{ fontSize: "16px" }}
+          onClick={() => setIsOpen(true)}
+        >
           Active Ingredient
         </div>
       ),
@@ -158,7 +175,7 @@ export default function DosageForm(props) {
               name={e.name}
               title={e.title}
               image={e.image}
-              onClick={() => handleDosageCard(e.id)}
+              onClick={() => handleDosageCard(e.name, e.id)}
               selected={selected}
             />
           );

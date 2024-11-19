@@ -12,9 +12,13 @@ import LockIcon from "@icons/LockIcon";
 import "./style.scss";
 import ModalDetail from "./modalDetail";
 
+import { useFormulaCTX } from "@contexts/FormulaContext";
+
 export default function NewFormulaList() {
+  const ctx = useFormulaCTX();
+  const { setFormulation, formulation } = ctx;
+
   const [path, setPath] = useState("");
-  const [formulation, setFormulation] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);

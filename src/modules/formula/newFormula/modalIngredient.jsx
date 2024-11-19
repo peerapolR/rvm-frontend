@@ -1,28 +1,54 @@
 import { Modal, Input, Form, Checkbox, Row, Col } from "antd";
 import SearchIcon from "@icons/SearchIcon";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import BaseButton from "@components/BaseButton";
 
+import { useIngredientCTX } from "@contexts/IngredientContext";
+import { useFormulaCTX } from "@contexts/FormulaContext";
+
 export default function ModalIngredient(props) {
+  const ctx = useIngredientCTX();
+  const { ingredient } = ctx;
+
+  const formulaCtx = useFormulaCTX();
+  const { setMasterIngredient, setIngredient } = formulaCtx;
+
   const { isOpen, setIsOpen } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState([]);
 
-  const optionCheckbox = [
-    {
-      label: "Bioenergy RiaGev",
-      value: "Bioenergy RiaGev",
-    },
-    {
-      label: "L-Glutathione",
-      value: "L-Glutathione",
-    },
-    {
-      label: "Co-Enzyme Q10",
-      value: "Co-Enzyme Q10",
-    },
-  ];
+  const handleCheckIngredient = () => {
+    const data = form.getFieldValue();
+
+    setSelected(data);
+  };
+
+  const handleAllIngredient = () => {
+    const data = form.getFieldValue();
+
+    const mappingData = ingredient.reduce((acc, e) => {
+      if (!acc[e.ingredient_name]) {
+        acc[e.ingredient_name] = e;
+      }
+      return acc;
+    }, {});
+
+    const result = data?.masterIngredient?.map((e) => {
+      if (mappingData[e]) {
+        return {
+          ...mappingData[e],
+        };
+      }
+    });
+
+    setMasterIngredient(result);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    form.setFieldsValue({ masterIngredient: selected });
+  }, [isOpen]);
 
   return (
     <Modal open={isOpen} width={800} closeIcon={false} footer={false}>
@@ -35,21 +61,32 @@ export default function ModalIngredient(props) {
           className="w-[320px] h-[48px]"
           placeholder="Ingredient Name..."
           prefix={<SearchIcon style={{ color: "#ABB1C1" }} />}
-          //   onChange={()=}
+          // onChange={}
         />
       </div>
       <Form form={form}>
-        <Form.Item name="ingredient">
-          <Checkbox.Group style={{ width: "100%" }} className="flex flex-col">
-            {optionCheckbox.map((e, i) => {
-              return <RowInModal key={i} value={e.value} label={e.label} />;
+        <Form.Item name="masterIngredient">
+          <Checkbox.Group
+            style={{ width: "100%" }}
+            className="flex flex-col"
+            onChange={handleCheckIngredient}
+          >
+            {ingredient.map((e, i) => {
+              return (
+                <RowInModal
+                  key={i}
+                  value={e.ingredient_name}
+                  label={e.ingredient_name}
+                  detail={e}
+                />
+              );
             })}
           </Checkbox.Group>
         </Form.Item>
       </Form>
       <div className="flex items-center px-6 pt-6 justify-between bg-revomed-light-grey4 border-t border-revomed-light-grey2">
         <div className="text-revomed-primary" style={{ fontSize: "16px" }}>
-          2 Selected
+          {selected?.masterIngredient?.length} Selected
         </div>
         <div className="flex gap-4">
           <BaseButton
@@ -62,7 +99,7 @@ export default function ModalIngredient(props) {
           <BaseButton
             className="rounded-lg px-3 py-4 text-white h-12 w-[162px] bg-revomed-secondary"
             type="button"
-            onClick={() => setIsOpen(false)}
+            onClick={handleAllIngredient}
           >
             Add
           </BaseButton>
@@ -73,7 +110,7 @@ export default function ModalIngredient(props) {
 }
 
 export const RowInModal = (props) => {
-  const { selected, value, label } = props;
+  const { selected, value, label, detail } = props;
   return (
     <Row className="py-4 px-6 items-center">
       <Col span={4} className="flex items-center justify-center">

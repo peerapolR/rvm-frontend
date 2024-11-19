@@ -1,14 +1,6 @@
-import localFont from "next/font/local";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Header, Content } from "antd/es/layout/layout";
-import { Layout } from "antd";
 import ContextProvider from "@contexts/UserAuthContext";
-import PathProvider from "@contexts/PathContext";
-import AntdConfigProvider from "@provider/AntdConfigProvider";
-import SideBar from "@components/SideBar";
-import HeaderBar from "@components/HeaderBar";
-import IngredientProvider from "@contexts/IngredientContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",

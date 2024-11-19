@@ -1,8 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown, Form, Input, Select } from "antd";
 
+import { useFormulaCTX } from "@contexts/FormulaContext";
+
 export default function FormSearch(props) {
   const { setFormulation, formulation, form } = props;
+
+  const ctx = useFormulaCTX();
+  const { handleFormulaChange, newFormula, setNewFormula } = ctx;
+
+  const handleFormulaType = (e) => {
+    setNewFormula(() => ({
+      ...newFormula,
+      formula_type: e,
+    }));
+  };
 
   const optionType = [
     {
@@ -71,20 +83,30 @@ export default function FormSearch(props) {
     },
   ];
 
-
   useEffect(() => {
     form.setFieldValue("formulation", formulation);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formulation]);
 
   return (
     <Form className="pt-6 pb-4 grid grid-cols-3" layout="inline" form={form}>
       <Form.Item name="formulaNameLike" label="Formula Name" layout="vertical">
-        <Input placeholder="Formula Name" />
+        <Input
+          placeholder="Formula Name"
+          size="large"
+          name="formula_name"
+          value={newFormula?.formula_name}
+          onChange={handleFormulaChange}
+        />
       </Form.Item>
       <Form.Item name="type" label="Formula Type" layout="vertical">
-        <Select options={optionType} placeholder="Select Formula Type" />
+        <Select
+          options={optionType}
+          placeholder="Select Formula Type"
+          size="large"
+          name="formula_type"
+          value={newFormula?.formula_type}
+          onChange={handleFormulaType}
+        />
       </Form.Item>
       <Form.Item
         name="formulation"
@@ -93,6 +115,7 @@ export default function FormSearch(props) {
       >
         <Select
           mode="multiple"
+          size="large"
           allowClear
           maxCount="3"
           className="w-full rounded-lg"
