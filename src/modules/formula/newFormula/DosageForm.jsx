@@ -10,6 +10,10 @@ import LockIcon from "@icons/LockIcon";
 import BinIcon from "@icons/BinIcon";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
+export default function DosageForm(props) {
+  const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
+  const [form] = Form.useForm();
+  const [selected, setSelected] = useState(0);
 
 export default function DosageForm(props) {
   const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
@@ -40,6 +44,7 @@ export default function DosageForm(props) {
   };
 
   const handleDetail = (record) => {
+    console.log(record);
     setOpenDetail(true);
   };
 
@@ -275,9 +280,12 @@ const EditableCell = (props) => {
           name={[String(rowKey), dataIndex]}
           rules={[
             {
-              min: 22,
-              max: 150,
-              message: "Dosage must between 22 and 150",
+              validator: async (_, value) => {
+                if (value < 22 || value > 150) {
+                  return Promise.reject(new Error('Value must be between 22 and 150'));
+                }
+                return Promise.resolve();
+              },
             },
           ]}
         >

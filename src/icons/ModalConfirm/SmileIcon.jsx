@@ -17,5 +17,5 @@ const smileSvg = () => {
 };
 
 export default function SmileIcon(props) {
-  return <Icon component={smileSvg} {...props} />;
+  return <Icon component={smileSvg} style={{ color: "#07A804" }} {...props} />;
 }
