@@ -22,12 +22,12 @@ export default function DosageCard(props) {
       key={i}
       className={
         showOnly
-          ? `flex items-center gap-[45px] w-[300px] h-[110px] bg-revomed-white rounded-2xl border border-revomed-light-grey2`
-          : `flex items-center gap-[45px] w-[348px] h-[110px] bg-revomed-white rounded-2xl border cursor-pointer
+          ? `flex items-center gap-[45px] w-[300px] h-[110px]  rounded-2xl border border-revomed-light-grey2`
+          : `flex items-center gap-[45px] w-[348px] h-[110px]  rounded-2xl border cursor-pointer
         ${
           found
-            ? "border-revomed-primary-light1 "
-            : "border-revomed-light-grey2"
+            ? "border-revomed-primary-light1 bg-revomed-primary-light3"
+            : "border-revomed-light-grey2 bg-revomed-white"
         }
         `
       }

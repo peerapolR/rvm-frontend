@@ -10,30 +10,56 @@ import LockIcon from "@icons/LockIcon";
 import BinIcon from "@icons/BinIcon";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
-export default function DosageForm(props) {
-  const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
-  const [form] = Form.useForm();
-  const [selected, setSelected] = useState(0);
 
 export default function DosageForm(props) {
-  const { setFormulation, formulation, setIsOpen, setOpenDetail } = props;
+  const {
+    setFormulation,
+    formulation,
+    setIsOpen,
+    setOpenDetail,
+    setDetailModal,
+    setIsMaster,
+    setDataSource,
+    dataSource,
+  } = props;
 
   const ctx = useFormulaCTX();
-  const { handleFormulaChange, newFormula, setNewFormula, masterIngredient } =
-    ctx;
+  const {
+    newFormula,
+    setNewFormula,
+    masterIngredient,
+    activeIngredient,
+    sumDose,
+  } = ctx;
 
   const [form] = Form.useForm();
   const [selected, setSelected] = useState("");
 
-  const [dataSource, setDataSource] = useState([]);
-
   useEffect(() => {
-    setDataSource(masterIngredient);
+    if (dataSource.length > 0) {
+      const mergedArray = [...dataSource, ...masterIngredient].filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+      );
+      setDataSource(mergedArray);
+    } else {
+      setDataSource(masterIngredient);
+    }
   }, [masterIngredient]);
 
   useEffect(() => {
-    console.log(dataSource);
-  }, [dataSource]);
+    if (dataSource.length > 0) {
+      const mergedArray = [...dataSource, ...activeIngredient].filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+      );
+      setDataSource(mergedArray);
+    } else {
+      setDataSource(activeIngredient);
+    }
+  }, [activeIngredient]);
 
   const handleDosageCard = (name, id) => {
     setSelected(id);
@@ -44,7 +70,7 @@ export default function DosageForm(props) {
   };
 
   const handleDetail = (record) => {
-    console.log(record);
+    setDetailModal(record);
     setOpenDetail(true);
   };
 
@@ -53,18 +79,17 @@ export default function DosageForm(props) {
       title: "",
       dataIndex: "",
       key: "",
-      render: () => {
-        return (
-          <div>
-            <LockIcon />
-          </div>
-        );
+      render: (record) => {
+        return <div>{record.isMaster ? <LockIcon /> : ""}</div>;
       },
     },
     {
       title: "No.",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "",
+      key: "",
+      render: (text, record, index) => {
+        return <div>{index + 1}</div>;
+      },
     },
     {
       title: "Active Ingredients",
@@ -99,7 +124,7 @@ export default function DosageForm(props) {
     },
   ];
 
-  const columnForEdit = column.map((col) => {
+  const columnForEdit = column.map((col, i) => {
     if (!col.editable) {
       return col;
     }
@@ -111,32 +136,24 @@ export default function DosageForm(props) {
         dataIndex: col.dataIndex,
         title: col.title,
         editable: col.editable,
-        rowKey: record.id,
+        rowKey: record._id,
       }),
     };
   });
 
-  // const dataSource = [
-  //   {
-  //     id: 1,
-  //     ingredients: "Bioenergy RiaGev",
-  //     dosage: "0",
-  //   },
-  //   {
-  //     id: 2,
-  //     ingredients: "Grape Skin Extract - Resveratrol 98%",
-  //     dosage: "0",
-  //   },
-  //   {
-  //     id: 3,
-  //     ingredients: "Pycnogenol - French Maritime Pine Bark Extract",
-  //     dosage: "0",
-  //   },
-  // ];
-
   const handleSelectedBadge = (name) => {
     const result = formulation.filter((e) => e !== name);
     setFormulation(result);
+  };
+
+  const onClickMaster = () => {
+    setIsOpen(true);
+    setIsMaster(true);
+  };
+
+  const onClickActive = () => {
+    setIsOpen(true);
+    setIsMaster(false);
   };
 
   const items = [
@@ -145,7 +162,7 @@ export default function DosageForm(props) {
         <div
           className="pt-4 px-6 pb-3"
           style={{ fontSize: "16px" }}
-          onClick={() => setIsOpen(true)}
+          onClick={onClickMaster}
         >
           Master Active Ingredient
         </div>
@@ -157,7 +174,7 @@ export default function DosageForm(props) {
         <div
           className="pb-4 px-6 pt-3"
           style={{ fontSize: "16px" }}
-          onClick={() => setIsOpen(true)}
+          onClick={onClickActive}
         >
           Active Ingredient
         </div>
@@ -241,8 +258,8 @@ export default function DosageForm(props) {
             dataSource={dataSource}
             pagination={false}
             rowClassName={"rowBackground"}
-            rowKey="id"
-            components={{ body: { cell: EditableCell } }}
+            rowKey={"_id"}
+            components={{ body: { cell: EdiTableCell } }}
           />
           <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl">
             <div className="flex gap-4">
@@ -252,14 +269,16 @@ export default function DosageForm(props) {
               >
                 {"Total Active (mg)"}
               </div>
-              <Form.Item name="total" style={{ margin: "0" }}>
+              {/* <Form.Item name="total" style={{ margin: "0" }}>
                 <Input
                   min={22}
                   max={150}
                   disabled
                   className="w-[120px] h-[40px]"
+                  defaultValue={sumDose}
                 />
-              </Form.Item>
+              </Form.Item> */}
+              <div>{sumDose}</div>
             </div>
           </div>
         </Form>
@@ -268,28 +287,92 @@ export default function DosageForm(props) {
   );
 }
 
-const EditableCell = (props) => {
+const EdiTableCell = (props) => {
   const { record, dataIndex, title, editable, rowKey, children, ...restProps } =
     props;
+  const ctx = useFormulaCTX();
+  const {
+    activeIngredient,
+    setActiveIngredient,
+    masterIngredient,
+    setMasterIngredient,
+  } = ctx;
+
+  const handleDosage = (e) => {
+    const { value } = e.target;
+    const ingredientName = record.ingredient_name;
+    const master = record.isMaster;
+
+    if (!ingredientName) {
+      console.error("Ingredient name is undefined or null");
+      return;
+    }
+
+    if (master) {
+      const ingredientArray = masterIngredient.find(
+        (e) => e.ingredient_name === ingredientName
+      );
+
+      if (!ingredientArray) {
+        console.error("Master ingredient not found:", ingredientName);
+        return;
+      }
+
+      setMasterIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+    } else {
+      const ingredientArray = activeIngredient.find(
+        (e) => e.ingredient_name === ingredientName
+      );
+
+      if (!ingredientArray) {
+        console.error("Active ingredient not found:", ingredientName);
+        return;
+      }
+
+      setActiveIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+    }
+  };
+
   return (
     <td>
       {editable ? (
         <Form.Item
+          key={record._id}
           className="flex items-center"
           style={{ margin: "0" }}
           name={[String(rowKey), dataIndex]}
           rules={[
             {
               validator: async (_, value) => {
-                if (value < 22 || value > 150) {
-                  return Promise.reject(new Error('Value must be between 22 and 150'));
+                if (value < record?.dose_min || value > record?.dose_max) {
+                  return Promise.reject(
+                    new Error(
+                      `Value must be between ${record?.dose_min} and ${record?.dose_max}`
+                    )
+                  );
                 }
                 return Promise.resolve();
               },
             },
           ]}
         >
-          <Input style={{ width: "160px", height: "40px" }} type="number" />
+          <Input
+            style={{ width: "160px", height: "40px" }}
+            type="number"
+            onChange={handleDosage}
+          />
         </Form.Item>
       ) : (
         children

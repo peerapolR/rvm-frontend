@@ -3,8 +3,12 @@ import { useRouter } from "next/navigation";
 
 import BaseButton from "@components/BaseButton";
 
-export default function FooterBar({ status }) {
+import { useNewProposalCTX } from "@contexts/NewProposalContext";
+
+export default function FooterBar({ status, _id }) {
   const router = useRouter();
+  const newProposalctx = useNewProposalCTX();
+  const { proposedOrder } = newProposalctx;
   return (
     <>
       {status === "pending" || status === "reject" ? (
@@ -50,7 +54,7 @@ export default function FooterBar({ status }) {
             <BaseButton
               className="w-[162px] h-[48px] py-3 px-10 text-revomed-white bg-revomed-green border-0 font-semibold"
               onClick={() => {
-                console.log("Propose");
+                proposedOrder(_id);
               }}
             >
               Propose

@@ -12,9 +12,14 @@ export default function ModalIngredient(props) {
   const { ingredient } = ctx;
 
   const formulaCtx = useFormulaCTX();
-  const { setMasterIngredient, setIngredient } = formulaCtx;
+  const {
+    setMasterIngredient,
+    setActiveIngredient,
+    masterIngredient,
+    activeIngredient,
+  } = formulaCtx;
 
-  const { isOpen, setIsOpen } = props;
+  const { isOpen, setIsOpen, setOpenDetail, setDetailModal, isMaster } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState([]);
 
@@ -38,11 +43,36 @@ export default function ModalIngredient(props) {
       if (mappingData[e]) {
         return {
           ...mappingData[e],
+          isMaster: isMaster,
         };
       }
     });
+    if (isMaster) {
+      const combinedArray = [...activeIngredient, ...result];
 
-    setMasterIngredient(result);
+      const mergedArray = combinedArray.filter(
+        (item, index, self) =>
+          self.filter((obj) => obj.ingredient_name === item.ingredient_name)
+            .length === 1
+      );
+      setMasterIngredient(mergedArray);
+    } else {
+      const combinedArray = [...masterIngredient, ...result];
+
+      const mergedArray = combinedArray.filter(
+        (item, index, self) =>
+          self.filter((obj) => obj.ingredient_name === item.ingredient_name)
+            .length === 1
+      );
+
+      setActiveIngredient(mergedArray);
+    }
+
+    setIsOpen(false);
+  };
+
+  const handleCancel = () => {
+    setSelected([]);
     setIsOpen(false);
   };
 
@@ -78,6 +108,8 @@ export default function ModalIngredient(props) {
                   value={e.ingredient_name}
                   label={e.ingredient_name}
                   detail={e}
+                  setOpenDetail={setOpenDetail}
+                  setDetailModal={setDetailModal}
                 />
               );
             })}
@@ -92,7 +124,7 @@ export default function ModalIngredient(props) {
           <BaseButton
             type="button"
             className="border border-revomed-secondary rounded-lg px-3 py-4 text-revomed-secondary h-12 w-[162px]"
-            onClick={() => setIsOpen(false)}
+            onClick={handleCancel}
           >
             Cancel
           </BaseButton>
@@ -110,7 +142,12 @@ export default function ModalIngredient(props) {
 }
 
 export const RowInModal = (props) => {
-  const { selected, value, label, detail } = props;
+  const { selected, value, label, detail, setOpenDetail, setDetailModal } =
+    props;
+  const openDetail = () => {
+    setDetailModal(detail);
+    setOpenDetail(true);
+  };
   return (
     <Row className="py-4 px-6 items-center">
       <Col span={4} className="flex items-center justify-center">
@@ -124,7 +161,12 @@ export const RowInModal = (props) => {
       </Col>
 
       <Col span={4} className="text-center">
-        <span className="underline text-revomed-primary-light1">Detail</span>
+        <span
+          className="underline text-revomed-primary-light1 cursor-pointer"
+          onClick={openDetail}
+        >
+          Detail
+        </span>
       </Col>
     </Row>
   );

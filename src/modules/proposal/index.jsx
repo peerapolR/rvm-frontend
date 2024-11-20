@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import Title from "antd/es/typography/Title";
@@ -10,24 +10,32 @@ import Cosmeticicon from "@icons/Cosmeticicon";
 
 export default function ProposalList() {
   const router = useRouter();
+  const [selected, setSelected] = useState("");
   const supIcon = () => <Supplementicon />;
   const skinIcon = () => <Skincareicon />;
   const cosIcon = () => <Cosmeticicon />;
 
   const ProductCat = [
     {
+      id: 1,
       name: "Supplement",
       icon: supIcon(),
     },
     {
+      id: 2,
       name: "Skincare",
       icon: skinIcon(),
     },
     {
+      id: 3,
       name: "Cosmetic",
       icon: cosIcon(),
     },
   ];
+  const handleProdCatCard = (name, id) => {
+    setSelected(id);
+  };
+
   return (
     <div className="relative" style={{ minHeight: "calc(100vh - 72px)" }}>
       <div className="p-6">
@@ -40,11 +48,12 @@ export default function ProposalList() {
           {ProductCat.map((i, idx) => [
             <Button
               key={idx}
+              id={i.id}
+              name={i.name}
               disabled={i.name === "Supplement" ? false : true}
               className="bg-revomed-white w-[348px] h-[215px] rounded-lg border-0 hover:border-1 border-revomed-primary font-semibold text-revomed-primary text-lg flex flex-col "
-              onClick={() => {
-                router.push("/main/proposal/formulation");
-              }}
+              // onClick={() => handleProdCatCard(i.name, i.id)}
+              onClick={() => router.push("/main/proposal/formulation")}
             >
               {i.icon}
               {i.name}
@@ -52,7 +61,7 @@ export default function ProposalList() {
           ])}
         </div>
       </div>
-      <FooterBar />
+      {/* <FooterBar selected={selected} /> */}
     </div>
   );
 }

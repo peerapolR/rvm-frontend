@@ -15,7 +15,10 @@ export default function FormulaList() {
           Formula
         </Title>
         <div className="flex gap-6">
-          <BaseButton className="w-[185px] py-3 px-10 border-1 border-revomed-secondary rounded-lg text-revomed-secondary">
+          <BaseButton
+            className="w-[185px] py-3 px-10 border-1 border-revomed-secondary rounded-lg text-revomed-secondary"
+            onClick={() => router.push("/main/ingredient")}
+          >
             All Ingredient
           </BaseButton>
           <BaseButton

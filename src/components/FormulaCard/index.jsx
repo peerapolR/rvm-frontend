@@ -4,9 +4,20 @@ import EditIcon from "@icons/EditIcon";
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 
+import formattedDate from "@functions/formatDate";
+
 export default function FormulaCard(props) {
-  const { header, type, status, date, form, name, details, onEdit, onDelete } =
-    props;
+  const {
+    header,
+    creater,
+    status,
+    date,
+    form,
+    code,
+    details,
+    onEdit,
+    onDelete,
+  } = props;
 
   let newHeader = "";
 
@@ -56,18 +67,16 @@ export default function FormulaCard(props) {
           <div className="text-revomed-primary-dark font-bold text-base">
             {details?.header}
           </div>
-          <div className="text-revomed-primary">{details?.component}</div>
+          <div className="text-revomed-primary h-[70px]">
+            {details?.component.map((e, i) => [<p key={i}>{e}</p>])}
+          </div>
         </div>
         <div className="flex justify-between">
-          {type ? (
-            <div className="flex gap-2 text-revomed-primary-light1">
-              <UserOutlined />
-              {type === "master" ? "Master" : "Custom"}
-            </div>
-          ) : (
-            <div></div>
-          )}
-          <div className="text-revomed-grey">{date}</div>
+          <div className="flex gap-2 text-revomed-primary-light1">
+            <UserOutlined />
+            {code} ({creater})
+          </div>
+          <div className="text-revomed-grey">{formattedDate(date)}</div>
         </div>
       </div>
     </div>

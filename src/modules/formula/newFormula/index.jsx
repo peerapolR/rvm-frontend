@@ -8,6 +8,15 @@ import DosageForm from "./DosageForm";
 import ModalIngredient from "./modalIngredient";
 import DosageCard from "@components/DosageCard";
 import capSule from "@public/assets/images/capsule.png";
+import tablet from "@public/assets/images/tablet.png";
+import softgel from "@public/assets/images/softgel.png";
+import powder from "@public/assets/images/powder.png";
+import oralPowder from "@public/assets/images/oralPowder.png";
+import jelly from "@public/assets/images/jelly.png";
+import gummie from "@public/assets/images/gummie.png";
+import effervescent from "@public/assets/images/effervescent.png";
+import chewable from "@public/assets/images/chewable.png";
+import coffeeAndTea from "@public/assets/images/coffeeAndTea.png";
 import LockIcon from "@icons/LockIcon";
 import "./style.scss";
 import ModalDetail from "./modalDetail";
@@ -16,13 +25,50 @@ import { useFormulaCTX } from "@contexts/FormulaContext";
 
 export default function NewFormulaList() {
   const ctx = useFormulaCTX();
-  const { setFormulation, formulation } = ctx;
+  const {
+    setFormulation,
+    formulation,
+    masterIngredient,
+    activeIngredient,
+    newFormula,
+    ingredientDose,
+    sumDose,
+  } = ctx;
 
   const [path, setPath] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [detailModal, setDetailModal] = useState({});
+
+  const [dataSource, setDataSource] = useState([]);
+  const [isMaster, setIsMaster] = useState(false);
   const [form] = Form.useForm();
+
+  const dosageIcon = (name) => {
+    switch (name) {
+      case "Capsule":
+        return capSule;
+      case "Tablet":
+        return tablet;
+      case "Softgel":
+        return softgel;
+      case "Powder":
+        return powder;
+      case "Oral Dissolving":
+        return oralPowder;
+      case "Jelly":
+        return jelly;
+      case "Gummie":
+        return gummie;
+      case "Effervescent":
+        return effervescent;
+      case "Chewable":
+        return chewable;
+      case "Coffee & Tea":
+        return coffeeAndTea;
+    }
+  };
 
   const itemBreadCrumb = [
     {
@@ -45,66 +91,50 @@ export default function NewFormulaList() {
     {
       title: "",
       dataIndex: "",
-      key: "icon",
-      render: () => {
-        return (
-          <div>
-            <LockIcon />
-          </div>
-        );
+      key: "",
+      render: (record) => {
+        return <div>{record.isMaster ? <LockIcon /> : ""}</div>;
       },
     },
     {
       title: "No.",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "",
+      key: "",
+      render: (text, record, index) => {
+        return <div>{index + 1}</div>;
+      },
     },
     {
       title: "Active Ingredients",
-      dataIndex: "ingredients",
-      key: "ingredients",
+      dataIndex: "ingredient_name",
+      key: "ingredient_name",
     },
     {
       title: "Dosage (mg)",
-      dataIndex: "dosage",
-      key: "dosage",
+      dataIndex: "dosageToUse",
+      key: "dosageToUse",
     },
     {
-      title: "",
+      title: "Manage",
       dataIndex: "",
       key: "",
       render: (text, record) => {
         return (
-          <div
-            className="underline text-revomed-primary-light1 cursor-pointer"
-            onClick={() => handleDetail(record)}
-          >
-            Detail
+          <div className="flex">
+            <div
+              className="underline text-revomed-primary-light1 cursor-pointer"
+              onClick={() => handleDetail(record)}
+            >
+              Detail
+            </div>
           </div>
         );
       },
     },
   ];
 
-  const dataSource = [
-    {
-      id: 1,
-      ingredients: "Bioenergy RiaGev",
-      dosage: "20.00",
-    },
-    {
-      id: 2,
-      ingredients: "Grape Skin Extract - Resveratrol 98%",
-      dosage: "20.00",
-    },
-    {
-      id: 3,
-      ingredients: "Pycnogenol - French Maritime Pine Bark Extract",
-      dosage: "15.00",
-    },
-  ];
-
   const handleDetail = (record) => {
+    setDetailModal(record);
     setOpenDetail(true);
   };
 
@@ -138,8 +168,18 @@ export default function NewFormulaList() {
               setFormulation={setFormulation}
               setIsOpen={setIsOpen}
               setOpenDetail={setOpenDetail}
+              setDetailModal={setDetailModal}
+              setIsMaster={setIsMaster}
+              setDataSource={setDataSource}
+              dataSource={dataSource}
             />
-            <ModalIngredient isOpen={isOpen} setIsOpen={setIsOpen} />
+            <ModalIngredient
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              setOpenDetail={setOpenDetail}
+              setDetailModal={setDetailModal}
+              isMaster={isMaster}
+            />
           </div>
         </>
       ) : (
@@ -167,7 +207,7 @@ export default function NewFormulaList() {
                     className="text-revomed-black"
                     style={{ fontSize: "16px" }}
                   >
-                    Anti-Aging
+                    {newFormula.formula_name}
                   </span>
                 </div>
                 <div className="flex gap-[16px]">
@@ -178,10 +218,10 @@ export default function NewFormulaList() {
                     Formula Type:{" "}
                   </span>
                   <span
-                    className="text-revomed-black"
+                    className="text-revomed-black capitalize"
                     style={{ fontSize: "16px" }}
                   >
-                    Prototype Formula
+                    {newFormula.formula_type} Formula
                   </span>
                 </div>
                 <div className="flex flex-col">
@@ -191,12 +231,15 @@ export default function NewFormulaList() {
                   >
                     Formulation:{" "}
                   </span>
-                  <span
-                    className="text-revomed-black"
-                    style={{ fontSize: "16px" }}
-                  >
-                    Protein, Probiotic - Prebiotic - Postbiotic, Eye & Brain
-                  </span>
+                  {formulation.map((e, i) => [
+                    <span
+                      className="text-revomed-black"
+                      key={i}
+                      style={{ fontSize: "16px" }}
+                    >
+                      {e}
+                    </span>,
+                  ])}
                 </div>
                 <div className="flex flex-col gap-2">
                   <span
@@ -207,8 +250,8 @@ export default function NewFormulaList() {
                   </span>
                   <DosageCard
                     key={1}
-                    image={capSule}
-                    name={"Capsule"}
+                    image={dosageIcon(newFormula.dosage_form)}
+                    name={newFormula.dosage_form}
                     showOnly={true}
                   />
                 </div>
@@ -218,7 +261,7 @@ export default function NewFormulaList() {
                 <Table
                   className="bg-revomed-white rounded-t-2xl min-h-[405px]"
                   columns={column}
-                  dataSource={dataSource}
+                  dataSource={ingredientDose}
                   pagination={false}
                   rowClassName={"rowBackground"}
                   rowKey="id"
@@ -229,18 +272,18 @@ export default function NewFormulaList() {
                     style={{ fontSize: "16px" }}
                   >
                     <div className="font-bold">{"Total Active (mg)"}</div>
-                    <div>65.50</div>
+                    <div>{sumDose}</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div
+            {/* <div
               className="flex gap-[16px] font-bold mt-6"
               style={{ fontSize: "16px" }}
             >
               <div className="text-revomed-dark-grey">Total price:</div>
               <div className="text-revomed-primary">30.00 THB</div>
-            </div>
+            </div> */}
           </div>
         </>
       )}
@@ -250,7 +293,11 @@ export default function NewFormulaList() {
         setConfirmOpen={setConfirmOpen}
         confirmOpen={confirmOpen}
       />
-      <ModalDetail openDetail={openDetail} setOpenDetail={setOpenDetail} />
+      <ModalDetail
+        openDetail={openDetail}
+        setOpenDetail={setOpenDetail}
+        detailModal={detailModal}
+      />
     </div>
   );
 }

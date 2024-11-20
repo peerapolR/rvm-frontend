@@ -64,6 +64,7 @@ function UserAuthContextProvider({ children }) {
     setAccessToken("");
     setUser(null);
     setAuthUser(null);
+    router.push("/");
   };
 
   const fetchUser = () => {

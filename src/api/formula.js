@@ -1,10 +1,14 @@
 import axios from "@config/axios";
 
-// export const getAllIngredient = () =>
-//   axios.get(`/ingredients/listAllIngredient`);
+export const addFormula = (params) =>
+  axios.post(`/formulas/addFormula`, params);
 
-// export const createIngredient = (params) =>
-//   axios.post("/ingredients/addIngredient", params);
+export const getAllFormula = () =>
+  axios.get(`/formulas/listAllFormula`);
+
+
+export const getFormulaByCon = (params) =>
+  axios.post(`/formulas/getFormulaByCon`, params);
 
 // export const getIngredientById = (_id) =>
 //   axios.get(`/ingredients/getIngredientById/${_id}`);

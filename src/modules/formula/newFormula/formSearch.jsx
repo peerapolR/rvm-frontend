@@ -15,19 +15,14 @@ export default function FormSearch(props) {
       formula_type: e,
     }));
   };
-
   const optionType = [
     {
-      label: "All",
-      value: "all",
+      label: "Prototype",
+      value: "prototype",
     },
     {
-      label: "Master",
-      value: "master",
-    },
-    {
-      label: "Custom",
-      value: "custom",
+      label: "Concept",
+      value: "concept",
     },
   ];
 

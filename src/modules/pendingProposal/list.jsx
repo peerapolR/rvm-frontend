@@ -10,36 +10,40 @@ import BinIcon from "@icons/BinIcon";
 
 import formatDate from "@functions/formatDate";
 
-// import { useIngredientCTX } from "@contexts/IngredientContext";
+import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
 export default function IngredientContainer() {
   const router = useRouter();
-  // const ctx = useIngredientCTX();
-  // const { ingredient, publishIngredient, deleteIngredient } = ctx;
+  const newProposalctx = useNewProposalCTX();
+  const { fetchPendingOrder, pendingOrder } = newProposalctx;
+
+  useEffect(() => {
+    fetchPendingOrder();
+  }, []);
 
   const columns = [
     {
       title: "No.",
-      dataIndex: "no",
-      key: "no",
+      dataIndex: "order_id",
+      key: "order_id",
       width: "10%",
     },
     {
       title: "Category",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "product_category",
+      key: "product_category",
       width: "15%",
     },
     {
       title: "Customer Name",
-      dataIndex: "cust_name",
-      key: "cust_name",
+      dataIndex: "customer_name",
+      key: "customer_name",
       width: "40%",
     },
     {
       title: "Formula Name",
-      dataIndex: "formula_name",
-      key: "formula_name",
+      dataIndex: "formular_name",
+      key: "formular_name",
     },
     {
       title: "Create Date",
@@ -49,8 +53,8 @@ export default function IngredientContainer() {
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "order_status",
+      key: "order_status",
       render: (text) => (
         <>
           <p
@@ -73,68 +77,6 @@ export default function IngredientContainer() {
     },
   ];
 
-  const dataSource = [
-    {
-      no: "P2309-01",
-      category: "Supplement",
-      cust_name: "New Image",
-      formula_name: "Anti-Aging",
-      createdAt: "2024-11-20T08:34:05.630Z",
-      status: "pending",
-      _id: "001",
-    },
-    {
-      no: "P2309-02",
-      category: "Supplement",
-      cust_name: "New Image",
-      formula_name: "Anti-Aging",
-      createdAt: "2024-11-21T08:34:05.630Z",
-      status: "pending",
-      _id: "002",
-    },
-    {
-      no: "P2309-03",
-      category: "Supplement",
-      cust_name: "New Image",
-      formula_name: "Anti-Aging",
-      createdAt: "2024-11-22T08:34:05.630Z",
-      status: "pending",
-      _id: "003",
-    },
-    {
-      no: "P2309-04",
-      category: "Supplement",
-      cust_name: "New Image",
-      formula_name: "Anti-Aging",
-      createdAt: "2024-11-23T08:34:05.630Z",
-      status: "pending",
-      _id: "004",
-    },
-    {
-      no: "P2309-04",
-      category: "Supplement",
-      cust_name: "New Image",
-      formula_name: "Anti-Aging",
-      createdAt: "2024-11-24T08:34:05.630Z",
-      status: "pending",
-      _id: "005",
-    },
-  ];
-
-  // const [dataSource, setDataSource] = useState([]);
-
-  // useEffect(() => {
-  //   let data = [];
-
-  //   if (ingredient && ingredient.length > 0) {
-  //     data = ingredient.map((i) => ({
-  //       ...i,
-  //       key: i._id,
-  //     }));
-  //     setDataSource(data);
-  //   }
-  // }, [ingredient]);
-
   function onShowSizeChange(current, pageSize) {
     console.log(current, pageSize);
   }
@@ -149,9 +91,9 @@ export default function IngredientContainer() {
             },
           };
         }}
-        dataSource={dataSource}
+        dataSource={pendingOrder}
         columns={columns}
-        loading={dataSource.length > 0 ? false : true}
+        loading={pendingOrder.length > 0 ? false : true}
         pagination={false}
       />
       {/* <div className="px-3 py-5 flex justify-end">
@@ -159,9 +101,9 @@ export default function IngredientContainer() {
       </div> */}
 
       <div className="flex justify-between px-6 py-[29.5px]">
-        <div className="text-[#14142A]">Total {dataSource.length} items</div>
+        <div className="text-[#14142A]">Total {pendingOrder.length} items</div>
         <BasePagination
-          total={dataSource.length}
+          total={pendingOrder.length}
           showTitle={false}
           defaultCurrent={1}
           showSizeChanger={false}

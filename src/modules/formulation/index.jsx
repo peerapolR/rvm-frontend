@@ -21,8 +21,14 @@ import KidIcon from "@icons/formulationIcon//KidIcon";
 import ProbioIcon from "@icons/formulationIcon/ProbioIcon";
 import OtherIcon from "@icons/formulationIcon/OtherIcon";
 
+import { useNewProposalCTX } from "@contexts/NewProposalContext";
+
 export default function FormulationList() {
   const router = useRouter();
+
+  const newProposalctx = useNewProposalCTX();
+  const { formulation, setFormulation } = newProposalctx;
+
   const skin = () => <SkinIcon />;
   const protein = () => <ProteinIcon />;
   const weight = () => <WeightIcon />;
@@ -36,8 +42,6 @@ export default function FormulationList() {
   const kid = () => <KidIcon />;
   const probio = () => <ProbioIcon />;
   const other = () => <OtherIcon />;
-
-  const [selected, setSelected] = useState([]);
 
   const FormulationOptions = [
     { name: "Skin", icon: skin() },
@@ -111,14 +115,14 @@ export default function FormulationList() {
               icon={o.icon}
               name={o.name}
               key={i}
-              setSelected={setSelected}
-              selected={selected}
+              setFormulation={setFormulation}
+              formulation={formulation}
             />,
           ])}
         </div>
         <div className="font-semibold flex justify-end">
           <span className="m-2">Formulation: </span>
-          {selected.map((select, idx) => [
+          {formulation.map((select, idx) => [
             <SelectedBadge name={select} key={idx} />,
           ])}
         </div>

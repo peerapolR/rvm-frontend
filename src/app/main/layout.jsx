@@ -10,6 +10,7 @@ import SideBar from "@components/SideBar";
 import HeaderBar from "@components/HeaderBar";
 import IngredientProvider from "@contexts/IngredientContext";
 import FormulaProvider from "@contexts/FormulaContext";
+import NewProposalProvider from "@contexts/NewProposalContext";
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -40,7 +41,9 @@ const RootLayout = ({ children }) => {
                 <HeaderBar />
                 <IngredientProvider>
                   <FormulaProvider>
-                    <Content>{children}</Content>
+                    <NewProposalProvider>
+                      <Content>{children}</Content>
+                    </NewProposalProvider>
                   </FormulaProvider>
                 </IngredientProvider>
               </Layout>

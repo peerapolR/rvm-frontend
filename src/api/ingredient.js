@@ -15,3 +15,6 @@ export const updateIngredient = (params) =>
 export const pubIngredient = (_id) => axios.put(`/ingredients/publish/${_id}`);
 
 export const deleteIngredient = (_id) => axios.delete(`/ingredients/${_id}`);
+
+export const getDataByDosage = (params) =>
+  axios.post("/ingredients/getDataByDosage", params);

@@ -6,7 +6,11 @@ import UnpublishIcon from "@icons/ModalConfirm/UnpublishIcon";
 import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
 
+import { useFormulaCTX } from "@contexts/FormulaContext";
+
 export default function ModalConfirm(props) {
+  const ctx = useFormulaCTX();
+  const { saveDraftFormula } = ctx;
   const { type, onClick, isOpen, setModal } = props;
   const [content, setContent] = useState(null);
 
@@ -15,7 +19,7 @@ export default function ModalConfirm(props) {
       case "success":
         setContent(
           <>
-            <SmileIcon  className="mb-6" />
+            <SmileIcon className="mb-6" />
             <div className="flex flex-col gap-2 mb-[60px]">
               <div className="text-xl text-#152142 font-bold">Success !</div>
               <div className="text-#6F7489" style={{ fontSize: "16px" }}>
@@ -39,7 +43,9 @@ export default function ModalConfirm(props) {
           <>
             <UnpublishIcon className="text-revomed-primary mb-6" />
             <div className="flex flex-col gap-2 mb-[84px]">
-              <div className="text-xl text-#152142 font-bold">Unpublish Formula?</div>
+              <div className="text-xl text-#152142 font-bold">
+                Unpublish Formula?
+              </div>
               <div className="text-#6F7489" style={{ fontSize: "16px" }}>
                 ยืนยันการยกเลิกเผยแพร่
                 <br />
@@ -68,7 +74,9 @@ export default function ModalConfirm(props) {
           <>
             <TrashIconInModal className="text-revomed-red mb-6" />
             <div className="flex flex-col gap-2 mb-[84px]">
-              <div className="text-xl text-#152142 font-bold">Delete Formula?</div>
+              <div className="text-xl text-#152142 font-bold">
+                Delete Formula?
+              </div>
               <div className="text-#6F7489" style={{ fontSize: "16px" }}>
                 หากลบแล้วคุณจะไม่สามารถ
                 <br />
@@ -99,7 +107,9 @@ export default function ModalConfirm(props) {
               <DiskSaveIcon className="text-revomed-primary mb-6" />
             </div>
             <div className="flex flex-col gap-2 mb-[84px]">
-              <div className="text-xl text-#152142 font-bold">Save Information?</div>
+              <div className="text-xl text-#152142 font-bold">
+                Save Information?
+              </div>
               <div className="text-#6F7489" style={{ fontSize: "16px" }}>
                 คุณต้องการบันทึกข้อมูลหรือไม่
               </div>
@@ -113,7 +123,7 @@ export default function ModalConfirm(props) {
               </BaseButton>
               <BaseButton
                 className="rounded-lg h-12 w-[132px] bg-revomed-primary text-revomed-white py-3 px-6"
-                onClick={onClick}
+                onClick={saveDraftFormula}
               >
                 Save
               </BaseButton>
@@ -136,7 +146,9 @@ export default function ModalConfirm(props) {
       closeIcon={false}
       className="text-center"
     >
-      <div className="flex flex-col items-center justify-center h-[400px]">{content}</div>
+      <div className="flex flex-col items-center justify-center h-[400px]">
+        {content}
+      </div>
     </Modal>
   );
 }

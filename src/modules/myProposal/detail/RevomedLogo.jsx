@@ -176,8 +176,8 @@ const RevomedLogo = () => {
           y2="53.6311"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2282_12345"
@@ -187,8 +187,8 @@ const RevomedLogo = () => {
           y2="53.5411"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_2282_12345"
@@ -198,8 +198,8 @@ const RevomedLogo = () => {
           y2="53.6139"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_2282_12345"
@@ -209,8 +209,8 @@ const RevomedLogo = () => {
           y2="53.7994"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_2282_12345"
@@ -220,8 +220,8 @@ const RevomedLogo = () => {
           y2="53.7773"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_2282_12345"
@@ -231,8 +231,8 @@ const RevomedLogo = () => {
           y2="53.8668"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_2282_12345"
@@ -242,8 +242,8 @@ const RevomedLogo = () => {
           y2="53.7927"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_2282_12345"
@@ -253,8 +253,8 @@ const RevomedLogo = () => {
           y2="53.6137"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_2282_12345"
@@ -264,8 +264,8 @@ const RevomedLogo = () => {
           y2="53.7029"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#1EB8EB" />
-          <stop offset="1" stop-color="#54B280" />
+          <stop stopColor="#1EB8EB" />
+          <stop offset="1" stopColor="#54B280" />
         </linearGradient>
       </defs>
     </svg>

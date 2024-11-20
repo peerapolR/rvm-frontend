@@ -1,4 +1,4 @@
-import React, { useParams, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Popover } from "antd";
 import RevomedLogo from "./RevomedLogo";
@@ -11,23 +11,22 @@ import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
 import FooterBar from "./footerBar";
 
-// import { useIngredientCTX } from "@contexts/IngredientContext";
+import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
 export default function Page({ _id }) {
   const router = useRouter();
-  // const ctx = useIngredientCTX();
-  // const {
-  //   fetchIngredientById,
-  //   ingredientById: ingredient,
-  //   publishIngredient,
-  //   deleteIngredient,
-  // } = ctx;
+  const newProposalctx = useNewProposalCTX();
+  const { fetchOrderById, orderDetail } = newProposalctx;
 
-  // useEffect(() => {
-  //   fetchIngredientById(_id);
-  // }, []);
+  // const [allIngredient, setAllIngredient] = useState([
+  //   ...orderDetail?.master_ingredient,
+  //   ...orderDetail?.ingredient,
+  // ]);
 
-  const status = "approve";
+  useEffect(() => {
+    fetchOrderById(_id);
+  }, []);
+
   const spaces = "\u00A0".repeat(75);
   const signForm = (name) => (
     <>
@@ -57,7 +56,8 @@ export default function Page({ _id }) {
               <Title level={4} style={{ color: "#004D7D" }}>
                 Proposal
               </Title>
-              {status === "draft" || status === "approve" ? (
+              {orderDetail?.order_status === "draft" ||
+              orderDetail?.order_status === "approve" ? (
                 <div
                   className="cursor-pointer bg-revomed-primary-light2 w-[32px] h-[32px] items-center flex justify-center rounded-lg ml-5"
                   onClick={() => {
@@ -73,18 +73,18 @@ export default function Page({ _id }) {
             </div>
             <p
               className={`first-letter:capitalize text-center text-revomed-white rounded-xl px-5 h-[21px] ${
-                status === "draft"
+                orderDetail?.order_status === "draft"
                   ? "bg-gray-500"
-                  : status === "pending"
+                  : orderDetail?.order_status === "pending"
                   ? "bg-blue-400"
-                  : status === "reject"
+                  : orderDetail?.order_status === "reject"
                   ? "bg-red-500"
-                  : status === "proposed"
+                  : orderDetail?.order_status === "proposed"
                   ? "bg-yellow-500"
                   : "bg-green-600"
               }`}
             >
-              {status}
+              {orderDetail?.order_status}
             </p>
           </div>
         </div>
@@ -98,10 +98,16 @@ export default function Page({ _id }) {
                 PROPOSAL
               </p>
               <p className="text-end mt-5">
-                เลขที่ <span className="font-semibold ml-5">P2309-01</span>
+                เลขที่{" "}
+                <span className="font-semibold ml-5">
+                  {orderDetail.proposal_code}
+                </span>
               </p>
               <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
-                ยอดชำระ <span className="font-semibold ml-5">5,700,000.00</span>
+                ยอดชำระ{" "}
+                <span className="font-semibold ml-5">
+                  {orderDetail.price ? orderDetail.price : "0"}
+                </span>
               </p>
             </div>
           </div>
@@ -110,20 +116,22 @@ export default function Page({ _id }) {
               <div className="flex">
                 <p>จาก</p>
                 <div className="ml-5">
-                  <p>นิ​ชา​นันท์ ถิร​ะรว​ีส​ิทธิ์</p>
+                  <p>พีรพล</p>
                   <p>097-196-3636</p>
-                  <p>nichanan@revomed.co.th</p>
+                  <p>peerapol@revomed.co.th</p>
                 </div>
               </div>
               <div className="flex ml-5">
                 <p>เรียน</p>
                 <div className="ml-5">
-                  <p>New Image</p>
+                  <p>{orderDetail.customer_name}</p>
                   <p>
-                    191 My Space @ Chinatown Samphanthawong Samphanthawong
-                    Bangkok 10130 (+64)220654565 - Chorthip Cleg
+                    {orderDetail.address} {orderDetail.district}{" "}
+                    {orderDetail.sub_district} {orderDetail.city}{" "}
+                    {orderDetail.postal_code} {orderDetail.tel} -{" "}
+                    {orderDetail.contact_person}
                   </p>
-                  <p>Tax ID:</p>
+                  <p>Tax ID: {orderDetail.tax_id}</p>
                 </div>
               </div>
             </div>
@@ -134,7 +142,7 @@ export default function Page({ _id }) {
                 <p>Expiration Date</p>
               </div>
               <div className="ml-5">
-                <p>11/09/23</p>
+                <p>-</p>
                 <p>-</p>
                 <p>-</p>
               </div>
@@ -161,42 +169,54 @@ export default function Page({ _id }) {
               <div className="col-span-1 ">1</div>
               <div className="col-span-4 text-left">
                 <p className="font-semibold">
-                  Name: <span className="ml-5 font-normal">Anti-Aging</span>
+                  Name:{" "}
+                  <span className="ml-5 font-normal">
+                    {orderDetail.proposal_name}
+                  </span>
                 </p>
                 <div className="mt-2 text-revomed-grey">
-                  <p>Bioenergy RiaGev1</p>
-                  <p>Bioenergy RiaGev2</p>
-                  <p>Bioenergy RiaGev3</p>
-                  <p>Bioenergy RiaGev4</p>
-                  <p>Bioenergy RiaGev5</p>
+                  {/* {allIngredient.map((ingre, i) => [
+                    <p key={i}>{ingre.ingredient_name}</p>,
+                  ])} */}
                 </div>
                 <p className="font-semibold mt-5">
-                  Code: <span className="ml-5 font-normal">RVM240430-001</span>
+                  Code:{" "}
+                  <span className="ml-5 font-normal">
+                    {orderDetail.formula}
+                  </span>
                 </p>
                 <p className="font-semibold mt-5">
-                  Form: <span className="ml-5 font-normal">Capsule</span>
+                  Form:{" "}
+                  <span className="ml-5 font-normal">
+                    {orderDetail.dosage_form}
+                  </span>
                 </p>
                 <p className="font-semibold mt-5">
                   Packaging:{" "}
                   <span className="ml-5 font-normal">
-                    PET Material (Size 100 ml) Box Standard Revomed Size S
+                    {orderDetail.packaging}
+                    {orderDetail.packaging_detail}
                   </span>
                 </p>
                 <p className="font-semibold mt-5">
                   Carton:{" "}
                   <span className="ml-5 font-normal">
-                    กระดาษลอนน้ำตาล 5 ชั้น Size M (30x41x22cm) Exclude Screen
+                    {orderDetail.carton}
+                    {orderDetail.carton_detail}
+                    {orderDetail.carton_screen}
                   </span>
                 </p>
               </div>
-              <div className="col-span-1 ">190.00</div>
-              <div className="col-span-1 ">30,000</div>
-              <div className="col-span-1 ">Capsule</div>
-              <div className="col-span-1  rounded-r-lg">5,700,000.00</div>
+              <div className="col-span-1 ">00.00</div>
+              <div className="col-span-1 ">{orderDetail.moq}</div>
+              <div className="col-span-1 ">{orderDetail.dosage_form}</div>
+              <div className="col-span-1  rounded-r-lg">
+                {orderDetail.price ? orderDetail.price : "0"}
+              </div>
             </div>
             <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
               <p>ยอดชำระทั้งหมด</p>
-              <p>5,700,000.00</p>
+              <p>{orderDetail.price ? orderDetail.price : "0"}</p>
             </div>
           </div>
           <div className="m-5">
@@ -230,7 +250,7 @@ export default function Page({ _id }) {
           </div>
         </div>
       </div>
-      <FooterBar status={status} />
+      <FooterBar status={orderDetail?.order_status} _id={_id} />
     </>
   );
 }
