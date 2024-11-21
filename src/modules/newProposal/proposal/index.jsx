@@ -95,7 +95,7 @@ export default function ProposalList() {
                 <p className="mb-2 font-semibold text-revomed-dark-grey">
                   Total Amount (Ex. VAT):
                 </p>
-                <p>5,700,000.00 THB</p>
+                <p>00.00 THB</p>
               </div>
             </div>
           </div>
