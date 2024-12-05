@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import Title from "antd/es/typography/Title";
 import BreadCrumb from "./Breadcrumb";
 import FooterBar from "./footerBar";
-import { Radio, Flex, Input } from "antd";
+import { Radio, Flex, Input, Select } from "antd";
 const { TextArea } = Input;
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
@@ -12,41 +12,81 @@ export default function PackagingList() {
   const router = useRouter();
 
   const newProposalctx = useNewProposalCTX();
-  const { formulation, newProposal, handleNewProposalChange, setNewProposal } =
-    newProposalctx;
+  const {
+    formulation,
+    newProposal,
+    handleNewProposalChange,
+    setNewProposal,
+    optionMoq,
+    getMoqByForm,
+  } = newProposalctx;
 
-  const [valuePackaging, setValuePackaging] = useState("Exclude");
-  const [valueCarton, setValueCarton] = useState("Exclude");
-  const [valueScreen, setValueScreen] = useState("Exclude");
+  const [valuePackaging1, setValuePackaging1] = useState("Exclude");
+  const [valuePackaging2, setValuePackaging2] = useState("Exclude");
+  const [valuePackaging3, setValuePackaging3] = useState("Exclude");
 
-  const onChangeRadioPackaging = (e) => {
+  const [moqToUse, setMoqToUse] = useState([]);
+
+  const onChangeRadioPackaging1 = (e) => {
     const { name, value } = e.target;
-    setValuePackaging(value);
+    setValuePackaging1(value);
     handleNewProposalChange(e);
   };
-  const onChangeRadioCarton = (e) => {
+  const onChangeRadioPackaging2 = (e) => {
     const { name, value } = e.target;
-    setValueCarton(value);
+    setValuePackaging2(value);
+    handleNewProposalChange(e);
+  };
+  const onChangeRadioPackaging3 = (e) => {
+    const { name, value } = e.target;
+    setValuePackaging3(value);
     handleNewProposalChange(e);
   };
 
-  const onChangeRadioScreen = (e) => {
-    const { name, value } = e.target;
-    setValueScreen(value);
-    handleNewProposalChange(e);
+  const onChangeMoq1 = (index, e) => {
+    setNewProposal(() => ({
+      ...newProposal,
+      moq1: e.label,
+    }));
+  };
+  const onChangeMoq2 = (index, e) => {
+    setNewProposal(() => ({
+      ...newProposal,
+      moq2: e.label,
+    }));
+  };
+  const onChangeMoq3 = (index, e) => {
+    setNewProposal(() => ({
+      ...newProposal,
+      moq3: e.label,
+    }));
   };
 
   useEffect(() => {
+    getMoqByForm();
     setNewProposal({
       ...newProposal,
-      packaging: "Exclude",
+      packaging1: "Exclude",
+      packaging2: "Exclude",
+      packaging3: "Exclude",
       carton: "Exclude",
       carton_screen: "Exclude",
     });
   }, []);
 
+  useEffect(() => {
+    if (optionMoq && optionMoq != null) {
+      const options = optionMoq?.condition?.map(({ moq, price }) => ({
+        label: moq,
+        value: price,
+      }));
+
+      setMoqToUse(options);
+    }
+  }, [optionMoq]);
+
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="p-6">
         <div className="flex justify-between items-center pb-5 mb-6 border-b-1 border-revomed-light-grey1">
           <div className="flex">
@@ -76,9 +116,92 @@ export default function PackagingList() {
           </div>
           <div></div>
         </div>
-        <div className="flex flex-col gap-5 mt-10">
-          <p>กรุณาเลือกรูปแบบการรับ Packaging</p>
-          <div className="bg-revomed-white rounded-lg min-h-[73px] p-6 flex flex-col justify-center">
+        <div className="flex flex-col mt-10">
+          <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
+            <div className="w-1/3">
+              <p className="mb-2 text-base text-revomed-dark-grey">
+                MOQ (จำนวนที่ต้องการผลิต)
+                <span className="text-revomed-red">*</span>
+              </p>
+              <Select
+                options={moqToUse}
+                name="moq1"
+                onChange={onChangeMoq1}
+                value={newProposal.moq1}
+                placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
+                style={{
+                  height: 50,
+                  width: 500,
+                  resize: "none",
+                }}
+              />
+            </div>
+            <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
+              <p>00.00 THB</p>
+            </div>
+            <div></div>
+            <div className="font-bold text-lg">MOQ 1</div>
+          </div>
+          <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">
+            <p>กรุณาเลือกรูปแบบการรับ Packaging</p>
+            <div className="flex">
+              <p className="font-semibold text-revomed-dark-grey">
+                Packaging:{" "}
+              </p>
+              <div className="ml-10">
+                <Radio.Group
+                  onChange={onChangeRadioPackaging1}
+                  value={valuePackaging1}
+                  name="packaging1"
+                >
+                  <Radio value={"Exclude"}>Exclude</Radio>
+                  <Radio value={"Include"} className="ml-10">
+                    Include
+                  </Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            {valuePackaging1 !== "Exclude" && (
+              <div className="p-6 bg-revomed-light-grey3 mt-5 rounded-lg flex text-revomed-dark-grey gap-5">
+                <div>
+                  <p className="mb-2">
+                    Packaging & Additional Detail
+                    <span className="text-revomed-red">*</span>
+                  </p>
+                  <TextArea
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_detail1}
+                    name="packaging_detail1"
+                    placeholder="Packaging Detail..."
+                    style={{
+                      height: 150,
+                      width: 800,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="mb-2">
+                    Packaging Price (THB)
+                    <span className="text-revomed-red">*</span>
+                  </p>
+                  <Input
+                    name="packaging_price1"
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_price1}
+                    placeholder="00.00"
+                    style={{
+                      height: 50,
+                      width: 370,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+          {/* <div className="bg-revomed-white rounded-lg min-h-[73px] p-6 flex flex-col justify-center">
             <div className="flex">
               <p className="font-semibold text-revomed-dark-grey">Packaging</p>
               <div className="ml-10">
@@ -134,8 +257,8 @@ export default function PackagingList() {
                 </div>
               </div>
             )}
-          </div>
-          <div className="bg-revomed-white rounded-lg min-h-[73px] p-6 flex flex-col justify-center">
+          </div> */}
+          {/* <div className="bg-revomed-white rounded-lg min-h-[73px] p-6 flex flex-col justify-center">
             <div className="flex">
               <p className="font-semibold text-revomed-dark-grey">Carton</p>
               <div className="ml-16">
@@ -205,10 +328,177 @@ export default function PackagingList() {
                 </div>
               </div>
             )}
+          </div> */}
+        </div>
+        <div className="flex flex-col mt-10">
+          <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
+            <div className="w-1/3">
+              <p className="mb-2 text-base text-revomed-dark-grey">
+                MOQ (จำนวนที่ต้องการผลิต)
+              </p>
+              <Select
+                options={moqToUse}
+                name="moq2"
+                onChange={onChangeMoq2}
+                value={newProposal.moq2}
+                placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
+                style={{
+                  height: 50,
+                  width: 500,
+                  resize: "none",
+                }}
+              />
+            </div>
+            <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
+              <p>00.00 THB</p>
+            </div>
+            <div></div>
+            <div className="font-bold text-lg">MOQ 2</div>
+          </div>
+          <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">
+            <p>กรุณาเลือกรูปแบบการรับ Packaging</p>
+            <div className="flex">
+              <p className="font-semibold text-revomed-dark-grey">
+                Packaging:{" "}
+              </p>
+              <div className="ml-10">
+                <Radio.Group
+                  onChange={onChangeRadioPackaging2}
+                  value={valuePackaging2}
+                  name="packaging2"
+                >
+                  <Radio value={"Exclude"}>Exclude</Radio>
+                  <Radio value={"Include"} className="ml-10">
+                    Include
+                  </Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            {valuePackaging2 !== "Exclude" && (
+              <div className="p-6 bg-revomed-light-grey3 mt-5 rounded-lg flex text-revomed-dark-grey gap-5">
+                <div>
+                  <p className="mb-2">
+                    Packaging & Additional Detail
+                    <span className="text-revomed-red">*</span>
+                  </p>
+                  <TextArea
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_detail2}
+                    name="packaging_detail2"
+                    placeholder="Packaging Detail..."
+                    style={{
+                      height: 150,
+                      width: 800,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="mb-2">
+                    Packaging Price (THB)
+                    <span className="text-revomed-red">*</span>
+                  </p>
+                  <Input
+                    name="packaging_price2"
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_price2}
+                    placeholder="00.00"
+                    style={{
+                      height: 50,
+                      width: 370,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-col mt-10">
+          <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
+            <div className="w-1/3">
+              <p className="mb-2 text-base text-revomed-dark-grey">
+                MOQ (จำนวนที่ต้องการผลิต)
+              </p>
+              <Select
+                options={moqToUse}
+                name="moq3"
+                onChange={onChangeMoq3}
+                value={newProposal.moq3}
+                placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
+                style={{
+                  height: 50,
+                  width: 500,
+                  resize: "none",
+                }}
+              />
+            </div>
+            <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
+              <p>00.00 THB</p>
+            </div>
+            <div></div>
+            <div className="font-bold text-lg">MOQ 3</div>
+          </div>
+          <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">
+            <p>กรุณาเลือกรูปแบบการรับ Packaging</p>
+            <div className="flex">
+              <p className="font-semibold text-revomed-dark-grey">
+                Packaging:{" "}
+              </p>
+              <div className="ml-10">
+                <Radio.Group
+                  onChange={onChangeRadioPackaging3}
+                  value={valuePackaging3}
+                  name="packaging3"
+                >
+                  <Radio value={"Exclude"}>Exclude</Radio>
+                  <Radio value={"Include"} className="ml-10">
+                    Include
+                  </Radio>
+                </Radio.Group>
+              </div>
+            </div>
+            {valuePackaging3 !== "Exclude" && (
+              <div className="p-6 bg-revomed-light-grey3 mt-5 rounded-lg flex text-revomed-dark-grey gap-5">
+                <div>
+                  <p className="mb-2">Packaging & Additional Detail</p>
+                  <TextArea
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_detail3}
+                    name="packaging_detail3"
+                    placeholder="Packaging Detail..."
+                    style={{
+                      height: 150,
+                      width: 800,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="mb-2">
+                    Packaging Price (THB)
+                    <span className="text-revomed-red">*</span>
+                  </p>
+                  <Input
+                    name="packaging_price3"
+                    onChange={handleNewProposalChange}
+                    value={newProposal.packaging_price3}
+                    placeholder="00.00"
+                    style={{
+                      height: 50,
+                      width: 370,
+                      resize: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <FooterBar />
-    </>
+      <FooterBar newProposal={newProposal} />
+    </div>
   );
 }

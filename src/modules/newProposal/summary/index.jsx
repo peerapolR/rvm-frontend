@@ -60,7 +60,7 @@ export default function SummaryList() {
     }
   };
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="p-6">
         <div className="flex justify-between items-center pb-5 mb-6 border-b-1 border-revomed-light-grey1">
           <div className="flex">
@@ -101,38 +101,113 @@ export default function SummaryList() {
               setOpenDetail={setOpenDetail}
             />
           </div>
-          <div className="col-span-2 bg-revomed-white rounded-xl p-6">
-            <div className="flex mb-2">
-              <p className={topicText}>Packaging:</p>
-              <p className={detailText}>{newProposal.packaging}</p>
-            </div>
-            <div className="flex mb-2">
-              <p className={topicText}>Packaging Detail:</p>
-              <p className={detailText}>{newProposal.packaging_detail}</p>
-            </div>
-            <div className="flex mb-2">
-              <p className={topicText}>Total Price:</p>
-              <p className={detailText}>{newProposal.packaging_price}</p>
+          <div className="col-span-3 bg-revomed-white rounded-xl p-6">
+            <div className="flex gap-5 justify-between">
+              <div className="flex mb-2">
+                <p className={topicText}>MOQ:</p>
+                <p className={detailText}>{newProposal.moq1}</p>
+              </div>
+              <div className="flex mb-2 flex-col">
+                <div className="flex">
+                  <p className={topicText}>Packaging:</p>
+                  <p className={detailText}>{newProposal.packaging1}</p>
+                </div>
+                <div className="flex">
+                  <p className={topicText}>Packaging & Additional Detail:</p>
+                  <p className={detailText}>
+                    {newProposal?.packaging_detail1
+                      ? newProposal.packaging_detail1
+                      : "-"}
+                  </p>
+                </div>
+                <div className="flex">
+                  <p className={topicText}>Packaging Price:</p>
+                  <p className={detailText}>
+                    {newProposal?.packaging_price1
+                      ? newProposal.packaging_price1
+                      : "-"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex mb-2 ">
+                <div className="font-bold text-lg">MOQ 1</div>
+              </div>
             </div>
           </div>
-          <div className="col-span-1 bg-revomed-white rounded-xl p-6">
-            <div className="flex mb-2">
-              <p className={topicText}>Caton:</p>
-              <p className={detailText}>{newProposal.carton}</p>
+          {newProposal?.moq2 != "" ? (
+            <div className="col-span-3 bg-revomed-white rounded-xl p-6">
+              <div className="flex gap-5 justify-between">
+                <div className="flex mb-2">
+                  <p className={topicText}>MOQ:</p>
+                  <p className={detailText}>{newProposal.moq2}</p>
+                </div>
+                <div className="flex mb-2 flex-col">
+                  <div className="flex">
+                    <p className={topicText}>Packaging:</p>
+                    <p className={detailText}>{newProposal.packaging2}</p>
+                  </div>
+                  <div className="flex">
+                    <p className={topicText}>Packaging & Additional Detail:</p>
+                    <p className={detailText}>
+                      {newProposal?.packaging_detail2
+                        ? newProposal?.packaging_detail2
+                        : "-"}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className={topicText}>Packaging Price:</p>
+                    <p className={detailText}>
+                      {newProposal?.packaging_price2
+                        ? newProposal?.packaging_price2
+                        : "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex mb-2 ">
+                  <div className="font-bold text-lg">MOQ 2</div>
+                </div>
+              </div>
             </div>
-            <div className="flex mb-2">
-              <p className={topicText}>Caton Detail:</p>
-              <p className={detailText}>{newProposal.carton_detail}</p>
+          ) : (
+            ""
+          )}
+          {newProposal?.moq3 != "" ? (
+            <div className="col-span-3 bg-revomed-white rounded-xl p-6">
+              <div className="flex gap-5 justify-between">
+                <div className="flex mb-2">
+                  <p className={topicText}>MOQ:</p>
+                  <p className={detailText}>{newProposal.moq3}</p>
+                </div>
+                <div className="flex mb-2 flex-col">
+                  <div className="flex">
+                    <p className={topicText}>Packaging:</p>
+                    <p className={detailText}>{newProposal.packaging3}</p>
+                  </div>
+                  <div className="flex">
+                    <p className={topicText}>Packaging & Additional Detail:</p>
+                    <p className={detailText}>
+                      {newProposal?.packaging_detail3
+                        ? newProposal?.packaging_detail3
+                        : "-"}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className={topicText}>Packaging Price:</p>
+                    <p className={detailText}>
+                      {newProposal?.packaging_price3
+                        ? newProposal?.packaging_price3
+                        : "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex mb-2 ">
+                  <div className="font-bold text-lg">MOQ 3</div>
+                </div>
+              </div>
             </div>
-            <div className="flex mb-2">
-              <p className={topicText}>Caton Screen:</p>
-              <p className={detailText}>{newProposal.carton_screen}</p>
-            </div>
-            <div className="flex mb-2">
-              <p className={topicText}>Total Price:</p>
-              <p className={detailText}>{newProposal.carton_price}</p>
-            </div>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
       <FooterBar />
@@ -141,6 +216,6 @@ export default function SummaryList() {
         setOpenDetail={setOpenDetail}
         detailModal={detailModal}
       />
-    </>
+    </div>
   );
 }

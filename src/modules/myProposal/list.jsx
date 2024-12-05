@@ -121,13 +121,13 @@ export default function IngredientContainer() {
         <div className="text-[#14142A]">
           Total {listOrderToSale.length} items
         </div>
-        <BasePagination
+        {/* <BasePagination
           total={listOrderToSale.length}
           showTitle={false}
           defaultCurrent={1}
           showSizeChanger={false}
           align="end"
-        />
+        /> */}
       </div>
     </div>
   );

@@ -3,10 +3,35 @@ import { useRouter } from "next/navigation";
 
 import BaseButton from "@components/BaseButton";
 
-export default function FooterBar() {
+import { notification } from "antd";
+
+export default function FooterBar({ newProposal }) {
   const router = useRouter();
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = () => {
+    api.info({
+      message: `กรุณาเลือกสูตร 1 สูตร`,
+      // description:
+      //   "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      placement: "top",
+      showProgress: true,
+      pauseOnHover: true,
+    });
+  };
+
+  const checkValidNext = () => {
+    if (!newProposal.formula || newProposal.formula === "") {
+      openNotification();
+    } else {
+      router.push("/main/proposal/editIngredient");
+    }
+  };
+
   return (
-    <div className="min-h-20 bg-revomed-white mt-[11.5rem]">
+    <div className="min-h-20 bg-revomed-white">
+      {contextHolder}
       <div className="flex gap-5 justify-between mx-5 pt-4">
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
@@ -14,7 +39,7 @@ export default function FooterBar() {
             router.push("/main");
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
         <div className="flex gap-5">
           <BaseButton
@@ -35,9 +60,7 @@ export default function FooterBar() {
           </BaseButton>
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
-            onClick={() => {
-              router.push("/main/proposal/editIngredient");
-            }}
+            onClick={checkValidNext}
           >
             Next
           </BaseButton>

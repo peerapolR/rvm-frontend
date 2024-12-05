@@ -1,18 +1,26 @@
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
 import BaseButton from "@components/BaseButton";
 import DiskSaveIcon from "@icons/ModalConfirm/DiskSaveIcon";
 import SmileIcon from "@icons/ModalConfirm/SmileIcon";
 import TrashIconInModal from "@icons/ModalConfirm/TrashIcon";
 import UnpublishIcon from "@icons/ModalConfirm/UnpublishIcon";
 import { Modal } from "antd";
-import React, { useEffect, useState } from "react";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
 
 export default function ModalConfirm(props) {
+  const router = useRouter();
   const ctx = useFormulaCTX();
   const { saveDraftFormula } = ctx;
   const { type, onClick, isOpen, setModal } = props;
   const [content, setContent] = useState(null);
+
+  const confirmPublish = () => {
+    setModal({ type: "", isOpen: false });
+    router.push("/main/formula");
+  };
 
   useEffect(() => {
     switch (type) {
@@ -31,7 +39,7 @@ export default function ModalConfirm(props) {
             <BaseButton
               className="h-12 w-[132px] bg-revomed-primary py-3 px-6 text-revomed-white font-bold "
               style={{ fontSize: "16px" }}
-              onClick={onClick}
+              onClick={confirmPublish}
             >
               Got it
             </BaseButton>

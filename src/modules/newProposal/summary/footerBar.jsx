@@ -6,7 +6,7 @@ import BaseButton from "@components/BaseButton";
 export default function FooterBar() {
   const router = useRouter();
   return (
-    <div className="min-h-20 bg-revomed-white mt-[13rem]">
+    <div className="min-h-20 bg-revomed-white">
       <div className="flex gap-5 justify-between mx-5 pt-4">
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
@@ -14,7 +14,7 @@ export default function FooterBar() {
             router.push("/main");
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
         <div className="flex gap-5">
           <BaseButton

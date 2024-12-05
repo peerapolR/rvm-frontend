@@ -145,7 +145,7 @@ export default function NewFormulaList() {
   }, [path]);
 
   return (
-    <div className="relative" style={{ minHeight: "calc(100vh - 72px)" }}>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       {path === "newFormula" ? (
         <>
           <div className="flex flex-col p-6">
@@ -292,6 +292,9 @@ export default function NewFormulaList() {
         path={path}
         setConfirmOpen={setConfirmOpen}
         confirmOpen={confirmOpen}
+        newFormula={newFormula}
+        formulation={formulation}
+        ingredientDose={ingredientDose}
       />
       <ModalDetail
         openDetail={openDetail}

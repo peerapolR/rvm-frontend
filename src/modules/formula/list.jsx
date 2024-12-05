@@ -30,13 +30,13 @@ export default function FormulaContainer() {
       </div>
       <div className="flex justify-between px-6 py-[29.5px]">
         <div className="text-[#14142A]">Total {formula.length} items</div>
-        <BasePagination
+        {/* <BasePagination
           total={formula.length}
           showTitle={false}
           defaultCurrent={1}
           showSizeChanger={false}
           align="end"
-        />
+        /> */}
       </div>
     </div>
   );

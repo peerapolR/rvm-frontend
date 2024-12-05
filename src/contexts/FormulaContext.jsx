@@ -102,7 +102,7 @@ function FormulaContextProvider({ children }) {
         setIngredientDose([]);
         setFormulation([]);
         setSumDose("");
-        router.push("/main/formula");
+        fetchFormula();
       }
     } catch (error) {
       console.log(error);
@@ -129,7 +129,7 @@ function FormulaContextProvider({ children }) {
         setIngredientDose([]);
         setFormulation([]);
         setSumDose("");
-        router.push("/main/formula");
+        fetchFormula();
       }
     } catch (error) {
       console.log(error);

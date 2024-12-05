@@ -102,13 +102,13 @@ export default function IngredientContainer() {
 
       <div className="flex justify-between px-6 py-[29.5px]">
         <div className="text-[#14142A]">Total {pendingOrder.length} items</div>
-        <BasePagination
+        {/* <BasePagination
           total={pendingOrder.length}
           showTitle={false}
           defaultCurrent={1}
           showSizeChanger={false}
           align="end"
-        />
+        /> */}
       </div>
     </div>
   );

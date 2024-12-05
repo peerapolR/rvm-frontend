@@ -22,17 +22,12 @@ function NewProposalContextProvider({ children }) {
     formular_name: "",
     master_ingredient: "",
     ingredient: "",
-    packaging: "",
-    packaging_detail: "",
-    packaging_price: "",
     carton: "",
     carton_detail: "",
     carton_screen: "",
     carton_price: "",
     proposal_name: "",
-    moq: "",
     prePrice: "",
-    price: "",
     customer_name: "",
     proposal_code: "",
     address: "",
@@ -45,6 +40,21 @@ function NewProposalContextProvider({ children }) {
     contact_person: "",
     creator_id: "",
     order_status: "",
+    moq1: "",
+    price1: "",
+    packaging1: "",
+    packaging_detail1: "",
+    packaging_price1: "",
+    moq2: "",
+    price2: "",
+    packaging2: "",
+    packaging_detail2: "",
+    packaging_price2: "",
+    moq3: "",
+    price3: "",
+    packaging3: "",
+    packaging_detail3: "",
+    packaging_price3: "",
   };
 
   const [formulation, setFormulation] = useState([]);
@@ -58,6 +68,9 @@ function NewProposalContextProvider({ children }) {
   const [pendingOrder, setPendingOrder] = useState([]);
 
   const [saleManagerOrder, setSaleManagerOrder] = useState([]);
+  const [numToOrder, setNumToOrder] = useState(0);
+
+  const [optionMoq, setOptionMoq] = useState([]);
 
   const handleNewProposalChange = (e) => {
     const { name, value } = e.target;
@@ -91,7 +104,9 @@ function NewProposalContextProvider({ children }) {
         creator_id: user?.firstName,
         product_category: "supplement",
         order_status: "pending",
-        price: "0",
+        price1: "0",
+        price2: "0",
+        price3: "0",
         formulation: formulation,
         order_id: newProposal.proposal_code,
       });
@@ -100,6 +115,7 @@ function NewProposalContextProvider({ children }) {
         setNewProposal(defaultProposal);
         setListProposalByCon([]);
         setDosageData([]);
+        setNumToOrder(0);
 
         router.push("/main");
       }
@@ -206,6 +222,33 @@ function NewProposalContextProvider({ children }) {
       console.log(error);
     }
   };
+
+  const getNumToGenOrderId = async (order_id) => {
+    try {
+      const res = await proposalApi.getNumToGenOrderId(order_id);
+
+      if (res.status === 200 || res.status === 201) {
+        setNumToOrder(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getMoqByForm = async () => {
+    try {
+      const res = await proposalApi.getDataByDosage({
+        dosage_form: newProposal.dosage_form,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        setOptionMoq(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const value = {
     formulation,
     setFormulation,
@@ -228,6 +271,10 @@ function NewProposalContextProvider({ children }) {
     proposedOrder,
     fetchOrderForSaleManager,
     saleManagerOrder,
+    getNumToGenOrderId,
+    numToOrder,
+    optionMoq,
+    getMoqByForm,
   };
   return (
     <NewProposalContext.Provider value={value}>

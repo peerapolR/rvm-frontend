@@ -22,8 +22,6 @@ export default function IngredientTable(props) {
     newProposal,
   } = props;
 
-  console.log(newProposal.master_ingredient, newProposal.ingredient);
-
   const [allIngredient, setAllIngredient] = useState([
     ...newProposal.master_ingredient,
     ...newProposal.ingredient,

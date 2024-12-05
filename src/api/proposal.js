@@ -18,3 +18,9 @@ export const approveOrder = (_id) => axios.get(`/orders/approveOrder/${_id}`);
 export const rejectOrder = (_id) => axios.get(`/orders/rejectOrder/${_id}`);
 
 export const proposedOrder = (_id) => axios.get(`/orders/proposedOrder/${_id}`);
+
+export const getNumToGenOrderId = (order_id) =>
+  axios.get(`/orders/getNumToGenOrderId/${order_id}`);
+
+export const getDataByDosage = (dosage_form) =>
+  axios.post(`/ingredients/getDataByDosage`, dosage_form);

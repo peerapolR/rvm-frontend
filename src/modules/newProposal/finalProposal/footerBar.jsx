@@ -19,7 +19,7 @@ export default function FooterBar() {
             router.push("/main");
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
         <div className="flex gap-5">
           <BaseButton

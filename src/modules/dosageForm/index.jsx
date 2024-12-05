@@ -27,7 +27,7 @@ export default function FormulationList() {
   };
 
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <div className="flex">
@@ -74,6 +74,6 @@ export default function FormulationList() {
         </div>
       </div>
       <FooterBar />
-    </>
+    </div>
   );
 }

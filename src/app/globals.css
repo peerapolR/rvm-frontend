@@ -64,7 +64,9 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+#mainLayout {
+  min-height: 100vh;
+}
 body {
   font-family: "LINESeedSans", sans-sarif;
   min-height: 100vh;

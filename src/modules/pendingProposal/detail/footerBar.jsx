@@ -18,7 +18,7 @@ export default function FooterBar({ _id }) {
             router.back();
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
       </div>
       <div className="flex gap-5">

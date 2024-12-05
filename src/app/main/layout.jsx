@@ -37,7 +37,7 @@ const RootLayout = ({ children }) => {
           <PathProvider>
             <Layout>
               <SideBar />
-              <Layout>
+              <Layout id="mainLayout">
                 <HeaderBar />
                 <IngredientProvider>
                   <FormulaProvider>

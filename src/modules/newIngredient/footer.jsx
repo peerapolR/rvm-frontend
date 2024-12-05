@@ -5,12 +5,54 @@ import { useIngredientCTX } from "@contexts/IngredientContext";
 
 import BaseButton from "@components/BaseButton";
 
+import { notification } from "antd";
+
 export default function Footer() {
   const ctx = useIngredientCTX();
-  const { saveDraftIngredient, addNewIngredient } = ctx;
+  const { saveDraftIngredient, addNewIngredient, newIngredient } = ctx;
   const router = useRouter();
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = () => {
+    api.info({
+      message: `กรุณากรอกข้อมูลของสารให้ครบถ้วน`,
+      // description:
+      //   "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      placement: "top",
+      showProgress: true,
+      pauseOnHover: true,
+    });
+  };
+
+  const checkValidNext = () => {
+    if (
+      !newIngredient.ingredient_name ||
+      newIngredient.ingredient_name === "" ||
+      !newIngredient.dose_min ||
+      newIngredient.dose_min === "" ||
+      !newIngredient.dose_max ||
+      newIngredient.dose_max === "" ||
+      !newIngredient.leadTime ||
+      newIngredient.leadTime === "" ||
+      !newIngredient.price_min ||
+      newIngredient.price_min === "" ||
+      !newIngredient.price_max ||
+      newIngredient.price_max === "" ||
+      !newIngredient.chemical_comp ||
+      newIngredient.chemical_comp === "" ||
+      !newIngredient.health_benefits ||
+      newIngredient.health_benefits === "" ||
+      newIngredient.formulation.length <= 0
+    ) {
+      openNotification();
+    } else {
+      addNewIngredient();
+    }
+  };
   return (
     <div className="min-h-20 bg-revomed-white">
+      {contextHolder}
       <div className="flex gap-5 justify-end mx-5 pt-4">
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
@@ -26,13 +68,11 @@ export default function Footer() {
             router.push("/main/ingredient");
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 rounded-lg border-1 border-revomed-primary bg-revomed-primary text-white hover:bg-black"
-          onClick={() => {
-            addNewIngredient();
-          }}
+          onClick={checkValidNext}
         >
           Add Ingredient
         </BaseButton>

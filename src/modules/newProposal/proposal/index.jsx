@@ -11,25 +11,50 @@ export default function ProposalList() {
   const router = useRouter();
 
   const newProposalctx = useNewProposalCTX();
-  const { newProposal, handleNewProposalChange, fetchDataDosage, dosageData } =
-    newProposalctx;
+  const {
+    newProposal,
+    handleNewProposalChange,
+    setNewProposal,
+    fetchDataDosage,
+    dosageData,
+    getNumToGenOrderId,
+    numToOrder,
+  } = newProposalctx;
 
-  const [optionMoq, setOptionMoq] = useState([]);
+  const [codeToUse, setCodeToUse] = useState("");
+
+  const now = new Date();
+  const year = now.getFullYear().toString().slice(-2);
+  const month = now.getMonth() + 1;
 
   useEffect(() => {
     fetchDataDosage();
+    getNumToGenOrderId(`P${year}${month}`);
   }, []);
 
-  // useEffect(() => {
-  //   if (dosageData && dosageData?.condition.length > 0) {
-  //     setOptionMoq(
-  //       dosageData?.condition.map(({ moq, price }) => ({
-  //         label: moq,
-  //         value: price,
-  //       }))
-  //     );
-  //   }
-  // }, [dosageData]);
+  const generateCode = () => {
+    const runningNum = numToOrder;
+
+    const code = `P${year}${month}-${runningNum + 1}`;
+
+    setCodeToUse(code);
+  };
+
+  useEffect(() => {
+    if (numToOrder) {
+      generateCode();
+    }
+  }, [numToOrder]);
+
+  useEffect(() => {
+    if (codeToUse !== "") {
+      setNewProposal(() => ({
+        ...newProposal,
+        proposal_code: codeToUse,
+        order_id: codeToUse,
+      }));
+    }
+  }, [codeToUse]);
 
   return (
     <>
@@ -45,9 +70,6 @@ export default function ProposalList() {
         <div className="flex flex-col gap-5">
           <div className="bg-revomed-white rounded-xl p-6">
             <div className="grid grid-cols-3 gap-5">
-              <div className="col-span-3 font-semibold text-revomed-dark-grey mb-5">
-                Condition:
-              </div>
               <div className="col-span-1 text-revomed-dark-grey mb-5">
                 <p className="mb-2">
                   Proposal Name
@@ -63,39 +85,6 @@ export default function ProposalList() {
                     resize: "none",
                   }}
                 />
-              </div>
-              <div className="col-span-1 text-revomed-dark-grey mb-5">
-                <p className="mb-2">
-                  MOQ (จำนวนที่ต้องการผลิต)
-                  <span className="text-revomed-red">*</span>
-                </p>
-                <Input
-                  name="moq"
-                  onChange={handleNewProposalChange}
-                  value={newProposal.moq}
-                  placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
-                  style={{
-                    height: 50,
-                    resize: "none",
-                  }}
-                />
-                {/* <Select
-                  options={optionMoq}
-                  name="moq"
-                  onChange={handleNewProposalChange}
-                  value={newProposal.moq}
-                  placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
-                  style={{
-                    height: 50,
-                    resize: "none",
-                  }}
-                /> */}
-              </div>
-              <div className="col-span-1 text-revomed-dark-grey mb-5 text-right justify-end flex flex-col">
-                <p className="mb-2 font-semibold text-revomed-dark-grey">
-                  Total Amount (Ex. VAT):
-                </p>
-                <p>00.00 THB</p>
               </div>
             </div>
           </div>
@@ -126,8 +115,10 @@ export default function ProposalList() {
                   <span className="text-revomed-red">*</span>
                 </p>
                 <Input
+                  disabled={true}
                   name="proposal_code"
-                  onChange={handleNewProposalChange}
+                  // onChange={handleNewProposalChange}
+                  // value={newProposal.proposal_code}
                   value={newProposal.proposal_code}
                   placeholder="Proposal Code..."
                   style={{
@@ -268,7 +259,7 @@ export default function ProposalList() {
           </div>
         </div>
       </div>
-      <FooterBar />
+      <FooterBar newProposal={newProposal} />
     </>
   );
 }

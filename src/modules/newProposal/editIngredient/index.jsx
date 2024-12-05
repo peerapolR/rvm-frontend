@@ -20,7 +20,7 @@ export default function EditIngredientList() {
     newProposalctx;
 
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="p-6 mb-[22.5rem]">
         <div className="flex justify-between items-center pb-5 mb-6 border-b-1 border-revomed-light-grey1">
           <div className="flex">
@@ -73,6 +73,6 @@ export default function EditIngredientList() {
         setOpenDetail={setOpenDetail}
         detailModal={detailModal}
       />
-    </>
+    </div>
   );
 }

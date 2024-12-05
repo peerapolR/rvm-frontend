@@ -26,7 +26,7 @@ export default function Footer() {
             router.push("/main/ingredient");
           }}
         >
-          Cancle
+          Cancel
         </BaseButton>
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 rounded-lg border-1 border-revomed-primary bg-revomed-primary text-white hover:bg-black"

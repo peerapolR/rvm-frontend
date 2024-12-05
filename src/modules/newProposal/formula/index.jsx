@@ -25,8 +25,6 @@ export default function FormulationList() {
   const [selected, setSelected] = useState("");
 
   const handleFormulaCard = (id, items) => {
-    console.log("items", items);
-
     setSelected(id);
     setNewProposal(() => ({
       ...newProposal,
@@ -45,7 +43,7 @@ export default function FormulationList() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="p-6">
         <div className="flex justify-between items-center pb-5 mb-6 border-b-1 border-revomed-light-grey1">
           <div className="flex">
@@ -93,7 +91,7 @@ export default function FormulationList() {
           selected={selected}
         />
       </div>
-      <FooterBar />
-    </>
+      <FooterBar newProposal={newProposal} />
+    </div>
   );
 }

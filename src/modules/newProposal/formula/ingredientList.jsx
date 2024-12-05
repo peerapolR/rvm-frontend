@@ -14,7 +14,6 @@ import { div } from "framer-motion/client";
 // import { useIngredientCTX } from "@contexts/IngredientContext";
 
 export default function IngredientListContainer({ listProposalByCon }) {
-  console.log(listProposalByCon);
 
   const router = useRouter();
 
