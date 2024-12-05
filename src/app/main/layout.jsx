@@ -32,10 +32,10 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
-      <body className={inter.className} style={{ fontFamily: "LINESeedSans" }}>
+      <body className={inter.className} style={{ fontFamily: "LINESeedSans"  }}>
         <AntdConfigProvider>
           <PathProvider>
-            <Layout>
+            <Layout id="mainLayout">
               <SideBar />
               <Layout id="mainLayout">
                 <HeaderBar />
