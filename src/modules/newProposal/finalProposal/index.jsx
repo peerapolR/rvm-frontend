@@ -124,10 +124,10 @@ export default function FinalProposalList() {
                   <p>จาก</p>
                   <div className="ml-5">
                     <p>
-                      {user.firstName} {user.lastName}
+                      {user?.firstName} {user?.lastName}
                     </p>
-                    <p>+66{user.tel}</p>
-                    <p>{user.email}</p>
+                    <p>+66{user?.tel}</p>
+                    <p>{user?.email}</p>
                   </div>
                 </div>
                 <div className="flex ml-5">
@@ -286,10 +286,10 @@ export default function FinalProposalList() {
                   <p>จาก</p>
                   <div className="ml-5">
                     <p>
-                      {user.firstName} {user.lastName}
+                      {user?.firstName} {user?.lastName}
                     </p>
-                    <p>+66{user.tel}</p>
-                    <p>{user.email}</p>
+                    <p>+66{user?.tel}</p>
+                    <p>{user?.email}</p>
                   </div>
                 </div>
                 <div className="flex ml-5">
@@ -448,10 +448,10 @@ export default function FinalProposalList() {
                   <p>จาก</p>
                   <div className="ml-5">
                     <p>
-                      {user.firstName} {user.lastName}
+                      {user?.firstName} {user?.lastName}
                     </p>
-                    <p>+66{user.tel}</p>
-                    <p>{user.email}</p>
+                    <p>+66{user?.tel}</p>
+                    <p>{user?.email}</p>
                   </div>
                 </div>
                 <div className="flex ml-5">
