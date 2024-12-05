@@ -117,11 +117,12 @@ export default function Page({ _id }) {
                 orderDetail?.order_status === "draft"
                   ? "bg-gray-500"
                   : orderDetail?.order_status === "pending"
-                  ? "bg-blue-400"
-                  : orderDetail?.order_status === "reject"
+                  ? "bg-yellow-400"
+                  : orderDetail?.order_status === "reject" ||
+                    orderDetail?.order_status === "decline"
                   ? "bg-red-500"
-                  : orderDetail?.order_status === "proposed"
-                  ? "bg-yellow-500"
+                  : orderDetail?.order_status === "success"
+                  ? "bg-green-600"
                   : "bg-green-600"
               }`}
             >

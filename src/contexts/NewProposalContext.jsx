@@ -222,6 +222,17 @@ function NewProposalContextProvider({ children }) {
       console.log(error);
     }
   };
+  const declineOrder = async (_id) => {
+    try {
+      const res = await proposalApi.declineOrder(_id);
+
+      if (res.status === 200 || res.status === 201) {
+        router.push("/main/myProposal");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getNumToGenOrderId = async (order_id) => {
     try {
@@ -269,6 +280,7 @@ function NewProposalContextProvider({ children }) {
     approveOrder,
     rejectOrder,
     proposedOrder,
+    declineOrder,
     fetchOrderForSaleManager,
     saleManagerOrder,
     getNumToGenOrderId,

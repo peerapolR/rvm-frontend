@@ -8,7 +8,7 @@ import { useNewProposalCTX } from "@contexts/NewProposalContext";
 export default function FooterBar({ status, _id }) {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
-  const { proposedOrder } = newProposalctx;
+  const { proposedOrder, declineOrder } = newProposalctx;
   return (
     <>
       {status === "pending" || status === "reject" ? (
@@ -52,12 +52,20 @@ export default function FooterBar({ status, _id }) {
               Download
             </BaseButton>
             <BaseButton
+              className="w-[162px] h-[48px] py-3 px-10 text-revomed-white bg-revomed-red border-0 font-semibold"
+              onClick={() => {
+                declineOrder(_id);
+              }}
+            >
+              Decline
+            </BaseButton>
+            <BaseButton
               className="w-[162px] h-[48px] py-3 px-10 text-revomed-white bg-revomed-green border-0 font-semibold"
               onClick={() => {
                 proposedOrder(_id);
               }}
             >
-              Propose
+              Success
             </BaseButton>
           </div>
         </div>

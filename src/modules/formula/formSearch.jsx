@@ -37,8 +37,12 @@ export default function FormSearch() {
       value: "approve",
     },
     {
-      label: "Proposed",
-      value: "proposed",
+      label: "Decline",
+      value: "decline",
+    },
+    {
+      label: "Success",
+      value: "success",
     },
     {
       label: "Cancel",

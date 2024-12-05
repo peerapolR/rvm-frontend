@@ -18,7 +18,7 @@ export default function FooterBar({ status }) {
             Back
           </BaseButton>
         </div>
-      ) : status === "approve" || status === "proposed" ? (
+      ) : status === "approve" || status === "success" ? (
         <div className="min-h-20 bg-revomed-white bottom-0 flex gap-5 justify-between pt-4 px-5">
           <div>
             <BaseButton

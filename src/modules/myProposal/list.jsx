@@ -62,11 +62,11 @@ export default function IngredientContainer() {
               text === "draft"
                 ? "bg-gray-500"
                 : text === "pending"
-                ? "bg-blue-400"
-                : text === "reject"
+                ? "bg-yellow-400"
+                : text === "reject" || text === "decline"
                 ? "bg-red-500"
-                : text === "proposed"
-                ? "bg-yellow-500"
+                : text === "success"
+                ? "bg-green-600"
                 : "bg-green-600"
             }`}
           >

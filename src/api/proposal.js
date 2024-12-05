@@ -19,6 +19,8 @@ export const rejectOrder = (_id) => axios.get(`/orders/rejectOrder/${_id}`);
 
 export const proposedOrder = (_id) => axios.get(`/orders/proposedOrder/${_id}`);
 
+export const declineOrder = (_id) => axios.get(`/orders/declineOrder/${_id}`);
+
 export const getNumToGenOrderId = (order_id) =>
   axios.get(`/orders/getNumToGenOrderId/${order_id}`);
 

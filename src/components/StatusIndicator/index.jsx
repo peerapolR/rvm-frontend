@@ -14,13 +14,17 @@ export default function StatusIndicator(props) {
       bgColor = "bg-revomed-aqua";
       content = "Publish";
       break;
-    case "proposed":
-      bgColor = "bg-revomed-yellow";
-      content = "Proposed";
+    case "success":
+      bgColor = "bg-revomed-green";
+      content = "Success";
       break;
     case "approve":
       bgColor = "bg-revomed-green";
       content = "Approve";
+      break;
+    case "decline":
+      bgColor = "bg-revomed-red";
+      content = "Decline";
       break;
     case "cancel":
       bgColor = "bg-revomed-red";
