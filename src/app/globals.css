@@ -65,6 +65,16 @@
   }
 }
 
+/* html {
+  min-height: 100vh;
+} */
+
+#mainLayout{
+  min-height: 100vh;
+}
+
+
+
 body {
   font-family: "LINESeedSans", sans-sarif;
   min-height: 100vh;
