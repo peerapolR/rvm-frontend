@@ -13,6 +13,8 @@ import FooterBar from "./footerBar";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
+import formatPrice from "@functions/formatPrice";
+
 export default function Page({ _id }) {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
@@ -150,7 +152,7 @@ export default function Page({ _id }) {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {orderDetail.price1 ? orderDetail.price1 : "0"}
+                    {orderDetail.price1 ? formatPrice(orderDetail.price1) : "00.00"}
                   </span>
                 </p>
               </div>
@@ -245,16 +247,18 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">{orderDetail.prePrice}</div>
                 <div className="col-span-1 ">{orderDetail.moq1}</div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {orderDetail.price1 ? orderDetail.price1 : "0"}
+                  {orderDetail.price1 ? formatPrice(orderDetail.price1) : "00.00"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{orderDetail.price1 ? orderDetail.price1 : "0"}</p>
+                <p>
+                  {orderDetail.price1 ? formatPrice(orderDetail.price1) : "00.00"}
+                </p>
               </div>
             </div>
             <div className="m-5">
@@ -310,7 +314,7 @@ export default function Page({ _id }) {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {orderDetail.price2 ? orderDetail.price2 : "0"}
+                    {orderDetail.price2 ? formatPrice(orderDetail.price2) : "0"}
                   </span>
                 </p>
               </div>
@@ -405,16 +409,18 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">{orderDetail.prePrice}</div>
                 <div className="col-span-1 ">{orderDetail.moq2}</div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {orderDetail.price2 ? orderDetail.price2 : "0"}
+                  {orderDetail.price2 ? formatPrice(orderDetail.price2) : "0"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{orderDetail.price2 ? orderDetail.price2 : "0"}</p>
+                <p>
+                  {orderDetail.price2 ? formatPrice(orderDetail.price2) : "0"}
+                </p>
               </div>
             </div>
             <div className="m-5">
@@ -470,7 +476,7 @@ export default function Page({ _id }) {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {orderDetail.price3 ? orderDetail.price3 : "0"}
+                    {orderDetail.price3 ? formatPrice(orderDetail.price3) : "0"}
                   </span>
                 </p>
               </div>
@@ -565,16 +571,16 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">{orderDetail.prePrice}</div>
                 <div className="col-span-1 ">{orderDetail.moq3}</div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {orderDetail.price3 ? orderDetail.price3 : "0"}
+                  {orderDetail.price3 ? formatPrice(orderDetail.price3) : "0"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{orderDetail.price3 ? orderDetail.price3 : "0"}</p>
+                <p>{orderDetail.price3 ? formatPrice(orderDetail.price3) : "0"}</p>
               </div>
             </div>
             <div className="m-5">

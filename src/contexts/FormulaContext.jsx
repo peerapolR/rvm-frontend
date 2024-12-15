@@ -29,6 +29,7 @@ function FormulaContextProvider({ children }) {
   const [activeIngredient, setActiveIngredient] = useState([]);
   const [ingredientDose, setIngredientDose] = useState([]);
   const [sumDose, setSumDose] = useState("");
+  const [sumPrice, setSumPrice] = useState("");
 
   const handleFormulaChange = (e) => {
     const { name, value } = e.target;
@@ -47,8 +48,19 @@ function FormulaContextProvider({ children }) {
     setSumDose(isNaN(total) ? "0" : total.toString());
   };
 
+  const calculatePrice = () => {
+    const totalPrice = ingredientDose.reduce((acc, item) => {
+      const price = parseFloat(item.price_min) || 0;
+      const dosage = parseFloat(item.dosageToUse) || 0;
+      return acc + price * dosage;
+    }, 0);
+
+    setSumPrice(isNaN(totalPrice) ? "0" : totalPrice.toFixed(2).toString());
+  };
+
   useEffect(() => {
     calculateSum();
+    calculatePrice();
   }, [ingredientDose]);
 
   useEffect(() => {
@@ -90,6 +102,7 @@ function FormulaContextProvider({ children }) {
         formulation: formulation,
         dosage_form: newFormula.dosage_form,
         master_ingredient: masterIngredient,
+        price: sumPrice,
         ingredient: activeIngredient,
         createdBy: user?.firstName,
         product_category: "supplement",
@@ -102,6 +115,7 @@ function FormulaContextProvider({ children }) {
         setIngredientDose([]);
         setFormulation([]);
         setSumDose("");
+        setSumPrice("");
         fetchFormula();
       }
     } catch (error) {
@@ -118,6 +132,7 @@ function FormulaContextProvider({ children }) {
         dosage_form: newFormula.dosage_form,
         master_ingredient: masterIngredient,
         ingredient: activeIngredient,
+        price: sumPrice,
         createdBy: user?.firstName,
         product_category: "supplement",
         formula_status: "publish",
@@ -129,6 +144,7 @@ function FormulaContextProvider({ children }) {
         setIngredientDose([]);
         setFormulation([]);
         setSumDose("");
+        setSumPrice("");
         fetchFormula();
       }
     } catch (error) {
@@ -192,6 +208,7 @@ function FormulaContextProvider({ children }) {
     ingredientDose,
     sumDose,
     formula,
+    sumPrice,
   };
   return (
     <FormulaContext.Provider value={value}>{children}</FormulaContext.Provider>

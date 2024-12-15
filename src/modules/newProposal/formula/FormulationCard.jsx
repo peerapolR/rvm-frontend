@@ -78,7 +78,9 @@ export default function FormulationCard({ e, selected, handleFormulaCard }) {
             </div>
             <div className="flex justify-between text-revomed-primary ">
               <div className="flex gap-2 ">{e.dosage_form}</div>
-              <div className="text-revomed-secondary">{e.price} THB</div>
+              <div className="text-revomed-secondary">
+                {parseFloat(e.price).toFixed(2)} THB
+              </div>
             </div>
           </div>
         </div>

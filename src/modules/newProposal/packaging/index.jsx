@@ -8,6 +8,8 @@ const { TextArea } = Input;
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
+import formatPrice from "@functions/formatPrice";
+
 export default function PackagingList() {
   const router = useRouter();
 
@@ -19,13 +21,42 @@ export default function PackagingList() {
     setNewProposal,
     optionMoq,
     getMoqByForm,
+    finalPrice1,
+    setFinalPrice1,
+    finalPrice2,
+    setFinalPrice2,
+    finalPrice3,
+    setFinalPrice3,
   } = newProposalctx;
 
   const [valuePackaging1, setValuePackaging1] = useState("Exclude");
   const [valuePackaging2, setValuePackaging2] = useState("Exclude");
   const [valuePackaging3, setValuePackaging3] = useState("Exclude");
 
+  const [moqPrice1, setMoqPrice1] = useState(0);
+  const [moqPrice2, setMoqPrice2] = useState(0);
+  const [moqPrice3, setMoqPrice3] = useState(0);
+
   const [moqToUse, setMoqToUse] = useState([]);
+
+  const calPriceByMoq = (moq, num) => {
+    let cal =
+      parseFloat(moq.label) *
+      parseFloat(newProposal.prePrice) *
+      parseFloat(moq.value);
+    // let formetted = formatPrice(cal);
+
+    if (num === 1) {
+      setMoqPrice1(cal);
+      setFinalPrice1(cal);
+    } else if (num === 2) {
+      setMoqPrice2(cal);
+      setFinalPrice2(cal);
+    } else if (num === 3) {
+      setMoqPrice3(cal);
+      setFinalPrice3(cal);
+    }
+  };
 
   const onChangeRadioPackaging1 = (e) => {
     const { name, value } = e.target;
@@ -44,23 +75,110 @@ export default function PackagingList() {
   };
 
   const onChangeMoq1 = (index, e) => {
+    calPriceByMoq(e, 1);
     setNewProposal(() => ({
       ...newProposal,
       moq1: e.label,
     }));
   };
   const onChangeMoq2 = (index, e) => {
+    calPriceByMoq(e, 2);
     setNewProposal(() => ({
       ...newProposal,
       moq2: e.label,
     }));
   };
   const onChangeMoq3 = (index, e) => {
+    calPriceByMoq(e, 3);
     setNewProposal(() => ({
       ...newProposal,
       moq3: e.label,
     }));
   };
+
+  const onChangePackingPrice1 = (e) => {
+    const newValue = Number(e.target.value);
+    if (e.target.value === "") {
+      setNewProposal(() => ({
+        ...newProposal,
+        packaging_price1: "0",
+      }));
+    } else {
+      if (newValue >= 0) {
+        handleNewProposalChange(e);
+      } else {
+        setNewProposal(() => ({
+          ...newProposal,
+          packaging_price1: "0",
+        }));
+      }
+    }
+  };
+
+  const onChangePackingPrice2 = (e) => {
+    const newValue = Number(e.target.value);
+    if (e.target.value === "") {
+      setNewProposal(() => ({
+        ...newProposal,
+        packaging_price2: "0",
+      }));
+    } else {
+      if (newValue >= 0) {
+        handleNewProposalChange(e);
+      } else {
+        setNewProposal(() => ({
+          ...newProposal,
+          packaging_price2: "0",
+        }));
+      }
+    }
+  };
+
+  const onChangePackingPrice3 = (e) => {
+    const newValue = Number(e.target.value);
+    if (e.target.value === "") {
+      setNewProposal(() => ({
+        ...newProposal,
+        packaging_price3: "0",
+      }));
+    } else {
+      if (newValue >= 0) {
+        handleNewProposalChange(e);
+      } else {
+        setNewProposal(() => ({
+          ...newProposal,
+          packaging_price3: "0",
+        }));
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (newProposal.packaging_price1 != "") {
+      const cal =
+        parseFloat(moqPrice1) + parseFloat(newProposal.packaging_price1);
+
+      setFinalPrice1(cal);
+    }
+  }, [newProposal.packaging_price1]);
+
+  useEffect(() => {
+    if (newProposal.packaging_price2 != "") {
+      const cal =
+        parseFloat(moqPrice2) + parseFloat(newProposal.packaging_price2);
+
+      setFinalPrice2(cal);
+    }
+  }, [newProposal.packaging_price2]);
+
+  useEffect(() => {
+    if (newProposal.packaging_price3 != "") {
+      const cal =
+        parseFloat(moqPrice3) + parseFloat(newProposal.packaging_price3);
+
+      setFinalPrice3(cal);
+    }
+  }, [newProposal.packaging_price3]);
 
   useEffect(() => {
     getMoqByForm();
@@ -138,7 +256,7 @@ export default function PackagingList() {
             </div>
             <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
-              <p>00.00 THB</p>
+              <p>{formatPrice(finalPrice1)} THB</p>
             </div>
             <div></div>
             <div className="font-bold text-lg">MOQ 1</div>
@@ -188,9 +306,12 @@ export default function PackagingList() {
                   </p>
                   <Input
                     name="packaging_price1"
-                    onChange={handleNewProposalChange}
+                    // onChange={handleNewProposalChange}
+                    onChange={onChangePackingPrice1}
                     value={newProposal.packaging_price1}
+                    type="number"
                     placeholder="00.00"
+                    min="0"
                     style={{
                       height: 50,
                       width: 370,
@@ -351,7 +472,7 @@ export default function PackagingList() {
             </div>
             <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
-              <p>00.00 THB</p>
+              <p>{formatPrice(finalPrice2)} THB</p>
             </div>
             <div></div>
             <div className="font-bold text-lg">MOQ 2</div>
@@ -401,9 +522,11 @@ export default function PackagingList() {
                   </p>
                   <Input
                     name="packaging_price2"
-                    onChange={handleNewProposalChange}
+                    // onChange={handleNewProposalChange}
+                    onChange={onChangePackingPrice2}
                     value={newProposal.packaging_price2}
                     placeholder="00.00"
+                    type="number"
                     style={{
                       height: 50,
                       width: 370,
@@ -436,7 +559,7 @@ export default function PackagingList() {
             </div>
             <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
-              <p>00.00 THB</p>
+              <p>{formatPrice(finalPrice3)} THB</p>
             </div>
             <div></div>
             <div className="font-bold text-lg">MOQ 3</div>
@@ -483,9 +606,11 @@ export default function PackagingList() {
                   </p>
                   <Input
                     name="packaging_price3"
-                    onChange={handleNewProposalChange}
+                    // onChange={handleNewProposalChange}
+                    onChange={onChangePackingPrice3}
                     value={newProposal.packaging_price3}
                     placeholder="00.00"
+                    type="number"
                     style={{
                       height: 50,
                       width: 370,

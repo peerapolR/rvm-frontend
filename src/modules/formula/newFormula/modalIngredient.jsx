@@ -19,7 +19,15 @@ export default function ModalIngredient(props) {
     activeIngredient,
   } = formulaCtx;
 
-  const { isOpen, setIsOpen, setOpenDetail, setDetailModal, isMaster } = props;
+  const {
+    isOpen,
+    setIsOpen,
+    setOpenDetail,
+    setDetailModal,
+    isMaster,
+    // setQuery,
+    // query,
+  } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState([]);
 
@@ -91,7 +99,8 @@ export default function ModalIngredient(props) {
           className="w-[320px] h-[48px]"
           placeholder="Ingredient Name..."
           prefix={<SearchIcon style={{ color: "#ABB1C1" }} />}
-          // onChange={}
+          // value={query}
+          // onChange={(e) => setQuery(e.target.value)}
         />
       </div>
       <Form form={form}>
@@ -101,18 +110,20 @@ export default function ModalIngredient(props) {
             className="flex flex-col"
             onChange={handleCheckIngredient}
           >
-            {ingredient.map((e, i) => {
-              return (
-                <RowInModal
-                  key={i}
-                  value={e.ingredient_name}
-                  label={e.ingredient_name}
-                  detail={e}
-                  setOpenDetail={setOpenDetail}
-                  setDetailModal={setDetailModal}
-                />
-              );
-            })}
+            <div className="max-h-[600px] overflow-y-auto">
+              {ingredient.map((e, i) => {
+                return (
+                  <RowInModal
+                    key={i}
+                    value={e.ingredient_name}
+                    label={e.ingredient_name}
+                    detail={e}
+                    setOpenDetail={setOpenDetail}
+                    setDetailModal={setDetailModal}
+                  />
+                );
+              })}
+            </div>
           </Checkbox.Group>
         </Form.Item>
       </Form>

@@ -72,6 +72,37 @@ function NewProposalContextProvider({ children }) {
 
   const [optionMoq, setOptionMoq] = useState([]);
 
+  const [finalPrice1, setFinalPrice1] = useState(0);
+  const [finalPrice2, setFinalPrice2] = useState(0);
+  const [finalPrice3, setFinalPrice3] = useState(0);
+
+  useEffect(() => {
+    if (finalPrice1) {
+      setNewProposal(() => ({
+        ...newProposal,
+        price1: finalPrice1,
+      }));
+    }
+  }, [finalPrice1]);
+
+  useEffect(() => {
+    if (finalPrice2) {
+      setNewProposal(() => ({
+        ...newProposal,
+        price2: finalPrice2,
+      }));
+    }
+  }, [finalPrice2]);
+
+  useEffect(() => {
+    if (finalPrice3) {
+      setNewProposal(() => ({
+        ...newProposal,
+        price3: finalPrice3,
+      }));
+    }
+  }, [finalPrice3]);
+
   const handleNewProposalChange = (e) => {
     const { name, value } = e.target;
 
@@ -104,9 +135,9 @@ function NewProposalContextProvider({ children }) {
         creator_id: user?.firstName,
         product_category: "supplement",
         order_status: "pending",
-        price1: "0",
-        price2: "0",
-        price3: "0",
+        price1: finalPrice1.toString(),
+        price2: finalPrice2.toString(),
+        price3: finalPrice3.toString(),
         formulation: formulation,
         order_id: newProposal.proposal_code,
       });
@@ -287,6 +318,12 @@ function NewProposalContextProvider({ children }) {
     numToOrder,
     optionMoq,
     getMoqByForm,
+    finalPrice1,
+    setFinalPrice1,
+    finalPrice2,
+    setFinalPrice2,
+    finalPrice3,
+    setFinalPrice3,
   };
   return (
     <NewProposalContext.Provider value={value}>

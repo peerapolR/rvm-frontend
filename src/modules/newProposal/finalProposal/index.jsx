@@ -8,6 +8,8 @@ import RevomedLogo from "@modules/allProposal/detail/RevomedLogo";
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 import { useUserAuth } from "@contexts/UserAuthContext";
 
+import formatPrice from "@functions/formatPrice";
+
 export default function FinalProposalList() {
   const router = useRouter();
 
@@ -113,7 +115,7 @@ export default function FinalProposalList() {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {newProposal.price1 ? newProposal.price1 : "0"}
+                    {newProposal.price1 ? formatPrice(newProposal.price1) : "00.00"}
                   </span>
                 </p>
               </div>
@@ -210,16 +212,20 @@ export default function FinalProposalList() {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">
+                  {formatPrice(newProposal.prePrice)}
+                </div>
                 <div className="col-span-1 ">{newProposal.moq1}</div>
                 <div className="col-span-1 ">{newProposal.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {newProposal.price1 ? newProposal.price1 : "0"}
+                  {newProposal.price1 ? formatPrice(newProposal.price1) : "00.00"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{newProposal.price1 ? newProposal.price1 : "0"}</p>
+                <p>
+                  {newProposal.price1 ? formatPrice(newProposal.price1) : "00.00"}
+                </p>
               </div>
             </div>
             <div className="m-5">
@@ -275,7 +281,7 @@ export default function FinalProposalList() {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {newProposal.price2 ? newProposal.price2 : "0"}
+                    {newProposal.price2 ? formatPrice(newProposal.price2) : "0"}
                   </span>
                 </p>
               </div>
@@ -372,16 +378,20 @@ export default function FinalProposalList() {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">
+                  {formatPrice(newProposal.prePrice)}
+                </div>
                 <div className="col-span-1 ">{newProposal.moq2}</div>
                 <div className="col-span-1 ">{newProposal.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {newProposal.price2 ? newProposal.price2 : "0"}
+                  {newProposal.price2 ? formatPrice(newProposal.price2) : "0"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{newProposal.price2 ? newProposal.price2 : "0"}</p>
+                <p>
+                  {newProposal.price2 ? formatPrice(newProposal.price2) : "0"}
+                </p>
               </div>
             </div>
             <div className="m-5">
@@ -437,7 +447,7 @@ export default function FinalProposalList() {
                 <p className="text-end my-5 bg-revomed-primary-light2 text-revomed-primary px-3 py-2 rounded-lg">
                   ยอดชำระ{" "}
                   <span className="font-semibold ml-5">
-                    {newProposal.price3 ? newProposal.price3 : "0"}
+                    {newProposal.price3 ? formatPrice(newProposal.price3) : "0"}
                   </span>
                 </p>
               </div>
@@ -534,16 +544,20 @@ export default function FinalProposalList() {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">00.00</div>
+                <div className="col-span-1 ">
+                  {formatPrice(newProposal.prePrice)}
+                </div>
                 <div className="col-span-1 ">{newProposal.moq3}</div>
                 <div className="col-span-1 ">{newProposal.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
-                  {newProposal.price3 ? newProposal.price3 : "0"}
+                  {newProposal.price3 ? formatPrice(newProposal.price3) : "0"}
                 </div>
               </div>
               <div className="flex justify-between font-semibold mt-[10rem] pl-[10rem] pr-[1rem] mb-5">
                 <p>ยอดชำระทั้งหมด</p>
-                <p>{newProposal.price3 ? newProposal.price3 : "0"}</p>
+                <p>
+                  {newProposal.price3 ? formatPrice(newProposal.price3) : "0"}
+                </p>
               </div>
             </div>
             <div className="m-5">

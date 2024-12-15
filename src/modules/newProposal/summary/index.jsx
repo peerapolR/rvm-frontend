@@ -20,6 +20,8 @@ import coffeeAndTea from "@public/assets/images/coffeeAndTea.png";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
+import formatPrice from "@functions/formatPrice";
+
 export default function SummaryList() {
   const router = useRouter();
 
@@ -124,7 +126,7 @@ export default function SummaryList() {
                   <p className={topicText}>Packaging Price:</p>
                   <p className={detailText}>
                     {newProposal?.packaging_price1
-                      ? newProposal.packaging_price1
+                      ? `${formatPrice(newProposal.packaging_price1)} THB`
                       : "-"}
                   </p>
                 </div>
@@ -158,7 +160,7 @@ export default function SummaryList() {
                     <p className={topicText}>Packaging Price:</p>
                     <p className={detailText}>
                       {newProposal?.packaging_price2
-                        ? newProposal?.packaging_price2
+                        ? `${formatPrice(newProposal.packaging_price2)} THB`
                         : "-"}
                     </p>
                   </div>
@@ -195,7 +197,7 @@ export default function SummaryList() {
                     <p className={topicText}>Packaging Price:</p>
                     <p className={detailText}>
                       {newProposal?.packaging_price3
-                        ? newProposal?.packaging_price3
+                        ? `${formatPrice(newProposal.packaging_price3)} THB`
                         : "-"}
                     </p>
                   </div>

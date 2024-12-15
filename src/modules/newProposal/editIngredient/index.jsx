@@ -60,12 +60,24 @@ export default function EditIngredientList() {
             </BaseButton>
           </div>
         </div>
-
         <IngredientTable
           newProposal={newProposal}
           setDetailModal={setDetailModal}
           setOpenDetail={setOpenDetail}
         />
+
+        <div
+          className="flex gap-[16px] font-bold mt-6"
+          style={{ fontSize: "16px" }}
+        >
+          <div className="text-revomed-dark-grey">Total price:</div>
+          <div className="text-revomed-primary">
+            {newProposal.prePrice
+              ? parseFloat(newProposal.prePrice).toFixed(2)
+              : "0.00"}{" "}
+            THB
+          </div>
+        </div>
       </div>
       <FooterBar />
       <ModalDetail

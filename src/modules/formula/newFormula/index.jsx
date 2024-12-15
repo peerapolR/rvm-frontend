@@ -22,6 +22,7 @@ import "./style.scss";
 import ModalDetail from "./modalDetail";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
+// import { searchIngredient } from "@functions/searchIngredient";
 
 export default function NewFormulaList() {
   const ctx = useFormulaCTX();
@@ -33,6 +34,7 @@ export default function NewFormulaList() {
     newFormula,
     ingredientDose,
     sumDose,
+    sumPrice,
   } = ctx;
 
   const [path, setPath] = useState("");
@@ -44,6 +46,22 @@ export default function NewFormulaList() {
   const [dataSource, setDataSource] = useState([]);
   const [isMaster, setIsMaster] = useState(false);
   const [form] = Form.useForm();
+
+  // const [query, setQuery] = useState("");
+  // const [results, setResults] = useState([]);
+
+  // const handleSearch = () => {
+  //   try {
+  //     const searchResults = searchName(query, nameList);
+  //     setResults(searchResults);
+  //   } catch (error) {
+  //     console.error(error.message);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   handleSearch();
+  // }, [query]);
 
   const dosageIcon = (name) => {
     switch (name) {
@@ -179,6 +197,8 @@ export default function NewFormulaList() {
               setOpenDetail={setOpenDetail}
               setDetailModal={setDetailModal}
               isMaster={isMaster}
+              // query={query}
+              // setQuery={setQuery}
             />
           </div>
         </>
@@ -277,13 +297,13 @@ export default function NewFormulaList() {
                 </div>
               </div>
             </div>
-            {/* <div
+            <div
               className="flex gap-[16px] font-bold mt-6"
               style={{ fontSize: "16px" }}
             >
               <div className="text-revomed-dark-grey">Total price:</div>
-              <div className="text-revomed-primary">30.00 THB</div>
-            </div> */}
+              <div className="text-revomed-primary">{sumPrice} THB</div>
+            </div>
           </div>
         </>
       )}
