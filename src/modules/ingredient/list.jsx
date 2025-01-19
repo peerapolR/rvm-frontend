@@ -12,7 +12,7 @@ import formatDate from "@functions/formatDate";
 
 import { useIngredientCTX } from "@contexts/IngredientContext";
 
-export default function IngredientContainer() {
+export default function IngredientContainer({ handleSearch }) {
   const router = useRouter();
   const ctx = useIngredientCTX();
   const { ingredient, publishIngredient, deleteIngredient } = ctx;
@@ -133,6 +133,49 @@ export default function IngredientContainer() {
       setDataSource(data);
     }
   }, [ingredient]);
+
+  useEffect(() => {
+    let filteredData = [];
+
+    if (handleSearch.name === "" && handleSearch.status === "all") {
+      if (ingredient && ingredient.length > 0) {
+        filteredData = ingredient.map((i) => ({
+          ...i,
+          key: i._id,
+        }));
+        setDataSource(filteredData);
+      }
+    } else if (handleSearch.status === "all") {
+      const searchData = ingredient.filter((item) =>
+        item.ingredient_name.toLowerCase().includes(handleSearch.name)
+      );
+      console.log(handleSearch);
+
+      filteredData = searchData.map((i) => ({
+        ...i,
+        key: i._id,
+      }));
+
+      setDataSource(filteredData);
+    } else {
+      filteredData = ingredient.filter((item) => {
+        const matchesFormulaName =
+          handleSearch.name &&
+          item.ingredient_name &&
+          item.ingredient_name
+            .toLowerCase()
+            .includes(handleSearch.name.toLowerCase());
+
+        const matchesStatus =
+          handleSearch.status === "all" ||
+          item.ingredient_status === handleSearch.status; // Ignore status if it's "all"
+
+        return matchesFormulaName && matchesStatus; // Return only items that match both conditions
+      });
+
+      setDataSource(filteredData);
+    }
+  }, [handleSearch]);
 
   function onShowSizeChange(current, pageSize) {
     console.log(current, pageSize);

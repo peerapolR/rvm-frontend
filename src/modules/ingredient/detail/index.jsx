@@ -67,8 +67,15 @@ export default function Page({ _id }) {
           </Title>
         </div>
         <div className="flex flex-col gap-6">
-          <div className="grid grid-cols-3 bg-revomed-white rounded-lg w-full p-5">
-            <div>Image</div>
+          <div className="grid grid-cols-3 bg-revomed-white rounded-lg w-full p-5 items-center">
+            <div className="flex justify-center">
+              <div className="h-full w-24">
+                <img
+                  src={ingredient.ingredient_image}
+                  className="w-full object-contain min-h-0"
+                ></img>
+              </div>
+            </div>
             <div className="flex flex-col">
               <div className="relative mb-5">
                 <p className="text-revomed-primary font-semibold text-base">

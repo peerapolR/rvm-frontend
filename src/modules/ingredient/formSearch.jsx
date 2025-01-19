@@ -1,114 +1,40 @@
 import React from "react";
-import Tabs from "@components/Tabs";
-import { Dropdown, Form, Input, Select } from "antd";
+import { Form, Input, Select } from "antd";
 import BaseButton from "@components/BaseButton";
 import { SearchOutlined } from "@ant-design/icons";
 
-export default function FormSearch() {
-  const optionType = [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Master",
-      value: "master",
-    },
-    {
-      label: "Custom",
-      value: "custom",
-    },
-  ];
+export default function FormSearch({ setHandleSearch }) {
+  const [form] = Form.useForm();
 
   const optionStatus = [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Draft",
-      value: "draft",
-    },
-    {
-      label: "Publish",
-      value: "publish",
-    },
-    {
-      label: "Approve",
-      value: "approve",
-    },
-    {
-      label: "Decline",
-      value: "decline",
-    },
-    {
-      label: "Success",
-      value: "success",
-    },
-    {
-      label: "Cancel",
-      value: "cancel",
-    },
+    { label: "All", value: "all" },
+    { label: "Draft", value: "draft" },
+    { label: "Publish", value: "publish" },
+    { label: "Unpublish", value: "unpublish" },
   ];
 
-  const optionMonth = [
-    {
-      label: "All",
-      value: "all",
-    },
-    {
-      label: "Jan",
-      value: 0,
-    },
-    {
-      label: "Feb",
-      value: 1,
-    },
-    {
-      label: "Mar",
-      value: 2,
-    },
-    {
-      label: "Apr",
-      value: 3,
-    },
-    {
-      label: "May",
-      value: 4,
-    },
-    {
-      label: "Jun",
-      value: 5,
-    },
-    {
-      label: "Jul",
-      value: 6,
-    },
-    {
-      label: "Aug",
-      value: 7,
-    },
-    {
-      label: "Sep",
-      value: 8,
-    },
-    {
-      label: "Oct",
-      value: 9,
-    },
-    {
-      label: "Nov",
-      value: 10,
-    },
-    {
-      label: "Dec",
-      value: 11,
-    },
-  ];
+  const clickEvent = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        setHandleSearch({
+          name: values.formulaNameLike,
+          status: values.status,
+        });
+      })
+      .catch((errorInfo) => {
+        console.error("Validation Failed:", errorInfo);
+      });
+  };
 
   return (
     <div className="bg-revomed-white rounded-t-lg">
-      <Form className="px-6 py-6 grid grid-cols-6 items-end" layout="inline">
+      <Form
+        className="px-6 py-6 grid grid-cols-6 items-end"
+        layout="inline"
+        form={form} // Connect form instance
+      >
+        {/* Input for Formula Name */}
         <Form.Item
           name="formulaNameLike"
           label="Search"
@@ -120,14 +46,23 @@ export default function FormSearch() {
             prefix={<SearchOutlined />}
           />
         </Form.Item>
+        {/* Select for Status */}
+        <Form.Item
+          name="status"
+          label="Status"
+          layout="vertical"
+          initialValue="all" // Set initial value
+        >
+          <Select options={optionStatus} />
+        </Form.Item>
         <div></div>
-        <Form.Item name="status" label="Status" layout="vertical">
-          <Select options={optionStatus} defaultValue={"all"} />
-        </Form.Item>
-        <Form.Item name="date" label="Date" layout="vertical">
-          <Select options={optionMonth} defaultValue={"all"} />
-        </Form.Item>
-        <BaseButton className="bg-revomed-primary text-revomed-white">
+        <div></div>
+        {/* Apply Button */}
+        <BaseButton
+          className="bg-revomed-primary text-revomed-white"
+          onClick={clickEvent}
+          type="button" // Prevent form submission
+        >
           Apply
         </BaseButton>
       </Form>

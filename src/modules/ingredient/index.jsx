@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BaseButton from "@components/BaseButton";
 import PlusIcon from "@icons/PlusIcon";
@@ -14,7 +14,12 @@ export default function Page() {
   const router = useRouter();
 
   const ctx = useIngredientCTX();
-  const { fetchIngredient } = ctx;
+  const { fetchIngredient, ingredient } = ctx;
+
+  const [handleSearch, setHandleSearch] = useState({
+    name: "",
+    status: "all",
+  });
 
   useEffect(() => {
     fetchIngredient();
@@ -27,13 +32,13 @@ export default function Page() {
           All Ingredient
         </Title>
         <div className="flex gap-6">
-          <BaseButton
+          {/* <BaseButton
             className="w-[185px] py-3 px-10 border-1 border-revomed-primary rounded-lg text-revomed-primary cursor-not-allowed"
             iconPosition="start"
             icon={<ExportIcon />}
           >
             Export
-          </BaseButton>
+          </BaseButton> */}
           <BaseButton
             className="w-[185px] py-3 px-10 rounded-lg border-1 border-revomed-primary bg-revomed-primary text-white hover:bg-black"
             iconPosition="start"
@@ -46,8 +51,8 @@ export default function Page() {
           </BaseButton>
         </div>
       </div>
-      <FormSearch />
-      <IngredientContainer />
+      <FormSearch setHandleSearch={setHandleSearch} />
+      <IngredientContainer handleSearch={handleSearch} />
     </div>
   );
 }

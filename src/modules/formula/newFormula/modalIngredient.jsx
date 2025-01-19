@@ -25,8 +25,9 @@ export default function ModalIngredient(props) {
     setOpenDetail,
     setDetailModal,
     isMaster,
-    // setQuery,
-    // query,
+    setQuery,
+    query,
+    results,
   } = props;
   const [form] = Form.useForm();
   const [selected, setSelected] = useState([]);
@@ -99,8 +100,8 @@ export default function ModalIngredient(props) {
           className="w-[320px] h-[48px]"
           placeholder="Ingredient Name..."
           prefix={<SearchIcon style={{ color: "#ABB1C1" }} />}
-          // value={query}
-          // onChange={(e) => setQuery(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
       </div>
       <Form form={form}>
@@ -111,7 +112,7 @@ export default function ModalIngredient(props) {
             onChange={handleCheckIngredient}
           >
             <div className="max-h-[600px] overflow-y-auto">
-              {ingredient.map((e, i) => {
+              {results.map((e, i) => {
                 return (
                   <RowInModal
                     key={i}

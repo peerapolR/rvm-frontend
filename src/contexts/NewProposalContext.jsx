@@ -68,7 +68,7 @@ function NewProposalContextProvider({ children }) {
   const [pendingOrder, setPendingOrder] = useState([]);
 
   const [saleManagerOrder, setSaleManagerOrder] = useState([]);
-  const [numToOrder, setNumToOrder] = useState(0);
+  const [numToOrder, setNumToOrder] = useState(null);
 
   const [optionMoq, setOptionMoq] = useState([]);
 

@@ -1,14 +1,51 @@
 import React from "react";
+import pptxgen from "pptxgenjs";
 import { useRouter } from "next/navigation";
 
 import BaseButton from "@components/BaseButton";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
-export default function FooterBar({ status, _id }) {
+export default function FooterBar({ status, _id, reactPrint }) {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
   const { proposedOrder, declineOrder } = newProposalctx;
+
+  const handlePPT = () => {
+    let pres = new pptxgen();
+    let slide = pres.addSlide();
+
+    // Image URL
+    let proxyUrl = "https://cors-anywhere.herokuapp.com/";
+    let imageUrl =
+      "https://revomed.s3.ap-southeast-1.amazonaws.com/1737312296892-luggage%201.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAR6T5XXKMEYURNLHP%2F20250119%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250119T191004Z&X-Amz-Expires=86400&X-Amz-Signature=6162081fa2219fdae91c111495db2a11e37e70a5a4e2cfdbf0e536e4affeec26&X-Amz-SignedHeaders=host"; // Example image URL
+
+    // Fetch image as base64
+    fetch(proxyUrl + imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        let reader = new FileReader();
+        reader.onloadend = function () {
+          let base64Image = reader.result;
+
+          // Add the image as base64 to the slide
+          slide.addImage({
+            data: base64Image,
+            x: 1, // Optional: X position on the slide
+            y: 1, // Optional: Y position on the slide
+            w: 4, // Optional: Width of the image
+            h: 3, // Optional: Height of the image
+          });
+
+          // Save the presentation
+          pres.writeFile();
+        };
+        reader.readAsDataURL(blob);
+      })
+      .catch((error) => {
+        console.error("Error fetching image: ", error);
+      });
+  };
   return (
     <>
       {status === "pending" || status === "reject" ? (
@@ -37,17 +74,13 @@ export default function FooterBar({ status, _id }) {
           <div className="gap-5 flex">
             <BaseButton
               className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary bg-revomed-white border-0 font-semibold"
-              onClick={() => {
-                console.log("Print");
-              }}
+              onClick={() => reactPrint()}
             >
               Print
             </BaseButton>
             <BaseButton
               className="w-[162px] h-[48px] py-3 px-10 text-revomed-white bg-revomed-secondary border-1 font-semibold"
-              onClick={() => {
-                console.log("Download");
-              }}
+              onClick={handlePPT}
             >
               Download
             </BaseButton>

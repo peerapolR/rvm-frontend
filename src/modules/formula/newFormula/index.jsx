@@ -22,9 +22,13 @@ import "./style.scss";
 import ModalDetail from "./modalDetail";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
-// import { searchIngredient } from "@functions/searchIngredient";
+import { useIngredientCTX } from "@contexts/IngredientContext";
+
+import { searchIngredient } from "@functions/searchIngredient";
 
 export default function NewFormulaList() {
+  const ingreCtx = useIngredientCTX();
+  const { ingredient } = ingreCtx;
   const ctx = useFormulaCTX();
   const {
     setFormulation,
@@ -47,21 +51,21 @@ export default function NewFormulaList() {
   const [isMaster, setIsMaster] = useState(false);
   const [form] = Form.useForm();
 
-  // const [query, setQuery] = useState("");
-  // const [results, setResults] = useState([]);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState(ingredient);
 
-  // const handleSearch = () => {
-  //   try {
-  //     const searchResults = searchName(query, nameList);
-  //     setResults(searchResults);
-  //   } catch (error) {
-  //     console.error(error.message);
-  //   }
-  // };
+  const handleSearch = () => {
+    try {
+      const searchResults = searchIngredient(query, ingredient);
+      setResults(searchResults);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-  // useEffect(() => {
-  //   handleSearch();
-  // }, [query]);
+  useEffect(() => {
+    handleSearch();
+  }, [query]);
 
   const dosageIcon = (name) => {
     switch (name) {
@@ -197,8 +201,9 @@ export default function NewFormulaList() {
               setOpenDetail={setOpenDetail}
               setDetailModal={setDetailModal}
               isMaster={isMaster}
-              // query={query}
-              // setQuery={setQuery}
+              query={query}
+              setQuery={setQuery}
+              results={results}
             />
           </div>
         </>

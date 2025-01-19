@@ -41,7 +41,7 @@ export default function ProposalList() {
   };
 
   useEffect(() => {
-    if (numToOrder) {
+    if (numToOrder >= 0) {
       generateCode();
     }
   }, [numToOrder]);

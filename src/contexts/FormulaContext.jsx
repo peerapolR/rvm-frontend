@@ -30,7 +30,6 @@ function FormulaContextProvider({ children }) {
   const [ingredientDose, setIngredientDose] = useState([]);
   const [sumDose, setSumDose] = useState("");
   const [sumPrice, setSumPrice] = useState("");
-
   const handleFormulaChange = (e) => {
     const { name, value } = e.target;
 
