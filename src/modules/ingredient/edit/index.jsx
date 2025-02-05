@@ -39,7 +39,7 @@ export default function Page({ _id }) {
           </Title>
         </div> */}
         <div className="grid grid-cols-2 gap-5">
-          <PhotoSection />
+          <PhotoSection photo={ingredient.ingredient_image} />
           <IngredientDetail />
           <ChemicalComp />
           <Cert />

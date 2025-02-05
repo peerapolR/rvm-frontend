@@ -77,11 +77,63 @@ function IngredientContextProvider({ children }) {
 
   const saveDraftIngredient = async () => {
     try {
-      const res = await ingredientApi.createIngredient({
+      // Assuming 'img' is the File object
+      const params = {
         ...newIngredient,
         product_category: "supplement",
         ingredient_status: "draft",
+      };
+
+      // Prepare the form data
+      const formData = new FormData();
+
+      // Add form fields (including the image file)
+      Object.keys(params).forEach((key) => {
+        if (Array.isArray(params[key])) {
+          // If the value is an array, append each item with the same key
+          params[key].forEach((item) => {
+            formData.append(key, item); // Append each array item individually
+          });
+        } else {
+          formData.append(key, params[key]); // If it's not an array, append the value directly
+        }
       });
+
+      const res = await ingredientApi.createIngredient(formData);
+      if (res.status === 201 || res.status === 200) {
+        setNewIngredient(defaultIngredient);
+        router.push("/main/ingredient");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const editDraftIngredient = async () => {
+    try {
+      // Assuming 'img' is the File object
+      const params = {
+        ...newIngredient,
+        product_category: "supplement",
+        ingredient_status: "draft",
+      };
+
+      // Prepare the form data
+      const formData = new FormData();
+
+      // Add form fields (including the image file)
+      Object.keys(params).forEach((key) => {
+        if (Array.isArray(params[key])) {
+          // If the value is an array, append each item with the same key
+          params[key].forEach((item) => {
+            formData.append(key, item); // Append each array item individually
+          });
+        } else {
+          formData.append(key, params[key]); // If it's not an array, append the value directly
+        }
+      });
+
+      const res = await ingredientApi.updateIngredient(formData);
       if (res.status === 201 || res.status === 200) {
         setNewIngredient(defaultIngredient);
         router.push("/main/ingredient");
@@ -128,11 +180,29 @@ function IngredientContextProvider({ children }) {
 
   const editIngredient = async () => {
     try {
-      const res = await ingredientApi.updateIngredient({
+      // Assuming 'img' is the File object
+      const params = {
         ...newIngredient,
         product_category: "supplement",
         ingredient_status: "publish",
+      };
+
+      // Prepare the form data
+      const formData = new FormData();
+
+      // Add form fields (including the image file)
+      Object.keys(params).forEach((key) => {
+        if (Array.isArray(params[key])) {
+          // If the value is an array, append each item with the same key
+          params[key].forEach((item) => {
+            formData.append(key, item); // Append each array item individually
+          });
+        } else {
+          formData.append(key, params[key]); // If it's not an array, append the value directly
+        }
       });
+
+      const res = await ingredientApi.updateIngredient(formData);
 
       if (res?.status === 201 || res?.status === 200) {
         setNewIngredient(defaultIngredient);
@@ -181,6 +251,7 @@ function IngredientContextProvider({ children }) {
     editIngredient,
     publishIngredient,
     deleteIngredient,
+    editDraftIngredient,
   };
   return (
     <IngredientContext.Provider value={value}>

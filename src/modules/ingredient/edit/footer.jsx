@@ -7,7 +7,7 @@ import BaseButton from "@components/BaseButton";
 
 export default function Footer() {
   const ctx = useIngredientCTX();
-  const { saveDraftIngredient, editIngredient } = ctx;
+  const { editDraftIngredient, editIngredient } = ctx;
   const router = useRouter();
   return (
     <div className="min-h-20 bg-revomed-white">
@@ -15,7 +15,7 @@ export default function Footer() {
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
           onClick={() => {
-            saveDraftIngredient();
+            editDraftIngredient();
           }}
         >
           Save

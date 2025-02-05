@@ -20,7 +20,6 @@ export default function PhotoSection() {
     maxCount: 1,
     accept: "image/*",
     showUploadList: false,
-    // action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {

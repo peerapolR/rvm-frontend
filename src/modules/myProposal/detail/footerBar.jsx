@@ -18,7 +18,7 @@ export default function FooterBar({ status, _id, reactPrint }) {
     // Image URL
     let proxyUrl = "https://cors-anywhere.herokuapp.com/";
     let imageUrl =
-      "https://revomed.s3.ap-southeast-1.amazonaws.com/1737312296892-luggage%201.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAR6T5XXKMEYURNLHP%2F20250119%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250119T191004Z&X-Amz-Expires=86400&X-Amz-Signature=6162081fa2219fdae91c111495db2a11e37e70a5a4e2cfdbf0e536e4affeec26&X-Amz-SignedHeaders=host"; // Example image URL
+      "https://revomed.s3.ap-southeast-1.amazonaws.com/1738784703511-luggage%201.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAR6T5XXKMJYUDKHWE%2F20250205%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250205T194628Z&X-Amz-Expires=86400&X-Amz-Signature=79f03e49eb2d66a66cd92fadb93f96a4904ca7f935aef4589793c53c1d4469dd&X-Amz-SignedHeaders=host"; // Example image URL
 
     // Fetch image as base64
     fetch(proxyUrl + imageUrl)
