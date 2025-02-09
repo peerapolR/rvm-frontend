@@ -3,7 +3,13 @@ import Tabs from "@components/Tabs";
 import { Dropdown, Form, Input, Select } from "antd";
 import BaseButton from "@components/BaseButton";
 import SearchIcon from "@icons/SearchIcon";
+
+import { useFormulaCTX } from "@contexts/FormulaContext";
+
 export default function FormSearch() {
+  const ctx = useFormulaCTX();
+  const { setFormulaQuery, formulaQuery } = ctx;
+
   const optionType = [
     {
       label: "All",
@@ -115,7 +121,12 @@ export default function FormSearch() {
         layout="inline"
       >
         <Form.Item name="formulaNameLike" label="Search" layout="vertical">
-          <Input placeholder="Search Formulation..." prefix={<SearchIcon />} />
+          <Input
+            placeholder="Search Formulation..."
+            prefix={<SearchIcon />}
+            onChange={(e) => setFormulaQuery(e.target.value)}
+            value={formulaQuery}
+          />
         </Form.Item>
         <Form.Item name="type" label="Type" layout="vertical">
           <Select options={optionType} defaultValue={"all"} />

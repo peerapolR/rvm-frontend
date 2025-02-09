@@ -8,6 +8,8 @@ const { TextArea } = Input;
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
+import formatUnit from "@functions/formatUnit";
+
 import formatPrice from "@functions/formatPrice";
 
 export default function PackagingList() {
@@ -41,7 +43,7 @@ export default function PackagingList() {
 
   const calPriceByMoq = (moq, num) => {
     let cal =
-      parseFloat(moq.label) *
+      parseFloat(moq.labelToCal) *
       parseFloat(newProposal.prePrice) *
       parseFloat(moq.value);
     // let formetted = formatPrice(cal);
@@ -195,7 +197,8 @@ export default function PackagingList() {
   useEffect(() => {
     if (optionMoq && optionMoq != null) {
       const options = optionMoq?.condition?.map(({ moq, price }) => ({
-        label: moq,
+        label: formatUnit(moq),
+        labelToCal: moq,
         value: price,
       }));
 

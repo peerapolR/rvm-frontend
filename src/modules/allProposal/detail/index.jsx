@@ -14,6 +14,7 @@ import FooterBar from "./footerBar";
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
 import formatPrice from "@functions/formatPrice";
+import formatUnit from "@functions/formatUnit";
 
 export default function Page({ _id }) {
   const router = useRouter();
@@ -250,7 +251,9 @@ export default function Page({ _id }) {
                   </div>
                 </div>
                 <div className="col-span-1 ">{orderDetail.prePrice}</div>
-                <div className="col-span-1 ">{orderDetail.moq1}</div>
+                <div className="col-span-1 ">
+                  {formatUnit(orderDetail.moq1)}
+                </div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
                   {orderDetail.price1
@@ -416,7 +419,9 @@ export default function Page({ _id }) {
                   </div>
                 </div>
                 <div className="col-span-1 ">{orderDetail.prePrice}</div>
-                <div className="col-span-1 ">{orderDetail.moq2}</div>
+                <div className="col-span-1 ">
+                  {formatUnit(orderDetail.moq2)}
+                </div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
                   {orderDetail.price2 ? formatPrice(orderDetail.price2) : "0"}
@@ -578,7 +583,9 @@ export default function Page({ _id }) {
                   </div>
                 </div>
                 <div className="col-span-1 ">{orderDetail.prePrice}</div>
-                <div className="col-span-1 ">{orderDetail.moq3}</div>
+                <div className="col-span-1 ">
+                  {formatUnit(orderDetail.moq3)}
+                </div>
                 <div className="col-span-1 ">{orderDetail.dosage_form}</div>
                 <div className="col-span-1  rounded-r-lg">
                   {orderDetail.price3 ? formatPrice(orderDetail.price3) : "0"}

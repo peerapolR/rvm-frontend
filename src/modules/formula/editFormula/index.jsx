@@ -28,10 +28,11 @@ import formatPrice from "@functions/formatPrice";
 
 import { searchIngredient } from "@functions/searchIngredient";
 
-export default function NewFormulaList() {
+export default function EditFormulaList({ _id }) {
   const router = useRouter();
   const ingreCtx = useIngredientCTX();
   const { ingredient } = ingreCtx;
+
   const ctx = useFormulaCTX();
   const {
     setFormulation,
@@ -42,7 +43,14 @@ export default function NewFormulaList() {
     ingredientDose,
     sumDose,
     sumPrice,
+    fetchEditFormulaById,
   } = ctx;
+
+  useEffect(() => {
+    if (_id) {
+      fetchEditFormulaById(_id);
+    }
+  }, [_id]);
 
   const [path, setPath] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -69,6 +77,10 @@ export default function NewFormulaList() {
   useEffect(() => {
     handleSearch();
   }, [query]);
+
+  useEffect(() => {
+    setDataSource(ingredientDose);
+  }, [ingredientDose]);
 
   const dosageIcon = (name) => {
     switch (name) {
@@ -98,7 +110,7 @@ export default function NewFormulaList() {
   const itemBreadCrumb = [
     {
       title: (
-        <div style={{ color: path === "newFormula" ? "#DC818D" : "#ABB1C1" }}>
+        <div style={{ color: path === "editFormula" ? "#DC818D" : "#ABB1C1" }}>
           {"New Formula"}
         </div>
       ),
@@ -165,13 +177,13 @@ export default function NewFormulaList() {
 
   useEffect(() => {
     if (!path) {
-      setPath("newFormula");
+      setPath("editFormula");
     }
   }, [path]);
 
   return (
     <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
-      {path === "newFormula" ? (
+      {path === "editFormula" ? (
         <>
           <div className="flex flex-col p-6">
             <div className="flex justify-between items-center mb-6">
@@ -183,7 +195,7 @@ export default function NewFormulaList() {
                   }}
                 />
                 <Title level={4} style={{ margin: "0", color: "#004D7D" }}>
-                  Formula
+                  Edit Formula
                 </Title>
               </div>
               <Breadcrumb separator=">" items={itemBreadCrumb} />
@@ -330,6 +342,7 @@ export default function NewFormulaList() {
         newFormula={newFormula}
         formulation={formulation}
         ingredientDose={ingredientDose}
+        _id={_id}
       />
       <ModalDetail
         openDetail={openDetail}

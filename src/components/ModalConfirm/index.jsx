@@ -13,12 +13,36 @@ import { useFormulaCTX } from "@contexts/FormulaContext";
 export default function ModalConfirm(props) {
   const router = useRouter();
   const ctx = useFormulaCTX();
-  const { saveDraftFormula } = ctx;
-  const { type, onClick, isOpen, setModal } = props;
+  const {
+    saveDraftFormula,
+    saveEditDraftFormula,
+    setNewFormula,
+    defaultFormula,
+    setFormulation,
+    setMasterIngredient,
+    setActiveIngredient,
+    setIngredientDose,
+    setSumDose,
+    setSumPrice,
+  } = ctx;
+  const { type, onClick, isOpen, setModal, _id } = props;
   const [content, setContent] = useState(null);
 
   const confirmPublish = () => {
     setModal({ type: "", isOpen: false });
+    router.push("/main/formula");
+  };
+
+  const confirmDiscard = () => {
+    setModal({ type: "", isOpen: false });
+    setNewFormula(defaultFormula);
+    setFormulation([]);
+    setMasterIngredient([]);
+    setActiveIngredient([]);
+    setIngredientDose([]);
+    setSumDose("");
+    setSumPrice("");
+
     router.push("/main/formula");
   };
 
@@ -125,13 +149,44 @@ export default function ModalConfirm(props) {
             <div className="flex justify-center gap-6">
               <BaseButton
                 className="border-2 h-12 w-[132px] border-revomed-primary rounded-lg text-revomed-primary py-3 px-6"
-                onClick={() => setModal({ type: "", isOpen: false })}
+                onClick={confirmDiscard}
               >
                 Discard
               </BaseButton>
               <BaseButton
                 className="rounded-lg h-12 w-[132px] bg-revomed-primary text-revomed-white py-3 px-6"
                 onClick={saveDraftFormula}
+              >
+                Save
+              </BaseButton>
+            </div>
+          </>
+        );
+        break;
+      case "saveEdit":
+        setContent(
+          <>
+            <div className="flex items-center justify-center">
+              <DiskSaveIcon className="text-revomed-primary mb-6" />
+            </div>
+            <div className="flex flex-col gap-2 mb-[84px]">
+              <div className="text-xl text-#152142 font-bold">
+                Save Information?
+              </div>
+              <div className="text-#6F7489" style={{ fontSize: "16px" }}>
+                คุณต้องการบันทึกข้อมูลหรือไม่
+              </div>
+            </div>
+            <div className="flex justify-center gap-6">
+              <BaseButton
+                className="border-2 h-12 w-[132px] border-revomed-primary rounded-lg text-revomed-primary py-3 px-6"
+                onClick={confirmDiscard}
+              >
+                Discard
+              </BaseButton>
+              <BaseButton
+                className="rounded-lg h-12 w-[132px] bg-revomed-primary text-revomed-white py-3 px-6"
+                onClick={() => saveEditDraftFormula(_id)}
               >
                 Save
               </BaseButton>

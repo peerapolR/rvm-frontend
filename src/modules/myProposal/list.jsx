@@ -7,6 +7,7 @@ import SubMenuIcon from "@icons/SubMenuIcon";
 import BasePagination from "@components/Pagination";
 import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
+import { EyeOutlined } from "@ant-design/icons";
 
 import formatDate from "@functions/formatDate";
 
@@ -81,22 +82,41 @@ export default function IngredientContainer() {
       key: "_id",
       render: (text, record) => (
         <div className="flex">
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              router.push(`/main/myProposal/proposalDeatil/${record._id}`);
-            }}
-          >
-            <EditIcon />
-          </div>
-          {/* <div
-            className="cursor-pointer pl-5"
-            onClick={() => {
-              router.push(`/main/myProposal/proposalDeatil/${text}`);
-            }}
-          >
-            <BinIcon />
-          </div> */}
+          {["draft", "pending"].includes(record.order_status) ? (
+            <>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push(`/main/myProposal/proposalDeatil/${record._id}`);
+                }}
+              >
+                <EditIcon />
+              </div>
+              {["draft"].includes(record.order_status) ? (
+                ""
+              ) : (
+                <div
+                  className="cursor-pointer ml-5"
+                  onClick={() => {
+                    router.push(
+                      `/main/myProposal/proposalDeatil/${record._id}`
+                    );
+                  }}
+                >
+                  <EyeOutlined />
+                </div>
+              )}
+            </>
+          ) : (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                router.push(`/main/myProposal/proposalDeatil/${record._id}`);
+              }}
+            >
+              <EyeOutlined />
+            </div>
+          )}
         </div>
       ),
     },

@@ -17,6 +17,8 @@ export default function IngredientContainer({ handleSearch }) {
   const ctx = useIngredientCTX();
   const { ingredient, publishIngredient, deleteIngredient } = ctx;
 
+  console.log(ingredient);
+
   const content = (text, status) => {
     return (
       <div className="rounded-lg w-[100px] mx-3">
@@ -51,7 +53,8 @@ export default function IngredientContainer({ handleSearch }) {
       title: "Active Ingredient",
       dataIndex: "ingredient_name",
       key: "ingredient_name",
-      width: "60%",
+      width: "50%",
+      sorter: (a, b) => a.ingredient_name.localeCompare(b.ingredient_name),
     },
     {
       title: "Dosage (mg)",
@@ -90,6 +93,20 @@ export default function IngredientContainer({ handleSearch }) {
       key: "createdAt",
       width: "10%",
       render: (text) => <p>{formatDate(text)}</p>,
+    },
+    {
+      title: "Update Date",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (text) => (
+        <p className="text-center">{text ? formatDate(text) : "-"}</p>
+      ),
+    },
+    {
+      title: "Update By",
+      dataIndex: "createdBy",
+      key: "createdBy",
+      render: (text) => <p className="text-center">{text ? text : "Admin"}</p>,
     },
     {
       title: "Manage",

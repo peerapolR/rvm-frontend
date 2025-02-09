@@ -9,8 +9,8 @@ import { notification } from "antd";
 
 export default function FooterBar(props) {
   const ctx = useFormulaCTX();
-  const { addNewFormula } = ctx;
-  const { setPath, path, newFormula, formulation, ingredientDose } = props;
+  const { addNewFormula, updatePubFormula } = ctx;
+  const { setPath, path, newFormula, formulation, ingredientDose, _id } = props;
   const [modal, setModal] = useState({
     type: "",
     isOpen: false,
@@ -41,7 +41,11 @@ export default function FooterBar(props) {
     ) {
       openNotification("กรุณาระบุข้อมูลให้ครบถ้วน");
     } else {
-      setPath("summary");
+      if (path === "newFormula") {
+        setPath("summary");
+      } else {
+        setPath("editSummary");
+      }
     }
     if (ingredientDose.length <= 0) {
       openNotification("กรุณาระบุสารที่ต้องการ");
@@ -50,7 +54,11 @@ export default function FooterBar(props) {
         if (!i.dosageToUse || i.dosageToUse === "") {
           openNotification("กรุณากรอก Dosage ให้ครบถ้วน");
         } else {
-          setPath("summary");
+          if (path === "newFormula") {
+            setPath("summary");
+          } else {
+            setPath("editSummary");
+          }
         }
       });
     }
@@ -68,11 +76,18 @@ export default function FooterBar(props) {
     handleModal("success");
   };
 
+  const handleEditPub = (_id) => {
+    updatePubFormula(_id);
+    handleModal("success");
+  };
+
+  console.log(path);
+
   return (
     <div className="min-h-20 bg-revomed-white ">
       {contextHolder}
       <div className="flex gap-5 justify-between mx-5 pt-4">
-        {path === "newFormula" ? (
+        {path === "newFormula" || path === "editFormula" ? (
           <div
             className="flex gap-4 font-bold items-center"
             style={{ fontSize: "16px" }}
@@ -91,7 +106,7 @@ export default function FooterBar(props) {
           </div>
         )}
         <div className="flex gap-6 items-center">
-          {path === "newFormula" ? (
+          {path === "newFormula" || path === "editFormula" ? (
             <>
               <BaseButton
                 className="p-3 text-revomed-secondary border-0 bg-revomed-white"
@@ -99,18 +114,49 @@ export default function FooterBar(props) {
               >
                 Cancel
               </BaseButton>
-              <BaseButton
-                className="p-3 text-revomed-secondary border-0 bg-revomed-white"
-                onClick={() => handleModal("save")}
-              >
-                Save
-              </BaseButton>
+              {path === "newFormula" ? (
+                <BaseButton
+                  className="p-3 text-revomed-secondary border-0 bg-revomed-white"
+                  onClick={() => handleModal("save")}
+                >
+                  Save
+                </BaseButton>
+              ) : (
+                <BaseButton
+                  className="p-3 text-revomed-secondary border-0 bg-revomed-white"
+                  onClick={() => handleModal("saveEdit")}
+                >
+                  Save
+                </BaseButton>
+              )}
               <BaseButton
                 // disabled
                 className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
                 onClick={checkValidNext}
               >
                 Next
+              </BaseButton>
+            </>
+          ) : path === "editSummary" ? (
+            <>
+              <BaseButton
+                className="p-3 text-revomed-secondary border-0 bg-revomed-white"
+                onClick={() => handleModal("saveEdit")}
+              >
+                Save
+              </BaseButton>
+              <BaseButton
+                className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-1 bg-revomed-white border-revomed-secondary"
+                onClick={() => setPath("editFormula")}
+              >
+                Back
+              </BaseButton>
+              <BaseButton
+                // disabled
+                className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
+                onClick={() => handleEditPub(_id)}
+              >
+                Publish
               </BaseButton>
             </>
           ) : (
@@ -143,6 +189,7 @@ export default function FooterBar(props) {
         type={modal.type}
         setModal={setModal}
         onClick={() => setModal({ type: "", isOpen: false })}
+        _id={_id}
       />
     </div>
   );

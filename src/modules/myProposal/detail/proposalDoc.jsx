@@ -2,9 +2,11 @@ import { forwardRef } from "react";
 
 import RevomedLogo from "./RevomedLogo";
 import formatPrice from "@functions/formatPrice";
+import formatUnit from "@functions/formatUnit";
 
 const ProposalDoc = forwardRef((props, ref) => {
   const { moqActive, orderDetail, allIngredient } = props;
+
   const spaces = "\u00A0".repeat(75);
   const signForm = (name) => (
     <div>
@@ -137,7 +139,7 @@ const ProposalDoc = forwardRef((props, ref) => {
                 </div>
               </div>
               <div className="col-span-1 ">{orderDetail.prePrice}</div>
-              <div className="col-span-1 ">{orderDetail.moq1}</div>
+              <div className="col-span-1 ">{formatUnit(orderDetail.moq1)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">
                 {orderDetail.price1 ? formatPrice(orderDetail.price1) : "00.00"}
@@ -299,7 +301,7 @@ const ProposalDoc = forwardRef((props, ref) => {
                 </div>
               </div>
               <div className="col-span-1 ">{orderDetail.prePrice}</div>
-              <div className="col-span-1 ">{orderDetail.moq2}</div>
+              <div className="col-span-1 ">{formatUnit(orderDetail.moq2)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">
                 {orderDetail.price2 ? formatPrice(orderDetail.price2) : "0"}
@@ -461,7 +463,7 @@ const ProposalDoc = forwardRef((props, ref) => {
                 </div>
               </div>
               <div className="col-span-1 ">{orderDetail.prePrice}</div>
-              <div className="col-span-1 ">{orderDetail.moq3}</div>
+              <div className="col-span-1 ">{formatUnit(orderDetail.moq3)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">
                 {orderDetail.price3 ? formatPrice(orderDetail.price3) : "0"}

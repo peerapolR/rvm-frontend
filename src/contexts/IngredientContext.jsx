@@ -79,7 +79,12 @@ function IngredientContextProvider({ children }) {
     try {
       // Assuming 'img' is the File object
       const params = {
-        ...newIngredient,
+        ...Object.fromEntries(
+          Object.entries(newIngredient).map(([key, value]) => [
+            key,
+            value ?? " ",
+          ])
+        ),
         product_category: "supplement",
         ingredient_status: "draft",
       };

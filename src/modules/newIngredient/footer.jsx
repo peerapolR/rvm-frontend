@@ -50,6 +50,17 @@ export default function Footer() {
       addNewIngredient();
     }
   };
+
+  const checkValidSave = () => {
+    if (
+      !newIngredient.ingredient_name ||
+      newIngredient.ingredient_name === ""
+    ) {
+      openNotification();
+    } else {
+      saveDraftIngredient();
+    }
+  };
   return (
     <div className="min-h-20 bg-revomed-white">
       {contextHolder}
@@ -57,7 +68,7 @@ export default function Footer() {
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
           onClick={() => {
-            saveDraftIngredient();
+            checkValidSave();
           }}
         >
           Save

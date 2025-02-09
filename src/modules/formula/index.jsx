@@ -1,13 +1,14 @@
+import React, { useEffect, useState } from "react";
 import BaseButton from "@components/BaseButton";
 import PlusIcon from "@icons/PlusIcon";
 import Title from "antd/es/typography/Title";
-import React from "react";
 import FormSearch from "./formSearch";
 import FormulaContainer from "./list";
 import { useRouter } from "next/navigation";
 
 export default function FormulaList() {
   const router = useRouter();
+
   return (
     <div className="p-6" style={{ minHeight: "calc(100vh - 75px)" }}>
       <div className="flex justify-between items-center mb-6">

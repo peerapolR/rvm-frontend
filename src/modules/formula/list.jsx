@@ -1,18 +1,22 @@
+import { useRouter } from "next/navigation";
 import FormulaCard from "@components/FormulaCard";
 import BasePagination from "@components/Pagination";
-import React from "react";
+import React, { useState } from "react";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
 
-export default function FormulaContainer() {
+export default function FormulaContainer({ query }) {
+  const router = useRouter();
   const ctx = useFormulaCTX();
-  const { formula } = ctx;
+  const { formula, deleteFormula, formulaToShow } = ctx;
+
   return (
     <div className="p-6 bg-revomed-white">
       <div className="grid grid-cols-3 gap-6">
-        {formula.map((e, i) => [
+        {formulaToShow.map((e, i) => [
           <FormulaCard
             key={i}
+            _id={e._id}
             header={e.formula_type}
             creater={e.createdBy}
             code={e.formula_code}
@@ -23,8 +27,9 @@ export default function FormulaContainer() {
               header: e.formula_name,
               component: e.formulation,
             }}
-            onEdit={() => console.log("Edit")}
-            onDelete={() => console.log("Delete")}
+            approve={e.approved}
+            onEdit={() => router.push(`/main/formula/editFormula/${e._id}`)}
+            onDelete={() => deleteFormula(e._id)}
           />,
         ])}
       </div>

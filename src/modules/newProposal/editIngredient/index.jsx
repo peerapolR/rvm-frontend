@@ -6,6 +6,7 @@ import FooterBar from "./footerBar";
 import BaseButton from "@components/BaseButton";
 import IngredientTable from "./IngredientTable";
 import ModalDetail from "@modules/formula/newFormula/modalDetail";
+import formatPrice from "@functions/formatPrice";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
@@ -72,9 +73,7 @@ export default function EditIngredientList() {
         >
           <div className="text-revomed-dark-grey">Total price:</div>
           <div className="text-revomed-primary">
-            {newProposal.prePrice
-              ? parseFloat(newProposal.prePrice).toFixed(2)
-              : "0.00"}{" "}
+            {newProposal.prePrice ? formatPrice(newProposal.prePrice) : "0.00"}{" "}
             THB
           </div>
         </div>

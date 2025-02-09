@@ -10,6 +10,7 @@ import BinIcon from "@icons/BinIcon";
 
 import formatDate from "@functions/formatDate";
 import { div } from "framer-motion/client";
+import formatPrice from "@functions/formatPrice";
 
 // import { useIngredientCTX } from "@contexts/IngredientContext";
 
@@ -72,7 +73,7 @@ export default function IngredientListContainer({ listProposalByCon }) {
               <div className="flex justify-between text-revomed-primary ">
                 <div className="flex gap-2 ">{e.dosage_form}</div>
                 <div className="text-revomed-secondary">
-                  {parseFloat(e.price).toFixed(2)} THB
+                  {formatPrice(e.price)} THB
                 </div>
               </div>
             </div>

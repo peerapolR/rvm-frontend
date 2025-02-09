@@ -7,8 +7,6 @@ import { useIngredientCTX } from "@contexts/IngredientContext";
 const { Dragger } = Upload;
 
 export default function PhotoSection({ photo }) {
-  console.log(photo);
-
   const ctx = useIngredientCTX();
   const { setNewIngredient } = ctx;
 

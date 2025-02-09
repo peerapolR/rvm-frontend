@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import StatusIndicator from "@components/StatusIndicator";
 import DeleteIcon from "@icons/DeleteIcon";
 import EditIcon from "@icons/EditIcon";
@@ -7,6 +8,7 @@ import { UserOutlined } from "@ant-design/icons";
 import formattedDate from "@functions/formatDate";
 
 export default function FormulaCard(props) {
+  const router = useRouter();
   const {
     header,
     creater,
@@ -17,6 +19,8 @@ export default function FormulaCard(props) {
     details,
     onEdit,
     onDelete,
+    approve,
+    _id,
   } = props;
 
   let newHeader = "";
@@ -35,8 +39,19 @@ export default function FormulaCard(props) {
       break;
   }
 
+  const handleClick = () => {
+    if (status === "publish") {
+      router.push(`/main/formula/formulaDetail/${_id}`);
+    }
+  };
+
   return (
-    <div className="flex flex-col">
+    <div
+      className={`flex flex-col ${
+        status === "publish" ? `cursor-pointer` : ""
+      }`}
+      onClick={status === "publish" ? handleClick : undefined}
+    >
       {/* header */}
       <div className="bg-revomed-primary-light2 px-4 py-3 flex justify-between items-center rounded-t-lg">
         <div className="text-revomed-primary-blue text-[16px] font-bold">
@@ -51,7 +66,7 @@ export default function FormulaCard(props) {
           ) : status === "cancel" ? (
             <>{onDelete && <DeleteIcon onClick={onDelete} />}</>
           ) : status === "publish" ? (
-            <div className="text-revomed-primary-blue">Approve : 0</div>
+            <div className="text-revomed-primary-blue">Approve : {approve}</div>
           ) : (
             <></>
           )}
