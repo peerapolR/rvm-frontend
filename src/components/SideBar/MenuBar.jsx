@@ -21,7 +21,7 @@ export default function MenuBar() {
     sale: ["1", "2", "5"],
     "sale manager": ["1", "2", "4", "41", "42", "5"],
     "p&d": ["3", "33", "331", "332", "5"],
-    admin: ["1", "2", "3", "33", "331", "332", "4", "41", "42", "5"],
+    admin: ["1", "2", "3", "33", "331", "332", "4", "41", "42", "5", "6", "7"],
   };
 
   // Get accessible keys for the current user role
@@ -131,6 +131,8 @@ export default function MenuBar() {
         { key: "42", label: "All Proposal" },
       ],
     },
+    { key: "6", icon: < GroupIcon/>, label: "ChangePassword" },
+    { key: "7", icon: <ListIcon/>, label:"Admin Panel"},
     { key: "5", icon: <IconLogout />, label: "LogOut" },
   ];
 
