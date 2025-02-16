@@ -2,6 +2,8 @@ import axios from "@config/axios";
 
 export const addOrder = (params) => axios.post(`/orders/addOrder`, params);
 
+export const updateOrder = (params) => axios.put(`/orders/updateOrder`, params);
+
 export const listOrderBySale = (params) =>
   axios.post(`/orders/listOrderBySale`, params);
 

@@ -11,11 +11,12 @@ import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
 import FooterBar from "./footerBar";
 import ProposalDoc from "./proposalDoc";
+import ProposalDocToPrint from "./proposalDocToPrint";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
-export default function Page({ _id }) {
-  const componentRef = useRef(null);
+const Page = ({ _id }) => {
+  const contentRef = useRef();
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
   const { fetchOrderById, orderDetail = {} } = newProposalctx;
@@ -37,17 +38,7 @@ export default function Page({ _id }) {
 
   const [moqActive, setMoqActive] = useState(1);
 
-  const reactPrint = useReactToPrint({
-    content: () => componentRef.current, // Pass the ref here
-  });
-
-  // const reactPrint = useReactToPrint({
-  //   content: () => componentRef.current,
-  //   print: async (printIframe) => {
-  //     // Do whatever you want here, including asynchronous work
-  //     await generateAndSavePDF(printIframe);
-  //   },
-  // });
+  const reactPrint = useReactToPrint({ contentRef });
 
   return (
     <>
@@ -133,17 +124,27 @@ export default function Page({ _id }) {
           </div>
         </div>
         <ProposalDoc
-          ref={componentRef}
           moqActive={moqActive}
           orderDetail={orderDetail}
           allIngredient={allIngredient}
         />
+        <div className="hidden">
+          <ProposalDocToPrint
+            ref={contentRef}
+            orderDetail={orderDetail}
+            allIngredient={allIngredient}
+          />
+        </div>
       </div>
       <FooterBar
         status={orderDetail?.order_status}
         _id={_id}
         reactPrint={reactPrint}
+        masterImage={orderDetail.master_ingredient}
+        ingredientImage={orderDetail.ingredient}
       />
     </>
   );
-}
+};
+
+export default Page;

@@ -31,7 +31,7 @@ import { searchIngredient } from "@functions/searchIngredient";
 export default function NewFormulaList() {
   const router = useRouter();
   const ingreCtx = useIngredientCTX();
-  const { ingredient } = ingreCtx;
+  const { ingredient, ingredientToUse } = ingreCtx;
   const ctx = useFormulaCTX();
   const {
     setFormulation,
@@ -55,11 +55,11 @@ export default function NewFormulaList() {
   const [form] = Form.useForm();
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState(ingredient);
+  const [results, setResults] = useState(ingredientToUse);
 
   const handleSearch = () => {
     try {
-      const searchResults = searchIngredient(query, ingredient);
+      const searchResults = searchIngredient(query, ingredientToUse);
       setResults(searchResults);
     } catch (error) {
       console.error(error.message);

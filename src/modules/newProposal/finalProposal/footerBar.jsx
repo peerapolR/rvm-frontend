@@ -9,7 +9,7 @@ export default function FooterBar() {
   const router = useRouter();
 
   const newProposalctx = useNewProposalCTX();
-  const { addNewProposal } = newProposalctx;
+  const { addNewProposal, draftNewProposal } = newProposalctx;
   return (
     <div className="min-h-20 bg-revomed-white">
       <div className="flex gap-5 justify-between mx-5 pt-4">
@@ -25,7 +25,7 @@ export default function FooterBar() {
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10  bg-revomed-white border-0 text-revomed-secondary"
             onClick={() => {
-              console.log("Save");
+              draftNewProposal();
             }}
           >
             Save

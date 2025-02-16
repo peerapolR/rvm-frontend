@@ -40,7 +40,7 @@ export default function FormulaCard(props) {
   }
 
   const handleClick = () => {
-    if (status === "publish") {
+    if (["publish", "proposed"].includes(status)) {
       router.push(`/main/formula/formulaDetail/${_id}`);
     }
   };
@@ -48,9 +48,11 @@ export default function FormulaCard(props) {
   return (
     <div
       className={`flex flex-col ${
-        status === "publish" ? `cursor-pointer` : ""
+        ["publish", "proposed"].includes(status) ? `cursor-pointer` : ""
       }`}
-      onClick={status === "publish" ? handleClick : undefined}
+      onClick={
+        ["publish", "proposed"].includes(status) ? handleClick : undefined
+      }
     >
       {/* header */}
       <div className="bg-revomed-primary-light2 px-4 py-3 flex justify-between items-center rounded-t-lg">
@@ -65,7 +67,7 @@ export default function FormulaCard(props) {
             </>
           ) : status === "cancel" ? (
             <>{onDelete && <DeleteIcon onClick={onDelete} />}</>
-          ) : status === "publish" ? (
+          ) : ["publish", "proposed"].includes(status) ? (
             <div className="text-revomed-primary-blue">Approve : {approve}</div>
           ) : (
             <></>

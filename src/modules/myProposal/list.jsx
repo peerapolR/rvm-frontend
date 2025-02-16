@@ -87,7 +87,7 @@ export default function IngredientContainer() {
               <div
                 className="cursor-pointer"
                 onClick={() => {
-                  router.push(`/main/myProposal/proposalDeatil/${record._id}`);
+                  router.push(`/main/myProposal/proposalEdit/${record._id}`);
                 }}
               >
                 <EditIcon />

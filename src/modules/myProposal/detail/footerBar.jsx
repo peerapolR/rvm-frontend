@@ -4,50 +4,88 @@ import { useRouter } from "next/navigation";
 
 import BaseButton from "@components/BaseButton";
 
+import { notification } from "antd";
+
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
-export default function FooterBar({ status, _id, reactPrint }) {
+export default function FooterBar({
+  status,
+  _id,
+  reactPrint,
+  masterImage,
+  ingredientImage,
+}) {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
   const { proposedOrder, declineOrder } = newProposalctx;
 
-  const handlePPT = () => {
-    let pres = new pptxgen();
-    let slide = pres.addSlide();
+  const [api, contextHolder] = notification.useNotification();
 
-    // Image URL
-    let proxyUrl = "https://cors-anywhere.herokuapp.com/";
-    let imageUrl =
-      "https://revomed.s3.ap-southeast-1.amazonaws.com/1738784703511-luggage%201.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAR6T5XXKMJYUDKHWE%2F20250205%2Fap-southeast-1%2Fs3%2Faws4_request&X-Amz-Date=20250205T194628Z&X-Amz-Expires=86400&X-Amz-Signature=79f03e49eb2d66a66cd92fadb93f96a4904ca7f935aef4589793c53c1d4469dd&X-Amz-SignedHeaders=host"; // Example image URL
-
-    // Fetch image as base64
-    fetch(proxyUrl + imageUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        let reader = new FileReader();
-        reader.onloadend = function () {
-          let base64Image = reader.result;
-
-          // Add the image as base64 to the slide
-          slide.addImage({
-            data: base64Image,
-            x: 1, // Optional: X position on the slide
-            y: 1, // Optional: Y position on the slide
-            w: 4, // Optional: Width of the image
-            h: 3, // Optional: Height of the image
-          });
-
-          // Save the presentation
-          pres.writeFile();
-        };
-        reader.readAsDataURL(blob);
-      })
-      .catch((error) => {
-        console.error("Error fetching image: ", error);
-      });
+  const getBase64FromUrl = async (url) => {
+    let response = await fetch(url);
+    let blob = await response.blob();
+    return new Promise((resolve, reject) => {
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        let base64data = reader.result.split(",")[1]; // Remove data:image/jpeg;base64, part
+        resolve(base64data);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
   };
+
+  const handlePPT = async () => {
+    let pres = new pptxgen();
+
+    // List of multiple S3 image URLs
+
+    const masterUrls = (masterImage || []) // Ensure it's an array
+      .map((item) => item.ingredient_image)
+      .filter((url) => url);
+    const ingredientUrls = (ingredientImage || []) // Ensure it's an array
+      .map((item) => item.ingredient_image)
+      .filter((url) => url);
+
+    const imageUrls = [...masterUrls, ...ingredientUrls];
+    if (imageUrls.length > 0) {
+      try {
+        for (let url of imageUrls) {
+          let slide = pres.addSlide(); // Create a new slide for each image
+          let base64Image = await getBase64FromUrl(url);
+
+          slide.addImage({
+            x: 1,
+            y: 1,
+            // w: 5,
+            // h: 3,
+            data: `image/jpeg;base64,${base64Image}`,
+          });
+        }
+
+        // Save the Presentation
+        pres.writeFile({ fileName: "presentation.pptx" });
+      } catch (error) {
+        console.error("Error loading images:", error);
+      }
+    } else {
+      openNotification();
+    }
+  };
+  const openNotification = () => {
+    api.info({
+      message: `ไม่มีรูปภาพ`,
+      // description:
+      //   "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      placement: "top",
+      showProgress: true,
+      pauseOnHover: true,
+    });
+  };
+
   return (
     <>
+      {contextHolder}
       {status === "pending" || status === "reject" ? (
         <div className="min-h-20 bg-revomed-white bottom-0 flex gap-5 justify-end pt-4 px-5">
           <BaseButton

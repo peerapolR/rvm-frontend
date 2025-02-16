@@ -61,10 +61,6 @@ export default function DosageForm(props) {
     }
   }, [activeIngredient]);
 
-  useEffect(() => {
-    console.log(dataSource);
-  }, [dataSource]);
-
   const handleDosageCard = (name, id) => {
     setSelected(id);
     setNewFormula(() => ({

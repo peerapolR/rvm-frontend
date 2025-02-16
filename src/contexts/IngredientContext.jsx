@@ -36,6 +36,7 @@ function IngredientContextProvider({ children }) {
   };
   const router = useRouter();
   const [ingredient, setIngredient] = useState([]);
+  const [ingredientToUse, setIngredientToUse] = useState([]);
   const [ingredientById, setIngredientById] = useState({});
   const [newIngredient, setNewIngredient] = useState(defaultIngredient);
 
@@ -59,9 +60,21 @@ function IngredientContextProvider({ children }) {
     }
   };
 
+  const fetchIngredientToUse = async () => {
+    try {
+      const res = await ingredientApi.getIngredientToUse();
+      if (res.status === 200 || res.status === 201) {
+        setIngredientToUse(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     setNewIngredient(defaultIngredient);
     fetchIngredient();
+    fetchIngredientToUse();
   }, []);
 
   const fetchIngredientById = async (_id) => {
@@ -245,6 +258,9 @@ function IngredientContextProvider({ children }) {
   const value = {
     ingredient,
     setIngredient,
+    ingredientToUse,
+    setIngredientToUse,
+    fetchIngredientToUse,
     newIngredient,
     setNewIngredient,
     handleIngredientChange,

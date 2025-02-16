@@ -13,6 +13,8 @@ export const getFormulaById = (_id) =>
 
 export const unPubFormula = (_id) => axios.get(`/formulas/unPubFormula/${_id}`);
 
+export const useFormula = (name) => axios.get(`/formulas/useFormula/${name}`);
+
 export const deleteFormula = (_id) => axios.delete(`/formulas/${_id}`);
 
 export const updateFormula = (params) =>
@@ -20,6 +22,5 @@ export const updateFormula = (params) =>
 
 // export const getIngredientById = (_id) =>
 //   axios.get(`/ingredients/getIngredientById/${_id}`);
-
 
 // export const pubIngredient = (_id) => axios.put(`/ingredients/publish/${_id}`);
