@@ -228,7 +228,7 @@ export default function DosageForm(props) {
       <div className="pt-2 flex flex-col">
         <div className="flex justify-between py-6">
           <div className="text-revomed-primary text-xl font-bold">
-            Ingredients
+            Ingredients (Edit)
           </div>
           <Dropdown
             menu={{ items }}

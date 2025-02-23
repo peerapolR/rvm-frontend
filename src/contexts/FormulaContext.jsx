@@ -75,14 +75,23 @@ function FormulaContextProvider({ children }) {
 
   const calculatePrice = () => {
     const totalPrice = ingredientDose.reduce((acc, item) => {
-      const price = parseFloat(item.price_min) || 0;
+      const price = parseFloat(item.price_min.trim()) || 0;
       const dosage = parseFloat(item.dosageToUse) || 0;
-      return dosagePrice(newFormula.dosage_form) + acc + price * dosage;
+      return acc + price * dosage;
     }, 0);
 
-    setSumPrice(isNaN(totalPrice) ? "0" : totalPrice.toFixed(2).toString());
+    setSumPrice(
+      isNaN(totalPrice)
+        ? "0"
+        : totalPrice +
+            parseFloat(dosagePrice(newFormula.dosage_form))
+              .toFixed(2)
+              .toString()
+    );
   };
-
+  useEffect(() => {
+    console.log(ingredientDose);
+  }, [ingredientDose]);
   useEffect(() => {
     calculateSum();
     calculatePrice();
@@ -126,7 +135,6 @@ function FormulaContextProvider({ children }) {
 
       if (res.status === 200 || res.status === 201) {
         const data = res.data.data;
-        console.log(data);
 
         setNewFormula({
           product_category: data.product_category,

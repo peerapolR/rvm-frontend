@@ -31,7 +31,7 @@ import { searchIngredient } from "@functions/searchIngredient";
 export default function EditFormulaList({ _id }) {
   const router = useRouter();
   const ingreCtx = useIngredientCTX();
-  const { ingredient , ingredientToUse } = ingreCtx;
+  const { ingredient, ingredientToUse } = ingreCtx;
 
   const ctx = useFormulaCTX();
   const {
@@ -233,7 +233,7 @@ export default function EditFormulaList({ _id }) {
             <div className="flex justify-between items-center mb-3">
               <div className="flex gap-6 items-center">
                 <Title level={4} style={{ margin: "0", color: "#004D7D" }}>
-                  Summary
+                  Summary (Edit)
                 </Title>
               </div>
               <Breadcrumb separator=">" items={itemBreadCrumb} />
