@@ -32,27 +32,28 @@ function FormulaContextProvider({ children }) {
   const [sumPrice, setSumPrice] = useState("");
 
   const dosagePrice = (name) => {
+    const addOnPrice = 0.5;
     switch (name) {
       case "Capsule":
-        return 0.6;
+        return 0.6 + addOnPrice;
       case "Tablet":
-        return 1.5;
+        return 1.5 + addOnPrice;
       case "Softgel":
-        return 1.7;
+        return 1.7 + addOnPrice;
       case "Powder":
-        return 4.7;
+        return 4.7 + addOnPrice;
       case "Oral Dissolving":
-        return 2.5;
+        return 2.5 + addOnPrice;
       case "Jelly":
-        return 10;
+        return 10 + addOnPrice;
       case "Gummie":
-        return 2;
+        return 2 + addOnPrice;
       case "Effervescent":
-        return 3;
+        return 3 + addOnPrice;
       case "Chewable":
-        return 2.5;
+        return 2.5 + addOnPrice;
       case "Coffee & Tea":
-        return 4.7;
+        return 4.7 + addOnPrice;
     }
   };
 
@@ -84,14 +85,10 @@ function FormulaContextProvider({ children }) {
       isNaN(totalPrice)
         ? "0"
         : totalPrice +
-            parseFloat(dosagePrice(newFormula.dosage_form))
-              .toFixed(2)
-              .toString()
+            parseFloat(dosagePrice(newFormula.dosage_form)).toString()
     );
   };
-  useEffect(() => {
-    console.log(ingredientDose);
-  }, [ingredientDose]);
+
   useEffect(() => {
     calculateSum();
     calculatePrice();
