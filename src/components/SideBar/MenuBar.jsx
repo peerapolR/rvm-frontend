@@ -7,6 +7,9 @@ import PlusIcon from "@icons/PlusIcon";
 import ListIcon from "@icons/ListIcon";
 import GroupIcon from "@icons/GroupIcon";
 import FileExportIcon from "@icons/FileExportIcon";
+
+import { UserOutlined, SwapOutlined } from "@ant-design/icons";
+
 import { usePath } from "@contexts/PathContext";
 import { useUserAuth } from "@contexts/UserAuthContext";
 
@@ -75,6 +78,8 @@ export default function MenuBar() {
     332: "/main/ingredient",
     41: "/main/pendingProposal",
     42: "/main/allProposal",
+    6: "/main/changePassword",
+    7: "/main/adminPanel",
   };
 
   const handlePath = (e) => {
@@ -131,8 +136,8 @@ export default function MenuBar() {
         { key: "42", label: "All Proposal" },
       ],
     },
-    { key: "6", icon: < GroupIcon/>, label: "ChangePassword" },
-    { key: "7", icon: <ListIcon/>, label:"Admin Panel"},
+    { key: "6", icon: <SwapOutlined />, label: "Change Password" },
+    { key: "7", icon: <UserOutlined />, label: "Admin Panel" },
     { key: "5", icon: <IconLogout />, label: "LogOut" },
   ];
 

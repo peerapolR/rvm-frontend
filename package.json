@@ -12,6 +12,7 @@
     "@ant-design/icons": "^5.5.1",
     "@nextui-org/react": "^2.4.2",
     "antd": "^5.20.5",
+    "antd-style": "^3.7.1",
     "axios": "^1.7.2",
     "framer-motion": "^11.2.12",
     "next": "14.2.4",
