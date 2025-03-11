@@ -213,7 +213,7 @@ export default function FormulaDetail({ _id }) {
                 rowClassName={"rowBackground"}
                 rowKey="id"
               />
-              <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl absolute bottom-0 w-full">
+              <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl w-full">
                 <div
                   className="flex gap-4 items-center text-revomed-primary"
                   style={{ fontSize: "16px" }}

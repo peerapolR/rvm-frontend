@@ -81,12 +81,10 @@ function FormulaContextProvider({ children }) {
       return acc + price * dosage;
     }, 0);
 
-    setSumPrice(
-      isNaN(totalPrice)
-        ? "0"
-        : totalPrice +
-            parseFloat(dosagePrice(newFormula.dosage_form)).toString()
-    );
+    const dp = parseFloat(dosagePrice(newFormula.dosage_form));
+    const sum = totalPrice + dp;
+
+    setSumPrice(isNaN(totalPrice) ? "0" : sum);
   };
 
   useEffect(() => {
