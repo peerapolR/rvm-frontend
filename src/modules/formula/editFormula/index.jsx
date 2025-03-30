@@ -64,6 +64,7 @@ export default function EditFormulaList({ _id }) {
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState(ingredientToUse);
+  const [selected, setSelected] = useState([]);
 
   const handleSearch = () => {
     try {
@@ -224,6 +225,8 @@ export default function EditFormulaList({ _id }) {
               query={query}
               setQuery={setQuery}
               results={results}
+              selected={selected}
+              setSelected={setSelected}
             />
           </div>
         </>

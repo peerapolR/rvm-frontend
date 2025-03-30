@@ -29,37 +29,61 @@ export default function DosageForm(props) {
     setNewFormula,
     masterIngredient,
     activeIngredient,
+    setMasterIngredient,
+    setActiveIngredient,
     sumDose,
   } = ctx;
 
   const [form] = Form.useForm();
   const [selected, setSelected] = useState("");
 
-  useEffect(() => {
-    if (dataSource.length > 0) {
-      const mergedArray = [...dataSource, ...masterIngredient].filter(
-        (item, index, self) =>
-          index ===
-          self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
-      );
-      setDataSource(mergedArray);
-    } else {
-      setDataSource(masterIngredient);
-    }
-  }, [masterIngredient]);
+  // useEffect(() => {
+  //   if (dataSource.length > 0) {
+  //     const mergedArray = [...dataSource, ...masterIngredient].filter(
+  //       (item, index, self) =>
+  //         index ===
+  //         self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+  //     );
+  //     setDataSource(mergedArray);
+  //   } else {
+  //     setDataSource(masterIngredient);
+  //   }
+  // }, [masterIngredient]);
+
+  // useEffect(() => {
+  //   if (dataSource.length > 0) {
+  //     const mergedArray = [...dataSource, ...activeIngredient].filter(
+  //       (item, index, self) =>
+  //         index ===
+  //         self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+  //     );
+  //     setDataSource(mergedArray);
+  //   } else {
+  //     setDataSource(activeIngredient);
+  //   }
+  // }, [activeIngredient]);
 
   useEffect(() => {
-    if (dataSource.length > 0) {
-      const mergedArray = [...dataSource, ...activeIngredient].filter(
-        (item, index, self) =>
-          index ===
-          self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
-      );
-      setDataSource(mergedArray);
-    } else {
-      setDataSource(activeIngredient);
-    }
-  }, [activeIngredient]);
+    const mergedArray = [...masterIngredient, ...activeIngredient].filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+    );
+    setDataSource(mergedArray);
+  }, [masterIngredient, activeIngredient]);
+
+  useEffect(() => {
+    const clonedMaster = [...masterIngredient];
+    const clonedActive = [...activeIngredient];
+
+    const mergedArray = [...clonedMaster, ...clonedActive].filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+    );
+
+    setDataSource(mergedArray);
+  }, [masterIngredient, activeIngredient]);
 
   const handleDosageCard = (name, id) => {
     setSelected(id);
@@ -72,6 +96,18 @@ export default function DosageForm(props) {
   const handleDetail = (record) => {
     setDetailModal(record);
     setOpenDetail(true);
+  };
+
+  const handleDelete = (record) => {
+    if (record.isMaster) {
+      setMasterIngredient((prev) =>
+        prev.filter((item) => item.ingredient_name !== record.ingredient_name)
+      );
+    } else {
+      setActiveIngredient((prev) =>
+        prev.filter((item) => item.ingredient_name !== record.ingredient_name)
+      );
+    }
   };
 
   const column = [
@@ -115,8 +151,11 @@ export default function DosageForm(props) {
             >
               Detail
             </div>
-            <div>
-              <BinIcon className="text-revomed-primary ml-5" />
+            <div
+              className="ml-10 cursor-pointer"
+              onClick={() => handleDelete(record)}
+            >
+              <BinIcon className="text-revomed-primary" />
             </div>
           </div>
         );
@@ -373,6 +412,7 @@ const EdiTableCell = (props) => {
             style={{ width: "160px", height: "40px" }}
             type="number"
             onChange={handleDosage}
+            value={record.dosageToUse}
           />
         </Form.Item>
       ) : (
