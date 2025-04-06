@@ -5,10 +5,15 @@ import BaseButton from "@components/BaseButton";
 
 import { notification } from "antd";
 
+import { useNewProposalCTX } from "@contexts/NewProposalContext";
+
 export default function FooterBar({ newProposal }) {
   const router = useRouter();
 
   const [api, contextHolder] = notification.useNotification();
+
+  const newProposalctx = useNewProposalCTX();
+  const { draftNewProposal } = newProposalctx;
 
   const openNotification = () => {
     api.info({
@@ -45,7 +50,7 @@ export default function FooterBar({ newProposal }) {
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10  bg-revomed-white border-0 text-revomed-secondary"
             onClick={() => {
-              console.log("Save");
+              draftNewProposal();
             }}
           >
             Save

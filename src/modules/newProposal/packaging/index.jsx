@@ -39,24 +39,32 @@ export default function PackagingList() {
   const [moqPrice2, setMoqPrice2] = useState(0);
   const [moqPrice3, setMoqPrice3] = useState(0);
 
+  const [perServe1, setPerServe1] = useState(0);
+  const [perServe2, setPerServe2] = useState(0);
+  const [perServe3, setPerServe3] = useState(0);
+
   const [moqToUse, setMoqToUse] = useState([]);
 
   const calPriceByMoq = (moq, num) => {
+    let calPerServe = parseFloat(newProposal.prePrice) * parseFloat(moq.value);
+
     let cal =
       parseFloat(moq.labelToCal) *
       parseFloat(newProposal.prePrice) *
       parseFloat(moq.value);
-    // let formetted = formatPrice(cal);
 
     if (num === 1) {
       setMoqPrice1(cal);
       setFinalPrice1(cal);
+      setPerServe1(calPerServe);
     } else if (num === 2) {
       setMoqPrice2(cal);
       setFinalPrice2(cal);
+      setPerServe2(calPerServe);
     } else if (num === 3) {
       setMoqPrice3(cal);
       setFinalPrice3(cal);
+      setPerServe3(calPerServe);
     }
   };
 
@@ -258,10 +266,13 @@ export default function PackagingList() {
               />
             </div>
             <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Cost per serve (Ex. VAT):</p>
+              <p>{formatPrice(perServe1)} THB</p>
+            </div>
+            <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
               <p>{formatPrice(finalPrice1)} THB</p>
             </div>
-            <div></div>
             <div className="font-bold text-lg">MOQ 1</div>
           </div>
           <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">
@@ -474,10 +485,13 @@ export default function PackagingList() {
               />
             </div>
             <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Cost per serve (Ex. VAT):</p>
+              <p>{formatPrice(perServe2)} THB</p>
+            </div>
+            <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
               <p>{formatPrice(finalPrice2)} THB</p>
             </div>
-            <div></div>
             <div className="font-bold text-lg">MOQ 2</div>
           </div>
           <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">
@@ -561,10 +575,13 @@ export default function PackagingList() {
               />
             </div>
             <div className="text-base text-revomed-dark-grey">
+              <p className="mb-2 font-semibold ">Cost per serve (Ex. VAT):</p>
+              <p>{formatPrice(perServe3)} THB</p>
+            </div>
+            <div className="text-base text-revomed-dark-grey">
               <p className="mb-2 font-semibold ">Total Amount (Ex. VAT):</p>
               <p>{formatPrice(finalPrice3)} THB</p>
             </div>
-            <div></div>
             <div className="font-bold text-lg">MOQ 3</div>
           </div>
           <div className="bg-revomed-white rounded-b-lg min-h-[73px] p-6 flex flex-col gap-5">

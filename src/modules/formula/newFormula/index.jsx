@@ -31,7 +31,7 @@ import { searchIngredient } from "@functions/searchIngredient";
 export default function NewFormulaList() {
   const router = useRouter();
   const ingreCtx = useIngredientCTX();
-  const { ingredient } = ingreCtx;
+  const { ingredient, ingredientToUse } = ingreCtx;
   const ctx = useFormulaCTX();
   const {
     setFormulation,
@@ -55,11 +55,12 @@ export default function NewFormulaList() {
   const [form] = Form.useForm();
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState(ingredient);
+  const [results, setResults] = useState(ingredientToUse);
+  const [selected, setSelected] = useState([]);
 
   const handleSearch = () => {
     try {
-      const searchResults = searchIngredient(query, ingredient);
+      const searchResults = searchIngredient(query, ingredientToUse);
       setResults(searchResults);
     } catch (error) {
       console.error(error.message);
@@ -212,6 +213,8 @@ export default function NewFormulaList() {
               query={query}
               setQuery={setQuery}
               results={results}
+              selected={selected}
+              setSelected={setSelected}
             />
           </div>
         </>
@@ -299,7 +302,7 @@ export default function NewFormulaList() {
                   rowClassName={"rowBackground"}
                   rowKey="id"
                 />
-                <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl absolute bottom-0 w-full">
+                <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl w-full">
                   <div
                     className="flex gap-4 items-center text-revomed-primary"
                     style={{ fontSize: "16px" }}

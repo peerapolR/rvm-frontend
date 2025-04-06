@@ -1,10 +1,8 @@
-import { forwardRef } from "react";
-
 import RevomedLogo from "./RevomedLogo";
 import formatPrice from "@functions/formatPrice";
 import formatUnit from "@functions/formatUnit";
 
-const ProposalDoc = forwardRef((props, ref) => {
+const ProposalDoc = (props) => {
   const { moqActive, orderDetail, allIngredient } = props;
 
   const spaces = "\u00A0".repeat(75);
@@ -20,7 +18,7 @@ const ProposalDoc = forwardRef((props, ref) => {
   );
 
   return (
-    <div ref={ref}>
+    <div>
       {moqActive === 1 ? (
         <div className="bg-revomed-white p-5 w-full">
           <div className="flex justify-between border-b-1">
@@ -511,7 +509,7 @@ const ProposalDoc = forwardRef((props, ref) => {
       )}
     </div>
   );
-});
+};
 
 ProposalDoc.displayName = "ProposalDoc";
 export default ProposalDoc;

@@ -17,8 +17,6 @@ export default function IngredientContainer({ handleSearch }) {
   const ctx = useIngredientCTX();
   const { ingredient, publishIngredient, deleteIngredient } = ctx;
 
-  console.log(ingredient);
-
   const content = (text, status) => {
     return (
       <div className="rounded-lg w-[100px] mx-3">
@@ -166,7 +164,6 @@ export default function IngredientContainer({ handleSearch }) {
       const searchData = ingredient.filter((item) =>
         item.ingredient_name.toLowerCase().includes(handleSearch.name)
       );
-      console.log(handleSearch);
 
       filteredData = searchData.map((i) => ({
         ...i,

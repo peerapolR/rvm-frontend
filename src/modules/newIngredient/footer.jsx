@@ -25,6 +25,21 @@ export default function Footer() {
     });
   };
 
+  const openNumNotification = () => {
+    api.info({
+      message: `กรุณากรอก Dose และ Price ให้เป็นตัวเลข`,
+      // description:
+      //   "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      placement: "top",
+      showProgress: true,
+      pauseOnHover: true,
+    });
+  };
+
+  function isValidNumber(value) {
+    return typeof value === "string" && value.trim() !== "" && !isNaN(value);
+  }
+
   const checkValidNext = () => {
     if (
       !newIngredient.ingredient_name ||
@@ -47,7 +62,16 @@ export default function Footer() {
     ) {
       openNotification();
     } else {
-      addNewIngredient();
+      if (
+        isValidNumber(newIngredient.dose_min) &&
+        isValidNumber(newIngredient.dose_max) &&
+        isValidNumber(newIngredient.price_min) &&
+        isValidNumber(newIngredient.price_max)
+      ) {
+        addNewIngredient();
+      } else {
+        openNumNotification();
+      }
     }
   };
 

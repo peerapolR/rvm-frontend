@@ -30,6 +30,10 @@ export default function StatusIndicator(props) {
       bgColor = "bg-revomed-red";
       content = "Cancel";
       break;
+    case "proposed":
+      bgColor = "bg-revomed-yellow";
+      content = "Proposed";
+      break;
   }
 
   return (

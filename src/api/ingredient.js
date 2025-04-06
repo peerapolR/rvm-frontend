@@ -3,6 +3,9 @@ import axios from "@config/axios";
 export const getAllIngredient = () =>
   axios.get(`/ingredients/listAllIngredient`);
 
+export const getIngredientToUse = () =>
+  axios.get(`/ingredients/listIngredientToUse`);
+
 export const createIngredient = (params) =>
   axios.post("/ingredients/addIngredient", params);
 

@@ -81,8 +81,6 @@ export default function FooterBar(props) {
     handleModal("success");
   };
 
-  console.log(path);
-
   return (
     <div className="min-h-20 bg-revomed-white ">
       {contextHolder}

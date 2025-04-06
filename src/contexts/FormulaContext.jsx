@@ -30,6 +30,33 @@ function FormulaContextProvider({ children }) {
   const [ingredientDose, setIngredientDose] = useState([]);
   const [sumDose, setSumDose] = useState("");
   const [sumPrice, setSumPrice] = useState("");
+
+  const dosagePrice = (name) => {
+    const addOnPrice = 0.5;
+    switch (name) {
+      case "Capsule":
+        return 0.6 + addOnPrice;
+      case "Tablet":
+        return 1.5 + addOnPrice;
+      case "Softgel":
+        return 1.7 + addOnPrice;
+      case "Powder":
+        return 4.7 + addOnPrice;
+      case "Oral Dissolving":
+        return 2.5 + addOnPrice;
+      case "Jelly":
+        return 10 + addOnPrice;
+      case "Gummie":
+        return 2 + addOnPrice;
+      case "Effervescent":
+        return 3 + addOnPrice;
+      case "Chewable":
+        return 2.5 + addOnPrice;
+      case "Coffee & Tea":
+        return 4.7 + addOnPrice;
+    }
+  };
+
   const handleFormulaChange = (e) => {
     const { name, value } = e.target;
 
@@ -49,12 +76,15 @@ function FormulaContextProvider({ children }) {
 
   const calculatePrice = () => {
     const totalPrice = ingredientDose.reduce((acc, item) => {
-      const price = parseFloat(item.price_min) || 0;
+      const price = parseFloat(item.price_min.trim()) || 0;
       const dosage = parseFloat(item.dosageToUse) || 0;
       return acc + price * dosage;
     }, 0);
 
-    setSumPrice(isNaN(totalPrice) ? "0" : totalPrice.toFixed(2).toString());
+    const dp = parseFloat(dosagePrice(newFormula.dosage_form));
+    const sum = totalPrice + dp;
+
+    setSumPrice(isNaN(totalPrice) ? "0" : sum);
   };
 
   useEffect(() => {
@@ -100,7 +130,6 @@ function FormulaContextProvider({ children }) {
 
       if (res.status === 200 || res.status === 201) {
         const data = res.data.data;
-        console.log(data);
 
         setNewFormula({
           product_category: data.product_category,
