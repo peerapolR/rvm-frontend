@@ -1,21 +1,24 @@
 import BaseButton from "@components/BaseButton";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-export default function FooterBar({ accessibility, passwordSet, sendDataToParent }) {
+export default function FooterBar({
+  accessibility,
+  adminData,
+  sendDataToParent,
+}) {
   const router = useRouter();
 
-  const handleSave = () => {
-    sendDataToParent(true)
+  const handleCreate = () => {
+    sendDataToParent(true);
   };
-  
+
   return (
     <footer className="min-h-20 bg-revomed-white">
       <div className="flex gap-5 justify-between mx-5 pt-4">
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
           onClick={() => {
-            router.push("/main");
+            router.push("/main/adminPanel");
           }}
         >
           Cancel
@@ -28,9 +31,9 @@ export default function FooterBar({ accessibility, passwordSet, sendDataToParent
                 ? "bg-[#DC818D] text-[#FCFCFC]"
                 : "bg-[#E0E3EB] text-[#ABB1C1]"
             }`}
-            onClick={handleSave}
+            onClick={handleCreate}
           >
-            Save
+            Create
           </BaseButton>
         </div>
       </div>

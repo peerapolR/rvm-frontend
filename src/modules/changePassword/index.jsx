@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import EyeSlashFilledIcon from "../../../public/assets/icon/EyeSlashFilledIcon.svg";
 import EyeFilledIcon from "../../../public/assets/icon/EyeFilledIcon.svg";
-import { Input, Form } from "antd";
+import { Input, Form, Modal } from "antd";
 import FooterBar from "./footerBar";
+import SmileIcon from "@icons/ModalConfirm/SmileIcon";
+import BaseButton from "@components/BaseButton";
 
 export default function ChangePassword() {
   const [newPasswordToggle, setNewPasswordToggle] = useState(false);
@@ -12,24 +14,23 @@ export default function ChangePassword() {
   // const confirmToggleVisibility = () => setConfirmToggle(!confirmToggle);
 
   const passwordSet = {
-    new_password : "",
-    confirm_password : "",
+    current_password: "",
+    new_password: "",
+    confirm_password: "",
   }
 
   const [newPassword, setNewPassword] = useState(passwordSet)
   const [accessibility, setAccessibility] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-      setNewPassword((prevData) => ({
-        ...prevData,
-        [name]: value, // Update specific field in state
-      }));
+    const { name, value } = e.target; //destructuring form
+    setNewPassword((prevData) => ({
+      ...prevData,
+      [name]: value, // Update specific field in state
+    }));
   }
 
-  const handleSave = () => {
-      console.log(passwordSet)
-  }
+  const [isSave, setIsSave] = useState(false)
 
   //set the value to single object
   useEffect(() => {
@@ -41,8 +42,6 @@ export default function ChangePassword() {
     }
   }, [newPassword.new_password, newPassword.confirm_password]);
 
-  console.log("The accessibility =", newPassword.new_password);
-
   return (
     <section className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="m-6 p-6 bg-white rounded-2xl">
@@ -51,14 +50,25 @@ export default function ChangePassword() {
             {/* first col */}
             <div>
               <p>Current Password</p>
-              <Form.Item>
-                <Input
-                  className="w-[95%] mt-1 p-2 px-3 bg-[#F3F5FB] border-1 border-[#E0E3EB] rounded-lg focus:outline-none"
+              <Form.Item
+                name="current_password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter your current password",
+                  },
+                ]}
+              >
+                <Input.Password
+                  onChange={handleChange}
+                  name="current_password"
+                  className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                   type="text"
                   placeholder="123456"
                   label="Current Password"
-                  variant="faded"
-                  readOnly
+                  iconRender={(confirmToggle) =>
+                    confirmToggle ? <EyeFilledIcon /> : <EyeSlashFilledIcon />
+                  }
                 />
               </Form.Item>
             </div>
@@ -67,11 +77,11 @@ export default function ChangePassword() {
             <div>
               <p>New Password</p>
               <Form.Item
-                name="new password"
+                name="new_password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your new password",
+                    message: "Please enter your new password",
                   },
                 ]}
               >
@@ -98,7 +108,7 @@ export default function ChangePassword() {
             <div>
               <p>Confirm New Password</p>
               <Form.Item
-                name="confirm new password"
+                name="confirm_password"
                 rules={[
                   {
                     required: true,
@@ -124,7 +134,44 @@ export default function ChangePassword() {
         </Form>
       </div>
 
-      <FooterBar accessibility={accessibility} />
+      <Modal
+        open={isSave}
+        // centered
+        height={420}
+        width={363}
+        footer={false}
+        closeIcon={false}
+        maskClosable={false}
+        mask={true}
+        className="text-center p-0"
+      >
+        <div className="flex flex-col items-center justify-center h-[400px]">
+          <div className="flex items-center justify-center">
+            <SmileIcon className="text-revomed-primary mb-6" />
+          </div>
+          <div className="flex flex-col gap-2 mb-[72px]">
+            <div className="text-xl text-#152142 font-semibold">Success!</div>
+            <p className="text-[#6F7489] text-[16px]">ข้อมูลของคุณถูกบันทึก</p>
+            <p className="text-[#6F7489] text-[16px]">เรียบร้อยแล้ว</p>
+          </div>
+          <div className="flex justify-center gap-6">
+            <BaseButton
+              className="rounded-lg h-12 w-[132px] bg-revomed-primary text-revomed-white py-3 px-6"
+              onClick={() => {
+                setIsSave(false);
+              }}
+            >
+              Got it
+            </BaseButton>
+          </div>
+        </div>
+      </Modal>
+
+      <FooterBar
+        accessibility={accessibility}
+        passwordSet={newPassword}
+        sendDataToParent={setIsSave}
+      />
     </section>
   );
 }
