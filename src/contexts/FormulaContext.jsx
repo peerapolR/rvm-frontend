@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  use,
+} from "react";
 import { useRouter } from "next/navigation";
 
 import { useUserAuth } from "@contexts/UserAuthContext";
@@ -30,6 +36,9 @@ function FormulaContextProvider({ children }) {
   const [ingredientDose, setIngredientDose] = useState([]);
   const [sumDose, setSumDose] = useState("");
   const [sumPrice, setSumPrice] = useState("");
+
+  const [customMasterIngredient, setCustomMasterIngredient] = useState([]);
+  const [customActiveIngredient, setCustomIngredient] = useState([]);
 
   const dosagePrice = (name) => {
     const addOnPrice = 0.5;
@@ -371,6 +380,11 @@ function FormulaContextProvider({ children }) {
     setFormulaToShow,
     setFormulaQuery,
     formulaQuery,
+    customMasterIngredient,
+    setCustomMasterIngredient,
+    customActiveIngredient,
+    setCustomIngredient,
+    dosagePrice,
   };
   return (
     <FormulaContext.Provider value={value}>{children}</FormulaContext.Provider>

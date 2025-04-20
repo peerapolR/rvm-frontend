@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Title from "antd/es/typography/Title";
 import BreadCrumb from "./Breadcrumb";
@@ -7,22 +7,75 @@ import BaseButton from "@components/BaseButton";
 import IngredientTable from "./IngredientTable";
 import ModalDetail from "@modules/formula/newFormula/modalDetail";
 import formatPrice from "@functions/formatPrice";
+import DosageForm from "./DosageForm";
+import ModalIngredient from "./modalIngredient";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
+import { useIngredientCTX } from "@contexts/IngredientContext";
+
+import { searchIngredient } from "@functions/searchIngredient";
 
 export default function EditIngredientList() {
   const router = useRouter();
 
+  const newProposalctx = useNewProposalCTX();
+  const {
+    formulation,
+    setNewProposal,
+    newProposal,
+    fetchFormulaByCon,
+    editIngredientNewProposal,
+    cancleEditIngredientNewProposal,
+  } = newProposalctx;
+  const ingreCtx = useIngredientCTX();
+  const { ingredient, ingredientToUse } = ingreCtx;
+
   const [detailModal, setDetailModal] = useState({});
   const [openDetail, setOpenDetail] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
-  const newProposalctx = useNewProposalCTX();
-  const { formulation, setNewProposal, newProposal, fetchFormulaByCon } =
-    newProposalctx;
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMaster, setIsMaster] = useState(false);
+  const [dataSource, setDataSource] = useState([
+    ...newProposal.master_ingredient,
+    ...newProposal.ingredient,
+  ]);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState(ingredientToUse);
+  const [selected, setSelected] = useState([]);
+  const [editCount, setEditCount] = useState(0);
+  const [editRecord, setEditRecord] = useState([]);
+  const [isCal, setIsCal] = useState(false);
+
+  const [readyToNext, setReadyToNext] = useState(false);
+
+  useEffect(() => {
+    setDataSource([
+      ...newProposal.master_ingredient,
+      ...newProposal.ingredient,
+    ]);
+  }, [isCal]);
+
+  const handleEditIngredient = () => {
+    console.log("Edit Ingredient");
+    setReadyToNext(true);
+    setOpenEdit(true);
+  };
+  const handleSearch = () => {
+    try {
+      const searchResults = searchIngredient(query, ingredientToUse);
+      setResults(searchResults);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    handleSearch();
+  }, [query]);
 
   return (
     <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
-      <div className="p-6 mb-[22.5rem]">
+      <div className="p-6 mb-5">
         <div className="flex justify-between items-center pb-5 mb-6 border-b-1 border-revomed-light-grey1">
           <div className="flex">
             <Title level={4} style={{ color: "#004D7D" }}>
@@ -51,34 +104,61 @@ export default function EditIngredientList() {
           </div>
           <div>
             <BaseButton
-              className="w-[162px] h-[48px] py-3 px-10  bg-revomed-primary rounded-lg text-revomed-white"
+              className=" h-[48px] py-3 px-10  bg-revomed-primary rounded-lg text-revomed-white"
               onClick={() => {
-                console.log("Edit Ingredient");
+                handleEditIngredient();
               }}
-              disabled={true}
+              disabled={openEdit}
             >
               Edit Ingredient
             </BaseButton>
           </div>
         </div>
-        <IngredientTable
-          newProposal={newProposal}
-          setDetailModal={setDetailModal}
-          setOpenDetail={setOpenDetail}
-        />
-
-        <div
-          className="flex gap-[16px] font-bold mt-6"
-          style={{ fontSize: "16px" }}
-        >
-          <div className="text-revomed-dark-grey">Total price:</div>
-          <div className="text-revomed-primary">
-            {newProposal.prePrice ? formatPrice(newProposal.prePrice) : "0.00"}{" "}
-            THB
-          </div>
-        </div>
+        {openEdit ? (
+          <>
+            <DosageForm
+              formulation={formulation}
+              setIsOpen={setIsOpen}
+              setOpenDetail={setOpenDetail}
+              setDetailModal={setDetailModal}
+              setIsMaster={setIsMaster}
+              setDataSource={setDataSource}
+              dataSource={dataSource}
+              setReadyToNext={setReadyToNext}
+              setOpenEdit={setOpenEdit}
+              price={newProposal.prePrice}
+              setEditCount={setEditCount}
+              editCount={editCount}
+              newProposal={newProposal}
+              editRecord={editRecord}
+              setEditRecord={setEditRecord}
+              isCal={isCal}
+              setIsCal={setIsCal}
+              editIngredientNewProposal={editIngredientNewProposal}
+              cancleEditIngredientNewProposal={cancleEditIngredientNewProposal}
+            />
+            <ModalIngredient
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              setOpenDetail={setOpenDetail}
+              setDetailModal={setDetailModal}
+              isMaster={isMaster}
+              query={query}
+              setQuery={setQuery}
+              results={results}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </>
+        ) : (
+          <IngredientTable
+            newProposal={newProposal}
+            setDetailModal={setDetailModal}
+            setOpenDetail={setOpenDetail}
+          />
+        )}
       </div>
-      <FooterBar />
+      <FooterBar readyToNext={readyToNext} />
       <ModalDetail
         openDetail={openDetail}
         setOpenDetail={setOpenDetail}

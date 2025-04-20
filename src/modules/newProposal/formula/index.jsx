@@ -38,6 +38,10 @@ export default function FormulationList() {
     }));
   };
 
+  const handleNewFormulaBySale = () => {
+    router.push("/main/proposal/formulaBySale");
+  };
+
   useEffect(() => {
     fetchFormulaByCon();
   }, []);
@@ -75,9 +79,8 @@ export default function FormulationList() {
             <BaseButton
               className="w-[162px] h-[48px] py-3 px-10  bg-revomed-primary rounded-lg text-revomed-white"
               onClick={() => {
-                console.log("New Formula");
+                handleNewFormulaBySale();
               }}
-              disabled={true}
             >
               New Formula
             </BaseButton>

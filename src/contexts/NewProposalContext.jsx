@@ -3,6 +3,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import { useUserAuth } from "@contexts/UserAuthContext";
+import { useFormulaCTX } from "@contexts/FormulaContext";
 
 import * as proposalApi from "@api/proposal";
 import * as ingredientApi from "@api/ingredient";
@@ -14,6 +15,15 @@ function NewProposalContextProvider({ children }) {
   const router = useRouter();
   const { user } = useUserAuth();
 
+  const formulaCtx = useFormulaCTX();
+  const {
+    masterIngredient,
+    activeIngredient,
+    customMasterIngredient,
+    customActiveIngredient,
+    sumPrice,
+  } = formulaCtx;
+
   const defaultProposal = {
     order_id: "",
     product_category: "",
@@ -22,12 +32,15 @@ function NewProposalContextProvider({ children }) {
     formular_name: "",
     master_ingredient: "",
     ingredient: "",
+    begin_master_ingredient: "",
+    begin_ingredient: "",
     carton: "",
     carton_detail: "",
     carton_screen: "",
     carton_price: "",
     proposal_name: "",
     prePrice: "",
+    begin_prePrice: "",
     customer_name: "",
     proposal_code: "",
     address: "",
@@ -109,6 +122,30 @@ function NewProposalContextProvider({ children }) {
     setNewProposal(() => ({
       ...newProposal,
       [name]: value,
+    }));
+  };
+
+  const editIngredientNewProposal = (cal) => {
+    setNewProposal(() => ({
+      ...newProposal,
+      master_ingredient: customMasterIngredient,
+      ingredient: customActiveIngredient,
+      begin_master_ingredient: masterIngredient,
+      begin_ingredient: activeIngredient,
+      prePrice: cal,
+      begin_prePrice: newProposal.prePrice,
+    }));
+  };
+
+  const cancleEditIngredientNewProposal = () => {
+    setNewProposal(() => ({
+      ...newProposal,
+      master_ingredient: masterIngredient,
+      ingredient: activeIngredient,
+      begin_master_ingredient: "",
+      begin_ingredient: "",
+      prePrice: newProposal.prePrice,
+      begin_prePrice: "",
     }));
   };
 
@@ -467,6 +504,8 @@ function NewProposalContextProvider({ children }) {
     finalPrice3,
     setFinalPrice3,
     fetchEditOrderById,
+    editIngredientNewProposal,
+    cancleEditIngredientNewProposal,
   };
   return (
     <NewProposalContext.Provider value={value}>
