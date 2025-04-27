@@ -122,7 +122,7 @@ export default function IngredientTable(props) {
             components={{ body: { cell: EdiTableCell } }}
           />
           <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl">
-            <div className="flex gap-4">
+            <div className="flex gap-4 mr-32">
               <div
                 className="flex items-center font-semibold"
                 style={{ fontSize: "16px" }}

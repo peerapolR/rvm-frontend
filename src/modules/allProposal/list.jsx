@@ -7,6 +7,8 @@ import SubMenuIcon from "@icons/SubMenuIcon";
 import BasePagination from "@components/Pagination";
 import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
+import { EyeOutlined } from "@ant-design/icons";
+import ExportCSV from "./exportCSV";
 
 import formatDate from "@functions/formatDate";
 
@@ -58,7 +60,7 @@ export default function IngredientContainer() {
       render: (text) => (
         <>
           <p
-            className={`first-letter:capitalize text-center text-revomed-white rounded-xl ${
+            className={`first-letter:capitalize text-center text-revomed-white rounded-xl w-[100px] ${
               text === "draft"
                 ? "bg-gray-500"
                 : text === "pending"
@@ -75,6 +77,24 @@ export default function IngredientContainer() {
         </>
       ),
     },
+    {
+      title: "Manage",
+      dataIndex: "_id",
+      key: "_id",
+      render: (text, record) => (
+        <div className="flex">
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              router.push(`/main/allProposal/proposalDeatil/${record._id}`);
+            }}
+          >
+            <EyeOutlined />
+          </div>
+          <ExportCSV dataToExport={record} />
+        </div>
+      ),
+    },
   ];
 
   function onShowSizeChange(current, pageSize) {
@@ -83,14 +103,6 @@ export default function IngredientContainer() {
   return (
     <div className="bg-revomed-white rounded-b-lg mt-1">
       <Table
-        rowClassName="cursor-pointer"
-        onRow={(record) => {
-          return {
-            onClick: () => {
-              router.push(`/main/allProposal/proposalDeatil/${record._id}`);
-            },
-          };
-        }}
         dataSource={saleManagerOrder}
         columns={columns}
         loading={saleManagerOrder.length > 0 ? false : true}

@@ -32,7 +32,7 @@ export default function FormulaCard(props) {
     case "concept":
       newHeader = "Concept Formula";
       break;
-    case "saleCustom":
+    case "sale-custom":
       newHeader = "Sale-Custom Formula";
       break;
     default:

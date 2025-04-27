@@ -136,7 +136,9 @@ const ProposalDoc = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="col-span-1 ">{orderDetail.prePrice}</div>
+              <div className="col-span-1 ">
+                {formatPrice(orderDetail.prePrice)}
+              </div>
               <div className="col-span-1 ">{formatUnit(orderDetail.moq1)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">
@@ -298,7 +300,9 @@ const ProposalDoc = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="col-span-1 ">{orderDetail.prePrice}</div>
+              <div className="col-span-1 ">
+                {formatPrice(orderDetail.prePrice)}
+              </div>
               <div className="col-span-1 ">{formatUnit(orderDetail.moq2)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">
@@ -460,7 +464,9 @@ const ProposalDoc = (props) => {
                   </p>
                 </div>
               </div>
-              <div className="col-span-1 ">{orderDetail.prePrice}</div>
+              <div className="col-span-1 ">
+                {formatPrice(orderDetail.prePrice)}
+              </div>
               <div className="col-span-1 ">{formatUnit(orderDetail.moq3)}</div>
               <div className="col-span-1 ">{orderDetail.dosage_form}</div>
               <div className="col-span-1  rounded-r-lg">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import BaseButton from "@components/BaseButton";
@@ -6,14 +6,25 @@ import BaseButton from "@components/BaseButton";
 import { notification } from "antd";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
+import { useFormulaCTX } from "@contexts/FormulaContext";
 
-export default function FooterBar() {
+export default function FooterBar(props) {
+  const { readyToNext } = props;
   const router = useRouter();
 
   const [api, contextHolder] = notification.useNotification();
 
   const newProposalctx = useNewProposalCTX();
-  const { draftNewProposal } = newProposalctx;
+  const { draftNewProposal, setNewProposal, newProposal } = newProposalctx;
+
+  const ctx = useFormulaCTX();
+  const {
+    addNewFormulaBySale,
+    masterIngredient,
+    activeIngredient,
+    sumPrice,
+    newFormula,
+  } = ctx;
 
   const openNotification = () => {
     api.info({
@@ -36,7 +47,7 @@ export default function FooterBar() {
       pauseOnHover: true,
     });
   };
-  
+
   const openNumNotification = () => {
     api.info({
       message: `กรุณากรอก Dose และ Price ให้เป็นตัวเลข`,
@@ -49,7 +60,19 @@ export default function FooterBar() {
   };
 
   const checkValidNext = () => {
-    router.push("/main/proposal/packaging");
+    if (newFormula.formula_name === "") {
+      openNameNotification();
+    } else {
+      addNewFormulaBySale();
+      setNewProposal(() => ({
+        ...newProposal,
+        master_ingredient: masterIngredient,
+        ingredient: activeIngredient,
+        prePrice: sumPrice,
+        formular_name: newFormula.formula_name,
+      }));
+      router.push("/main/proposal/packaging");
+    }
   };
 
   return (
@@ -67,6 +90,7 @@ export default function FooterBar() {
         <div className="flex gap-5">
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10  bg-revomed-white border-0 text-revomed-secondary"
+            disabled={readyToNext}
             onClick={() => {
               draftNewProposal();
             }}
@@ -83,6 +107,7 @@ export default function FooterBar() {
           </BaseButton>
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10 border-1 border-revomed-secondary bg-revomed-secondary rounded-lg text-revomed-white"
+            disabled={readyToNext}
             onClick={checkValidNext}
           >
             Next

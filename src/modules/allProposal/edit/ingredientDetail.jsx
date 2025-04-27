@@ -72,7 +72,7 @@ export default function IngredientDetail() {
         </div>
         <div className="mr-3">
           <p className="mb-3 text-base">
-            Min Price/Kg (THB)<span className="text-revomed-red">*</span>
+            Min Price/mg (THB)<span className="text-revomed-red">*</span>
           </p>
           <Input
             placeholder="0.00"
@@ -84,7 +84,7 @@ export default function IngredientDetail() {
         </div>
         <div>
           <p className="mb-3 text-base">
-            Max Price/Kg (THB)<span className="text-revomed-red">*</span>
+            Max Price/mg (THB)<span className="text-revomed-red">*</span>
           </p>
           <Input
             placeholder="0.00"

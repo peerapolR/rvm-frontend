@@ -62,6 +62,8 @@ export default function NewFormulaList() {
   const [results, setResults] = useState(ingredientToUse);
   const [selected, setSelected] = useState([]);
 
+  const [readyToNext, setReadyToNext] = useState(true);
+
   const handleSearch = () => {
     try {
       const searchResults = searchIngredient(query, ingredientToUse);
@@ -218,6 +220,8 @@ export default function NewFormulaList() {
             setIsMaster={setIsMaster}
             setDataSource={setDataSource}
             dataSource={dataSource}
+            dosage_form={newProposal.dosage_form}
+            setReadyToNext={setReadyToNext}
           />
           <ModalIngredient
             isOpen={isOpen}
@@ -233,7 +237,7 @@ export default function NewFormulaList() {
           />
         </div>
       </>
-      <FooterBar />
+      <FooterBar readyToNext={readyToNext} />
       <ModalDetail
         openDetail={openDetail}
         setOpenDetail={setOpenDetail}

@@ -296,6 +296,28 @@ function FormulaContextProvider({ children }) {
   //   }
   // };
 
+  const addNewFormulaBySale = async () => {
+    try {
+      const res = await formulaApi.addFormula({
+        formula_name: newFormula.formula_name,
+        formula_type: "sale-custom",
+        formulation: formulation,
+        dosage_form: newFormula.dosage_form,
+        master_ingredient: masterIngredient,
+        ingredient: activeIngredient,
+        price: sumPrice,
+        createdBy: user?.firstName,
+        product_category: "supplement",
+        formula_status: "publish",
+      });
+      if (res.status === 201 || res.status === 200) {
+        fetchFormula();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const publishFormula = async (_id) => {
     try {
       const res = await formulaApi.unPubFormula(_id);
@@ -385,6 +407,7 @@ function FormulaContextProvider({ children }) {
     customActiveIngredient,
     setCustomIngredient,
     dosagePrice,
+    addNewFormulaBySale,
   };
   return (
     <FormulaContext.Provider value={value}>{children}</FormulaContext.Provider>

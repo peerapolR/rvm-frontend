@@ -247,7 +247,7 @@ export default function PackagingList() {
         </div>
         <div className="flex flex-col mt-10">
           <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
-            <div className="w-1/3">
+            <div className="w-full md:w-1/3">
               <p className="mb-2 text-base text-revomed-dark-grey">
                 MOQ (จำนวนที่ต้องการผลิต)
                 <span className="text-revomed-red">*</span>
@@ -258,10 +258,13 @@ export default function PackagingList() {
                 onChange={onChangeMoq1}
                 value={newProposal.moq1}
                 placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
-                style={{
-                  height: 50,
-                  width: 500,
-                  resize: "none",
+                className="h-[50px] w-full"
+                styles={{
+                  control: (provided) => ({
+                    ...provided,
+                    height: "50px",
+                    minHeight: "50px",
+                  }),
                 }}
               />
             </div>
@@ -467,7 +470,7 @@ export default function PackagingList() {
         </div>
         <div className="flex flex-col mt-10">
           <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
-            <div className="w-1/3">
+            <div className="w-full md:w-1/3">
               <p className="mb-2 text-base text-revomed-dark-grey">
                 MOQ (จำนวนที่ต้องการผลิต)
               </p>
@@ -477,10 +480,13 @@ export default function PackagingList() {
                 onChange={onChangeMoq2}
                 value={newProposal.moq2}
                 placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
-                style={{
-                  height: 50,
-                  width: 500,
-                  resize: "none",
+                className="h-[50px] w-full"
+                styles={{
+                  control: (provided) => ({
+                    ...provided,
+                    height: "50px",
+                    minHeight: "50px",
+                  }),
                 }}
               />
             </div>
@@ -557,7 +563,7 @@ export default function PackagingList() {
         </div>
         <div className="flex flex-col mt-10">
           <div className="bg-revomed-white rounded-t-lg min-h-[73px] p-6 flex gap-5 justify-between">
-            <div className="w-1/3">
+            <div className="w-full md:w-1/3">
               <p className="mb-2 text-base text-revomed-dark-grey">
                 MOQ (จำนวนที่ต้องการผลิต)
               </p>
@@ -567,10 +573,13 @@ export default function PackagingList() {
                 onChange={onChangeMoq3}
                 value={newProposal.moq3}
                 placeholder="MOQ (จำนวนที่ต้องการผลิต)..."
-                style={{
-                  height: 50,
-                  width: 500,
-                  resize: "none",
+                className="h-[50px] w-full"
+                styles={{
+                  control: (provided) => ({
+                    ...provided,
+                    height: "50px",
+                    minHeight: "50px",
+                  }),
                 }}
               />
             </div>

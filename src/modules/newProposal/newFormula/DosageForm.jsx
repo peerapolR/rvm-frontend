@@ -7,13 +7,13 @@ import { DownOutlined, PlusOutlined } from "@ant-design/icons";
 import { Dropdown, Table, Form, Input } from "antd";
 import SelectedBadgeWithIcon from "@components/SelectedBadgeWithIcon";
 import LockIcon from "@icons/LockIcon";
+import formatPrice from "@functions/formatPrice";
 import BinIcon from "@icons/BinIcon";
 
 import { useFormulaCTX } from "@contexts/FormulaContext";
 
 export default function DosageForm(props) {
   const {
-    setFormulation,
     formulation,
     setIsOpen,
     setOpenDetail,
@@ -21,10 +21,13 @@ export default function DosageForm(props) {
     setIsMaster,
     setDataSource,
     dataSource,
+    dosage_form,
+    setReadyToNext,
   } = props;
 
   const ctx = useFormulaCTX();
   const {
+    setFormulation,
     newFormula,
     setNewFormula,
     masterIngredient,
@@ -32,10 +35,33 @@ export default function DosageForm(props) {
     setMasterIngredient,
     setActiveIngredient,
     sumDose,
+    sumPrice,
   } = ctx;
 
   const [form] = Form.useForm();
   const [selected, setSelected] = useState("");
+
+  const [priceToShow, setPriceToShow] = useState("0.00");
+  const [editCount, setEditCount] = useState(0);
+  const [editRecord, setEditRecord] = useState([]);
+  const [isCal, setIsCal] = useState(false);
+
+  useEffect(() => {
+    setMasterIngredient([]);
+    setActiveIngredient([]);
+    setNewFormula(() => ({
+      ...newFormula,
+      dosage_form: dosage_form,
+    }));
+    setFormulation(formulation);
+  }, []);
+
+  useEffect(() => {
+    if (editCount < 3) {
+      setReadyToNext(true);
+    }
+  }, [editCount]);
+
   //แก้ตรงนี้
   // useEffect(() => {
   //   if (dataSource.length > 0) {
@@ -103,11 +129,21 @@ export default function DosageForm(props) {
       setMasterIngredient((prev) =>
         prev.filter((item) => item.ingredient_name !== record.ingredient_name)
       );
+      setEditCount((prev) => prev - 1);
+      setPriceToShow("0.00");
     } else {
       setActiveIngredient((prev) =>
         prev.filter((item) => item.ingredient_name !== record.ingredient_name)
       );
+      setEditCount((prev) => prev - 1);
+      setPriceToShow("0.00");
     }
+  };
+
+  const handlePriceToShow = () => {
+    setReadyToNext(false);
+    setIsCal(true);
+    setPriceToShow(sumPrice);
   };
 
   const column = [
@@ -180,11 +216,6 @@ export default function DosageForm(props) {
     };
   });
 
-  const handleSelectedBadge = (name) => {
-    const result = formulation.filter((e) => e !== name);
-    setFormulation(result);
-  };
-
   const onClickMaster = () => {
     setIsOpen(true);
     setIsMaster(true);
@@ -230,27 +261,44 @@ export default function DosageForm(props) {
           <div className="text-revomed-primary text-xl font-bold">
             Ingredients
           </div>
-          <Dropdown
-            menu={{ items }}
-            trigger={["click"]}
-            placement="bottomRight"
-          >
+          <div className="flex">
+            <div className="mr-5">
+              <p className=" text-revomed-red pt-3">
+                *ต้องเพิ่มสารอย่างน้อย 3 รายการจึงจะสามารถกด Calculate ราคาได้{" "}
+              </p>
+              <p className="text-end">รายการแก้ไข {editCount} รายการ</p>
+            </div>
             <BaseButton
-              className="pl-6 pr-2 py-3 text-white bg-revomed-primary h-[48px]"
-              iconPosition="start"
-              icon={<PlusOutlined />}
+              className=" h-[48px] py-3 px-10  bg-revomed-primary rounded-lg text-revomed-white mr-5 font-bold"
+              disabled={editCount >= 3 ? false : true}
+              onClick={() => {
+                handlePriceToShow();
+              }}
             >
-              <div className="flex">
-                <div style={{ fontSize: "16px" }} className="font-bold mr-4">
-                  Ingredient
-                </div>
-                <DownOutlined
-                  style={{ color: "#fff", padding: "8px", fontSize: "10px" }}
-                  className="bg-revomed-primary-light1"
-                />
-              </div>
+              Calculate Price
             </BaseButton>
-          </Dropdown>
+            <Dropdown
+              menu={{ items }}
+              trigger={["click"]}
+              placement="bottomRight"
+            >
+              <BaseButton
+                className="pl-6 pr-2 py-3 text-white bg-revomed-primary h-[48px]"
+                iconPosition="start"
+                icon={<PlusOutlined />}
+              >
+                <div className="flex">
+                  <div style={{ fontSize: "16px" }} className="font-bold mr-4">
+                    Ingredient
+                  </div>
+                  <DownOutlined
+                    style={{ color: "#fff", padding: "8px", fontSize: "10px" }}
+                    className="bg-revomed-primary-light1"
+                  />
+                </div>
+              </BaseButton>
+            </Dropdown>
+          </div>
         </div>
         <Form component={false} form={form}>
           <Table
@@ -259,7 +307,20 @@ export default function DosageForm(props) {
             pagination={false}
             rowClassName={"rowBackground"}
             rowKey={"_id"}
-            components={{ body: { cell: EdiTableCell } }}
+            components={{
+              body: {
+                cell: (props) => (
+                  <EdiTableCell
+                    {...props}
+                    setEditCount={setEditCount}
+                    editCount={editCount}
+                    setDataSource={setDataSource}
+                    editRecord={editRecord}
+                    setEditRecord={setEditRecord}
+                  />
+                ),
+              },
+            }}
           />
           <div className="flex items-end justify-end bg-revomed-white p-6 border rounded-b-2xl">
             <div className="flex gap-4">
@@ -288,22 +349,58 @@ export default function DosageForm(props) {
         style={{ fontSize: "16px" }}
       >
         <div className="text-revomed-dark-grey">Total price:</div>
-        <div className="text-revomed-primary">0.00 THB</div>
+        <div className="text-revomed-primary">
+          {formatPrice(priceToShow)} THB
+        </div>
       </div>
     </div>
   );
 }
 
 const EdiTableCell = (props) => {
-  const { record, dataIndex, title, editable, rowKey, children, ...restProps } =
-    props;
+  const {
+    record,
+    dataIndex,
+    title,
+    editable,
+    rowKey,
+    children,
+    editCount,
+    setEditCount,
+    data,
+    dataSource,
+    setDataSource,
+    editRecord,
+    setEditRecord,
+    ...restProps
+  } = props;
   const ctx = useFormulaCTX();
   const {
     activeIngredient,
     setActiveIngredient,
     masterIngredient,
     setMasterIngredient,
+    customMasterIngredient,
+    setCustomMasterIngredient,
+    customActiveIngredient,
+    setCustomIngredient,
   } = ctx;
+
+  const isIngredientNameExists = (editRecord, ingredientName) => {
+    if (!Array.isArray(editRecord)) return false;
+    return editRecord.some((e) => e.ingredient_name === ingredientName);
+  };
+
+  const getIngredientRecord = (editRecord, ingredientName) => {
+    if (!Array.isArray(editRecord)) return null;
+    return editRecord.find((e) => e.ingredient_name === ingredientName);
+  };
+
+  const removeEditRecordByName = (nameToRemove) => {
+    setEditRecord((prev) =>
+      prev.filter((item) => item.ingredient_name !== nameToRemove)
+    );
+  };
 
   const handleDosage = (e) => {
     const { value } = e.target;
@@ -324,7 +421,6 @@ const EdiTableCell = (props) => {
         console.error("Master ingredient not found:", ingredientName);
         return;
       }
-
       setMasterIngredient((prevItems) =>
         prevItems.map((item) =>
           item.ingredient_name === ingredientArray.ingredient_name
@@ -332,6 +428,40 @@ const EdiTableCell = (props) => {
             : item
         )
       );
+
+      setCustomMasterIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+
+      const isChange = isIngredientNameExists(editRecord, ingredientName);
+
+      if (isChange) {
+        const matchedRecord = getIngredientRecord(editRecord, ingredientName);
+
+        if (matchedRecord.dosageToUse === value) {
+          // console.log("Found and dosageToUse is the same");
+          if (editCount <= 0) {
+            removeEditRecordByName(ingredientName);
+          } else {
+            setEditCount((prev) => prev - 1);
+            removeEditRecordByName(ingredientName);
+          }
+        }
+      } else {
+        setEditRecord((prev) => [
+          ...prev,
+          {
+            ingredient_name: ingredientArray.ingredient_name,
+            dosageToUse: ingredientArray.dosageToUse,
+          },
+        ]);
+
+        setEditCount((prev) => prev + 1);
+      }
     } else {
       const ingredientArray = activeIngredient.find(
         (e) => e.ingredient_name === ingredientName
@@ -341,8 +471,14 @@ const EdiTableCell = (props) => {
         console.error("Active ingredient not found:", ingredientName);
         return;
       }
-
       setActiveIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+      setCustomIngredient((prevItems) =>
         prevItems.map((item) =>
           item.ingredient_name === ingredientArray.ingredient_name
             ? { ...item, dosageToUse: value }

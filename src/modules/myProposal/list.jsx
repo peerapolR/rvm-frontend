@@ -8,12 +8,13 @@ import BasePagination from "@components/Pagination";
 import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
 import { EyeOutlined } from "@ant-design/icons";
+import ExportCSV from "./exportCSV";
 
 import formatDate from "@functions/formatDate";
 
 import { useNewProposalCTX } from "@contexts/NewProposalContext";
 
-export default function IngredientContainer() {
+export default function ProposalContainer() {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
   const { listOrderBySaleName, listOrderToSale } = newProposalctx;
@@ -117,6 +118,7 @@ export default function IngredientContainer() {
               <EyeOutlined />
             </div>
           )}
+          <ExportCSV dataToExport={record} />
         </div>
       ),
     },

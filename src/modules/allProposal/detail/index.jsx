@@ -250,7 +250,9 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">{orderDetail.prePrice}</div>
+                <div className="col-span-1 ">
+                  {formatPrice(orderDetail.prePrice)}
+                </div>
                 <div className="col-span-1 ">
                   {formatUnit(orderDetail.moq1)}
                 </div>
@@ -418,7 +420,9 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">{orderDetail.prePrice}</div>
+                <div className="col-span-1 ">
+                  {formatPrice(orderDetail.prePrice)}
+                </div>
                 <div className="col-span-1 ">
                   {formatUnit(orderDetail.moq2)}
                 </div>
@@ -582,7 +586,9 @@ export default function Page({ _id }) {
                     </p>
                   </div>
                 </div>
-                <div className="col-span-1 ">{orderDetail.prePrice}</div>
+                <div className="col-span-1 ">
+                  {formatPrice(orderDetail.prePrice)}
+                </div>
                 <div className="col-span-1 ">
                   {formatUnit(orderDetail.moq3)}
                 </div>

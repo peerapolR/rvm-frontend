@@ -134,7 +134,7 @@ export default function Page({ _id }) {
                 </p>
               </div>
               <div>
-                <p className="text-revomed-primary">Price/Kg (THB)</p>
+                <p className="text-revomed-primary">Price/mg (THB)</p>
                 <p>
                   {ingredient.price_min} - {ingredient.price_max}
                 </p>
