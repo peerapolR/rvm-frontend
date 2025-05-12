@@ -115,7 +115,7 @@ export default function IngredientContainer({ handleSearch }) {
           <div
             className="cursor-pointer"
             onClick={() => {
-              router.push(`/main/ingredient/ingredientDeatil/${text}`);
+              router.push(`/main/ingredient/ingredientDetail/${text}`);
             }}
           >
             <EditIcon />

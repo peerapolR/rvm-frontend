@@ -45,8 +45,13 @@ export default function NewFormulaList() {
   } = ctx;
 
   const newProposalctx = useNewProposalCTX();
-  const { formulation, setNewProposal, newProposal, fetchFormulaByCon } =
-    newProposalctx;
+  const {
+    formulation,
+    setNewProposal,
+    newProposal,
+    fetchFormulaByCon,
+    setIsSaleCustom,
+  } = newProposalctx;
 
   const [path, setPath] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -76,6 +81,10 @@ export default function NewFormulaList() {
   useEffect(() => {
     handleSearch();
   }, [query]);
+
+  useEffect(() => {
+    setIsSaleCustom(true);
+  }, []);
 
   const dosageIcon = (name) => {
     switch (name) {

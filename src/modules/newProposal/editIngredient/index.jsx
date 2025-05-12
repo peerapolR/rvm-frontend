@@ -26,6 +26,7 @@ export default function EditIngredientList() {
     fetchFormulaByCon,
     editIngredientNewProposal,
     cancleEditIngredientNewProposal,
+    setIsSaleCustom,
   } = newProposalctx;
   const ingreCtx = useIngredientCTX();
   const { ingredient, ingredientToUse } = ingreCtx;
@@ -72,6 +73,10 @@ export default function EditIngredientList() {
   useEffect(() => {
     handleSearch();
   }, [query]);
+
+  useEffect(() => {
+    setIsSaleCustom(false);
+  }, []);
 
   return (
     <div className="flex flex-col justify-between min-h-[calc(100vh-72px)]">

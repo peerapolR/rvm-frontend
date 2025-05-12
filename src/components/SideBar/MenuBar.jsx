@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
+import { WarningOutlined } from "@ant-design/icons";
 import IconLogout from "@icons/IconLogout";
 import DotIcon from "@icons/DotIcon";
 import { useRouter } from "next/navigation";
@@ -20,8 +21,8 @@ export default function MenuBar() {
   const roleAccess = {
     sale: ["1", "2", "5"],
     "sale manager": ["1", "2", "4", "41", "42", "5"],
-    "p&d": ["3", "33", "331", "332", "5"],
-    admin: ["1", "2", "3", "33", "331", "332", "4", "41", "42", "5"],
+    "p&d": ["3", "33", "331", "332", "5", "6"],
+    admin: ["1", "2", "3", "33", "331", "332", "4", "41", "42", "5", "6"],
   };
 
   // Get accessible keys for the current user role
@@ -75,6 +76,7 @@ export default function MenuBar() {
     332: "/main/ingredient",
     41: "/main/pendingProposal",
     42: "/main/allProposal",
+    6: "/main/verify",
   };
 
   const handlePath = (e) => {
@@ -130,6 +132,11 @@ export default function MenuBar() {
         { key: "41", label: "Pending Proposal" },
         { key: "42", label: "All Proposal" },
       ],
+    },
+    {
+      key: "6",
+      icon: <WarningOutlined style={{ fontSize: "22px" }} />,
+      label: "P&D Verify",
     },
     { key: "5", icon: <IconLogout />, label: "LogOut" },
   ];

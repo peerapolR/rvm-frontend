@@ -63,7 +63,7 @@ export default function ProposalContainer() {
             className={`first-letter:capitalize text-center text-revomed-white rounded-xl ${
               text === "draft"
                 ? "bg-gray-500"
-                : text === "pending"
+                : text === "pending" || text === "verify"
                 ? "bg-yellow-400"
                 : text === "reject" || text === "decline"
                 ? "bg-red-500"
@@ -100,7 +100,7 @@ export default function ProposalContainer() {
                   className="cursor-pointer ml-5"
                   onClick={() => {
                     router.push(
-                      `/main/myProposal/proposalDeatil/${record._id}`
+                      `/main/myProposal/proposalDetail/${record._id}`
                     );
                   }}
                 >
@@ -112,7 +112,7 @@ export default function ProposalContainer() {
             <div
               className="cursor-pointer"
               onClick={() => {
-                router.push(`/main/myProposal/proposalDeatil/${record._id}`);
+                router.push(`/main/myProposal/proposalDetail/${record._id}`);
               }}
             >
               <EyeOutlined />

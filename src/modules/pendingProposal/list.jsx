@@ -61,7 +61,7 @@ export default function IngredientContainer() {
             className={`first-letter:capitalize text-center text-revomed-white rounded-xl ${
               text === "draft"
                 ? "bg-gray-500"
-                : text === "pending"
+                : text === "pending" || text === "verify"
                 ? "bg-yellow-400"
                 : text === "reject" || text === "decline"
                 ? "bg-red-500"
@@ -87,7 +87,7 @@ export default function IngredientContainer() {
         onRow={(record) => {
           return {
             onClick: () => {
-              router.push(`/main/pendingProposal/proposalDeatil/${record._id}`);
+              router.push(`/main/pendingProposal/proposalDetail/${record._id}`);
             },
           };
         }}

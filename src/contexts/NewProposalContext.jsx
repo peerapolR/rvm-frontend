@@ -79,11 +79,13 @@ function NewProposalContextProvider({ children }) {
   const [orderDetail, setOrderDetail] = useState([]);
 
   const [pendingOrder, setPendingOrder] = useState([]);
+  const [verifyOrder, setVerifyOrder] = useState([]);
 
   const [saleManagerOrder, setSaleManagerOrder] = useState([]);
   const [numToOrder, setNumToOrder] = useState(null);
 
   const [optionMoq, setOptionMoq] = useState([]);
+  const [isSaleCustom, setIsSaleCustom] = useState(false);
 
   const [finalPrice1, setFinalPrice1] = useState(0);
   const [finalPrice2, setFinalPrice2] = useState(0);
@@ -167,11 +169,12 @@ function NewProposalContextProvider({ children }) {
 
   const addNewProposal = async () => {
     try {
+      const isCustom = isSaleCustom;
       const res = await proposalApi.addOrder({
         ...newProposal,
         creator_id: user?.firstName,
         product_category: "supplement",
-        order_status: "pending",
+        order_status: isCustom ? "verify" : "pending",
         price1: finalPrice1.toString(),
         price2: finalPrice2.toString(),
         price3: finalPrice3.toString(),
@@ -180,13 +183,11 @@ function NewProposalContextProvider({ children }) {
       });
       if (res.status === 201 || res.status === 200) {
         const update = await formulaApi.useFormula(newProposal.formular_name);
-
         setFormulation([]);
         setNewProposal(defaultProposal);
         setListProposalByCon([]);
         setDosageData([]);
         setNumToOrder(0);
-
         router.push("/main");
       }
     } catch (error) {
@@ -276,6 +277,31 @@ function NewProposalContextProvider({ children }) {
     }
   };
 
+  const editVerifyOrder = async (_id) => {
+    try {
+      const res = await proposalApi.updateVerifyOrder({
+        _id: _id,
+        // master_ingredient: master_ingredient,
+        // ingredient: ingredient,
+        // price1: finalPrice1.toString(),
+        // price2: finalPrice2.toString(),
+        // price3: finalPrice3.toString(),
+        // prePrice,
+        order_status: "pending",
+      });
+      if (res.status === 201 || res.status === 200) {
+        setFormulation([]);
+        setNewProposal(defaultProposal);
+        setListProposalByCon([]);
+        setDosageData([]);
+        setNumToOrder(0);
+
+        router.push("/main");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const listOrderBySaleName = async () => {
     try {
       const res = await proposalApi.listOrderBySale({
@@ -382,6 +408,18 @@ function NewProposalContextProvider({ children }) {
     }
   };
 
+  const fetchVerifyOrder = async () => {
+    try {
+      const res = await proposalApi.listVerifyOrder();
+
+      if (res.status === 200 || res.status === 201) {
+        setVerifyOrder(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchOrderForSaleManager = async () => {
     try {
       const res = await proposalApi.listOrderBysaleManager();
@@ -400,6 +438,18 @@ function NewProposalContextProvider({ children }) {
 
       if (res.status === 200 || res.status === 201) {
         router.push("/main/pendingProposal");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const pdVerifyOrder = async (_id) => {
+    try {
+      const res = await proposalApi.pdVerifyOrder(_id);
+
+      if (res.status === 200 || res.status === 201) {
+        router.push("/main/verify");
       }
     } catch (error) {
       console.log(error);
@@ -487,6 +537,8 @@ function NewProposalContextProvider({ children }) {
     orderDetail,
     fetchPendingOrder,
     pendingOrder,
+    fetchVerifyOrder,
+    verifyOrder,
     approveOrder,
     rejectOrder,
     proposedOrder,
@@ -506,6 +558,9 @@ function NewProposalContextProvider({ children }) {
     fetchEditOrderById,
     editIngredientNewProposal,
     cancleEditIngredientNewProposal,
+    setIsSaleCustom,
+    pdVerifyOrder,
+    editVerifyOrder,
   };
   return (
     <NewProposalContext.Provider value={value}>

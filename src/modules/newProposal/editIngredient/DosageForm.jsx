@@ -77,27 +77,27 @@ export default function DosageForm(props) {
     return isNaN(total) ? "0" : total.toString();
   };
 
-  // useEffect(() => {
-  //   const mergedArray = [...masterIngredient, ...activeIngredient].filter(
-  //     (item, index, self) =>
-  //       index ===
-  //       self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
-  //   );
-  //   setDataSource(mergedArray);
-  // }, [masterIngredient, activeIngredient]);
+  useEffect(() => {
+    const mergedArray = [...masterIngredient, ...activeIngredient].filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+    );
+    setDataSource(mergedArray);
+  }, [masterIngredient, activeIngredient]);
 
-  // useEffect(() => {
-  //   const clonedMaster = [...masterIngredient];
-  //   const clonedActive = [...activeIngredient];
+  useEffect(() => {
+    const clonedMaster = [...masterIngredient];
+    const clonedActive = [...activeIngredient];
 
-  //   const mergedArray = [...clonedMaster, ...clonedActive].filter(
-  //     (item, index, self) =>
-  //       index ===
-  //       self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
-  //   );
+    const mergedArray = [...clonedMaster, ...clonedActive].filter(
+      (item, index, self) =>
+        index ===
+        self.findIndex((obj) => obj.ingredient_name === item.ingredient_name)
+    );
 
-  //   setDataSource(mergedArray);
-  // }, [masterIngredient, activeIngredient]);
+    setDataSource(mergedArray);
+  }, [masterIngredient, activeIngredient]);
 
   const handleDetail = (record) => {
     setDetailModal(record);
@@ -435,6 +435,14 @@ const EdiTableCell = (props) => {
         return;
       }
 
+      setMasterIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+
       setCustomMasterIngredient((prevItems) =>
         prevItems.map((item) =>
           item.ingredient_name === ingredientArray.ingredient_name
@@ -478,6 +486,14 @@ const EdiTableCell = (props) => {
         return;
       }
 
+      setActiveIngredient((prevItems) =>
+        prevItems.map((item) =>
+          item.ingredient_name === ingredientArray.ingredient_name
+            ? { ...item, dosageToUse: value }
+            : item
+        )
+      );
+
       setCustomIngredient((prevItems) =>
         prevItems.map((item) =>
           item.ingredient_name === ingredientArray.ingredient_name
@@ -485,6 +501,31 @@ const EdiTableCell = (props) => {
             : item
         )
       );
+      const isChange = isIngredientNameExists(editRecord, ingredientName);
+
+      if (isChange) {
+        const matchedRecord = getIngredientRecord(editRecord, ingredientName);
+
+        if (matchedRecord.dosageToUse === value) {
+          // console.log("Found and dosageToUse is the same");
+          if (editCount <= 0) {
+            removeEditRecordByName(ingredientName);
+          } else {
+            setEditCount((prev) => prev - 1);
+            removeEditRecordByName(ingredientName);
+          }
+        }
+      } else {
+        setEditRecord((prev) => [
+          ...prev,
+          {
+            ingredient_name: ingredientArray.ingredient_name,
+            dosageToUse: ingredientArray.dosageToUse,
+          },
+        ]);
+
+        setEditCount((prev) => prev + 1);
+      }
     }
   };
 

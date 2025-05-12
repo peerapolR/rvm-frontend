@@ -485,6 +485,31 @@ const EdiTableCell = (props) => {
             : item
         )
       );
+      const isChange = isIngredientNameExists(editRecord, ingredientName);
+
+      if (isChange) {
+        const matchedRecord = getIngredientRecord(editRecord, ingredientName);
+
+        if (matchedRecord.dosageToUse === value) {
+          // console.log("Found and dosageToUse is the same");
+          if (editCount <= 0) {
+            removeEditRecordByName(ingredientName);
+          } else {
+            setEditCount((prev) => prev - 1);
+            removeEditRecordByName(ingredientName);
+          }
+        }
+      } else {
+        setEditRecord((prev) => [
+          ...prev,
+          {
+            ingredient_name: ingredientArray.ingredient_name,
+            dosageToUse: ingredientArray.dosageToUse,
+          },
+        ]);
+
+        setEditCount((prev) => prev + 1);
+      }
     }
   };
 

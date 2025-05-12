@@ -22,7 +22,7 @@ export default function ExportCSV(props) {
   );
 
   const headers = [
-    { label: "No", key: "no" },
+    { label: "No.", key: "no" },
     { label: "Active Ingredients", key: "active" },
     { label: "Dosage", key: "dosage" },
   ];
@@ -30,7 +30,7 @@ export default function ExportCSV(props) {
   const exportData = [
     ...activeIngredient,
     {},
-    { no: "", active: "Total Dosage", dosage: totalDosage.toFixed(2) },
+    { no: "", active: "Total Active", dosage: totalDosage.toFixed(2) },
   ];
 
   return (
@@ -38,7 +38,7 @@ export default function ExportCSV(props) {
       <CSVLink
         data={exportData}
         headers={headers}
-        filename={`${dataToExport.formular_name}_ingredient.csv`}
+        filename={`${dataToExport.formular_name}_ingredient_list.csv`}
       >
         <CopyOutlined />
       </CSVLink>

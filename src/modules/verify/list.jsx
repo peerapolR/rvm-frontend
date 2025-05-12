@@ -7,8 +7,6 @@ import SubMenuIcon from "@icons/SubMenuIcon";
 import BasePagination from "@components/Pagination";
 import UnpubIcon from "@icons/UnpubIcon";
 import BinIcon from "@icons/BinIcon";
-import { EyeOutlined } from "@ant-design/icons";
-import ExportCSV from "./exportCSV";
 
 import formatDate from "@functions/formatDate";
 
@@ -17,10 +15,10 @@ import { useNewProposalCTX } from "@contexts/NewProposalContext";
 export default function IngredientContainer() {
   const router = useRouter();
   const newProposalctx = useNewProposalCTX();
-  const { fetchOrderForSaleManager, saleManagerOrder } = newProposalctx;
+  const { fetchVerifyOrder, verifyOrder } = newProposalctx;
 
   useEffect(() => {
-    fetchOrderForSaleManager();
+    fetchVerifyOrder();
   }, []);
 
   const columns = [
@@ -60,7 +58,7 @@ export default function IngredientContainer() {
       render: (text) => (
         <>
           <p
-            className={`first-letter:capitalize text-center text-revomed-white rounded-xl w-[100px] ${
+            className={`first-letter:capitalize text-center text-revomed-white rounded-xl ${
               text === "draft"
                 ? "bg-gray-500"
                 : text === "pending" || text === "verify"
@@ -77,24 +75,6 @@ export default function IngredientContainer() {
         </>
       ),
     },
-    {
-      title: "Manage",
-      dataIndex: "_id",
-      key: "_id",
-      render: (text, record) => (
-        <div className="flex">
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              router.push(`/main/allProposal/proposalDetail/${record._id}`);
-            }}
-          >
-            <EyeOutlined />
-          </div>
-          <ExportCSV dataToExport={record} />
-        </div>
-      ),
-    },
   ];
 
   function onShowSizeChange(current, pageSize) {
@@ -103,9 +83,17 @@ export default function IngredientContainer() {
   return (
     <div className="bg-revomed-white rounded-b-lg mt-1">
       <Table
-        dataSource={saleManagerOrder}
+        rowClassName="cursor-pointer"
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              router.push(`/main/verify/verifyDetail/${record._id}`);
+            },
+          };
+        }}
+        dataSource={verifyOrder}
         columns={columns}
-        loading={saleManagerOrder.length > 0 ? false : true}
+        loading={verifyOrder.length > 0 ? false : true}
         pagination={false}
       />
       {/* <div className="px-3 py-5 flex justify-end">
@@ -113,16 +101,7 @@ export default function IngredientContainer() {
       </div> */}
 
       <div className="flex justify-between px-6 py-[29.5px]">
-        <div className="text-[#14142A]">
-          Total {saleManagerOrder.length} items
-        </div>
-        {/* <BasePagination
-          total={saleManagerOrder.length}
-          showTitle={false}
-          defaultCurrent={1}
-          showSizeChanger={false}
-          align="end"
-        /> */}
+        <div className="text-[#14142A]">Total {verifyOrder.length} items</div>
       </div>
     </div>
   );
