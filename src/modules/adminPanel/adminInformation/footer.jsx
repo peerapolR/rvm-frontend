@@ -1,12 +1,8 @@
 import BaseButton from "@components/BaseButton";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-export default function FooterBar({
-  accessibility,
-  adminData,
-  sendDataToParent,
-}) {
+export default function FooterBar() {
+  
   const router = useRouter();
 
   return (

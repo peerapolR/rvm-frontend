@@ -3,7 +3,7 @@ import AdminInformation from "@modules/adminPanel/adminInformation"
 import React from "react"
 AdminInformation
 
-export default function NewAdminPage(){
+export default function AdminInformationPage(){
     return (
         <AdminInformation/>
     )

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Input, Form, Select, Space } from "antd";
 import FooterBar from "./footer";
 
-export default function AdminInformation() {
+export default function AdminInformation(admin) {
   const AdminData = {
     first_name: "",
     last_name: "",
@@ -31,16 +31,6 @@ export default function AdminInformation() {
     }));
   };
 
-  // ✅ Validate form on every change
-  const handleFormChange = async (_, allValues) => {
-    try {
-      await form.validateForm(); // Checks for validation errors
-      setAccessibility(true); // ✅ Enable button if all fields are filled
-    } catch {
-      setAccessibility(false); // ❌ Disable button if validation fails
-    }
-  };
-
   return (
     <section className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div>
@@ -48,7 +38,7 @@ export default function AdminInformation() {
           Information
         </p>
         <div className="m-6 p-6 bg-white rounded-2xl">
-          <Form onValuesChange={handleFormChange}>
+          <Form>
             <div className="grid grid-cols-3">
               {/* first col */}
               <div>

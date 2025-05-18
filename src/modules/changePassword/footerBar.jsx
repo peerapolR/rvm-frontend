@@ -1,6 +1,5 @@
 import BaseButton from "@components/BaseButton";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export default function FooterBar({ accessibility, passwordSet, sendDataToParent }) {
   const router = useRouter();

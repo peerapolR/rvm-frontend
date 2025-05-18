@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Input, Table, Modal } from "antd";
 import { createStyles } from "antd-style";
 import BaseButton from "@components/BaseButton";
@@ -35,29 +35,41 @@ export default function AdminPanel() {
       key: "1",
       name: "Chaianan Phattanakarn",
       role: "Super Admin",
-      createdate: "20/07/24",
-      updatedate: "20/07/24",
+      email: "abc1@gmail.com",
+      phone_number: "0000000001",
+      password: "abcdef1",
+      create_date: "20/07/24",
+      update_date: "20/07/24",
     },
     {
       key: "2",
       name: "Supanut Wongtanom",
       role: "Admin",
-      createdate: "20/07/24",
-      updatedate: "20/07/24",
+      email: "abc2@gmail.com",
+      phone_number: "0000000002",
+      password: "abcdef2",
+      create_date: "20/07/24",
+      update_date: "20/07/24",
     },
     {
       key: "3",
       name: "Peerapol Rattanawongghun",
       role: "Sale",
-      createdate: "20/07/24",
-      updatedate: "20/07/24",
+      email: "abc3@gmail.com",
+      phone_number: "0000000003",
+      password: "abcdef3",
+      create_date: "20/07/24",
+      update_date: "20/07/24",
     },
     {
       key: "4",
       name: "Punyaporn AAA",
       role: "Sale Manager",
-      createdate: "20/07/24",
-      updatedate: "20/07/24",
+      email: "abc4@gmail.com",
+      phone_number: "0000000004",
+      password: "abcdef4",
+      create_date: "20/07/24",
+      update_date: "20/07/24",
     },
   ];
 
@@ -66,32 +78,28 @@ export default function AdminPanel() {
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [isConfirmReset, setIsConfirmReset] = useState(false);
+  const [deletedIndex, setDeleteIndex] = useState(null)
 
   const [searchedName, setSearchedName] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
   const handleReset = () => {
     setIsReset(true);
-  }
-
-  const handleDelete = () => {
-    setIsDelete(true);
-  }
+  };
 
   const handleDeleteRecord = (key) => {
-    const newData = dataSource.filter((item) => item.key !== key);
+    const newData = data.filter((item) => item.key !== key);
     setData(newData);
-  }
+    setFilteredData((prev) => prev.filter((item) => item.key !== key));
+  };
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchedName(value);
-   setFilteredData(
-     dataSource.filter(
-       (item) => item.name.toLowerCase().includes(value)
-     )
-   );
-  }
+    setFilteredData(
+      data.filter((item) => item.name.toLowerCase().includes(value))
+    );
+  };
 
   const columns = [
     {
@@ -100,10 +108,12 @@ export default function AdminPanel() {
       dataIndex: "name",
       key: "name",
       fixed: "left",
-      filteredvalue: [searchedName],
-      onfilter: (value, record) => { return String(record.name).toLowerCase().includes(value.toLowerCase()) },
+      filteredValue: [searchedName],
+      onfilter: (value, record) => {
+        return String(record.name).toLowerCase().includes(value.toLowerCase());
+      },
       render: (name) => (
-        <Link href="/main/adminPanel/adminInformation">{name}</Link>
+        <Link href={`/main/adminPanel/${name}`}>{name}</Link>
       ),
     },
     {
@@ -115,17 +125,17 @@ export default function AdminPanel() {
     },
     {
       title: "Create Date",
-      dataIndex: "createdate",
-      key: "createdate",
+      dataIndex: "create_date",
+      key: "create_date",
     },
     {
       title: "Update Date",
-      dataIndex: "updatedate",
-      key: "updatedate",
+      dataIndex: "update_date",
+      key: "update_date",
     },
     {
       title: "Password",
-      key: "operation",
+      key: "password",
       fixed: "right",
       width: 100,
       render: () => (
@@ -139,12 +149,15 @@ export default function AdminPanel() {
     },
     {
       title: "Manage",
-      key: "operation",
+      key: "manage",
       fixed: "right",
       width: 100,
-      render: () => (
+      render: (_,record) => (
         <BaseButton
-          onClick={handleDelete}
+          onClick={() => {
+            setDeleteIndex(record.key)
+            setIsDelete(true)
+          }}
           className="bg-[#F74E3B] text-[#FCFCFC] border-0"
         >
           Delete
@@ -156,12 +169,9 @@ export default function AdminPanel() {
   const { styles } = useStyle();
   const router = useRouter();
 
-  const OnAddNewAdmin = () => {
+  const onAddNewAdmin = () => {
     router.push("/main/adminPanel/newAdmin");
-  }
-
-  console.log("searched name :",searchedName)
-  console.log("filtered data",filteredData)
+  };
 
   return (
     <section>
@@ -178,7 +188,7 @@ export default function AdminPanel() {
           />
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10 text-[#FCFCFC] border-0 bg-[#004D7D]"
-            onClick={OnAddNewAdmin}
+            onClick={onAddNewAdmin}
           >
             + New Admin
           </BaseButton>
@@ -187,7 +197,6 @@ export default function AdminPanel() {
 
       <div className="mt-0 m-6 p-6 bg-white rounded-b-2xl">
         <Table
-          
           style={{ backgroundColor: "#fafafa" }}
           bodySortBg="#fafafa"
           className={styles.customTable}
@@ -325,7 +334,8 @@ export default function AdminPanel() {
               onClick={() => {
                 setIsDelete(false);
                 setIsConfirmDelete(true);
-                handleDeleteRecord(data.key); 
+                handleDeleteRecord(deletedIndex);
+                setDeleteIndex(null); // Clear after deleting
               }}
             >
               Delete

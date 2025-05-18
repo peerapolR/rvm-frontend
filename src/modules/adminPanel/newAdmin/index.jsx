@@ -256,7 +256,7 @@ export default function NewAdmin() {
               <SmileIcon className="text-revomed-primary mb-6" />
             </div>
             <div className="flex flex-col gap-2 mb-[72px]">
-              <div className="text-xl text-#152142 font-bold">Success!</div>
+              <div className="text-xl text-#152142 font-semibold">Success!</div>
               <p className="text-[#6F7489] text-[16px]">
                 ข้อมูลของคุณถูกบันทึก
               </p>
