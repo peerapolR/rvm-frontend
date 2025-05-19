@@ -1,16 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Input, Form, Select, Modal } from "antd";
 import FooterBar from "./footerBar";
 import BaseButton from "@components/BaseButton";
 import SmileIcon from "@icons/ModalConfirm/SmileIcon";
 
+import { useUserAuth } from "@contexts/UserAuthContext";
+
 export default function NewAdmin() {
+  const { register } = useUserAuth();
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const AdminData = {
-    first_name: "",
-    last_name: "",
-    phone_number: "",
+    firstName: "",
+    lastName: "",
+    tel: "",
     email: "",
     role: "",
   };
@@ -42,8 +47,6 @@ export default function NewAdmin() {
   };
 
   const handleFormChange = async (_, allValues) => {
-    console.log("Form Values:", allValues);
-
     // Ensure all fields are filled and not empty strings
     const allFieldsFilled = Object.values(allValues).every(
       (val) => val !== undefined && val !== null && val.toString().trim() !== ""
@@ -59,7 +62,7 @@ export default function NewAdmin() {
       //Enable button only if all fields are filled and valid
       setAccessibility(allFieldsFilled);
     } catch (errorInfo) {
-      console.log("Validation Failed:", errorInfo);
+      // console.log("Validation Failed:", errorInfo);
 
       //Disable button if validation fails
       setAccessibility(false);
@@ -90,7 +93,7 @@ export default function NewAdmin() {
               <div>
                 <p>Firstname</p>
                 <Form.Item
-                  name="first_name"
+                  name="firstName"
                   rules={[
                     {
                       required: true,
@@ -101,7 +104,7 @@ export default function NewAdmin() {
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="first_name"
+                    name="firstName"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Firstname..."
@@ -114,7 +117,7 @@ export default function NewAdmin() {
               <div>
                 <p>Lastname</p>
                 <Form.Item
-                  name="last_name"
+                  name="lastName"
                   rules={[
                     {
                       required: true,
@@ -125,7 +128,7 @@ export default function NewAdmin() {
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="last_name"
+                    name="lastName"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Lastname..."
@@ -139,7 +142,7 @@ export default function NewAdmin() {
               <div>
                 <p>Phone Number</p>
                 <Form.Item
-                  name="phone_number"
+                  name="tel"
                   rules={[
                     {
                       required: true,
@@ -154,7 +157,7 @@ export default function NewAdmin() {
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="phone_number"
+                    name="tel"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Phone Number..."
@@ -213,23 +216,19 @@ export default function NewAdmin() {
                     placeholder="Select Role..."
                     options={[
                       {
-                        value: "Super Admin",
-                        label: "Super Admin",
-                      },
-                      {
-                        value: "Admin",
+                        value: "admin",
                         label: "Admin",
                       },
                       {
-                        value: "Sale",
+                        value: "sale",
                         label: "Sale",
                       },
                       {
-                        value: "Sale Manager",
+                        value: "sale manager",
                         label: "Sale Manager",
                       },
                       {
-                        value: "P&D",
+                        value: "p&d",
                         label: "P&D",
                       },
                     ]}
@@ -266,6 +265,7 @@ export default function NewAdmin() {
               <BaseButton
                 className="rounded-lg h-12 w-[132px] bg-revomed-primary text-revomed-white py-3 px-6"
                 onClick={() => {
+                  router.push("/main/adminPanel");
                   setCreateState(false);
                 }}
               >
@@ -274,12 +274,12 @@ export default function NewAdmin() {
             </div>
           </div>
         </Modal>
-        
       </div>
       <FooterBar
         accessibility={accessibility}
         adminData={adminData}
         sendDataToParent={setCreateState}
+        register={register}
       />
     </section>
   );

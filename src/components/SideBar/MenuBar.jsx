@@ -22,9 +22,9 @@ export default function MenuBar() {
 
   // Access rules: map roles to accessible keys
   const roleAccess = {
-    sale: ["1", "2", "5"],
-    "sale manager": ["1", "2", "4", "41", "42", "5"],
-    "p&d": ["3", "33", "331", "332", "5"],
+    sale: ["1", "2", "5", "6"],
+    "sale manager": ["1", "2", "4", "41", "42", "5", "6"],
+    "p&d": ["3", "33", "331", "332", "5", "6"],
     admin: [
       "1",
       "2",

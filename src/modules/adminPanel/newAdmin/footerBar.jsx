@@ -3,12 +3,14 @@ import { useRouter } from "next/navigation";
 
 export default function FooterBar({
   accessibility,
-  adminData,
   sendDataToParent,
+  adminData,
+  register,
 }) {
   const router = useRouter();
 
   const handleCreate = () => {
+    register(adminData);
     sendDataToParent(true);
   };
 
@@ -18,7 +20,7 @@ export default function FooterBar({
         <BaseButton
           className="w-[162px] h-[48px] py-3 px-10 text-revomed-secondary border-0 bg-revomed-white"
           onClick={() => {
-            router.push("/main/adminPanel");
+            router.back();
           }}
         >
           Cancel
@@ -40,6 +42,3 @@ export default function FooterBar({
     </footer>
   );
 }
-// className={`py-2 px-4 rounded-md text-white w-full ${
-//           accessibility ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'
-//         }`}

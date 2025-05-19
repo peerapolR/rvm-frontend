@@ -6,36 +6,37 @@ import FooterBar from "./footerBar";
 import SmileIcon from "@icons/ModalConfirm/SmileIcon";
 import BaseButton from "@components/BaseButton";
 
+import { useUserAuth } from "@contexts/UserAuthContext";
+
 export default function ChangePassword() {
+  const { user, updatePassword } = useUserAuth();
   const [newPasswordToggle, setNewPasswordToggle] = useState(false);
   const [confirmToggle, setConfirmToggle] = useState(false);
-
-  // const toggleVisibility = () => setNewPasswordToggle(!newPasswordToggle);
-  // const confirmToggleVisibility = () => setConfirmToggle(!confirmToggle);
 
   const passwordSet = {
     current_password: "",
     new_password: "",
     confirm_password: "",
-  }
+  };
 
-  const [newPassword, setNewPassword] = useState(passwordSet)
+  const [newPassword, setNewPassword] = useState(passwordSet);
   const [accessibility, setAccessibility] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target; //destructuring form
+    const { name, value } = e.target;
     setNewPassword((prevData) => ({
       ...prevData,
-      [name]: value, // Update specific field in state
+      [name]: value,
     }));
-  }
+  };
 
-  const [isSave, setIsSave] = useState(false)
+  const [isSave, setIsSave] = useState(false);
 
-  //set the value to single object
   useEffect(() => {
-    if (newPassword.new_password === newPassword.confirm_password && newPassword.new_password.length > 0) {
-      //ensure the new password and confirm password is the same
+    if (
+      newPassword.new_password === newPassword.confirm_password &&
+      newPassword.new_password.length > 0
+    ) {
       setAccessibility(true);
     } else {
       setAccessibility(false);
@@ -45,6 +46,9 @@ export default function ChangePassword() {
   return (
     <section className="flex flex-col justify-between min-h-[calc(100vh-72px)]">
       <div className="m-6 p-6 bg-white rounded-2xl">
+        <p className="mb-5 text-revomed-red">
+          * Password ต้องใส่อย่างน้อย 5 ตัวขึ้นไป
+        </p>
         <Form>
           <div className="grid grid-cols-3">
             {/* first col */}
@@ -64,7 +68,7 @@ export default function ChangePassword() {
                   name="current_password"
                   className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                   type="text"
-                  placeholder="123456"
+                  placeholder="Current Password..."
                   label="Current Password"
                   iconRender={(confirmToggle) =>
                     confirmToggle ? <EyeFilledIcon /> : <EyeSlashFilledIcon />
@@ -136,7 +140,6 @@ export default function ChangePassword() {
 
       <Modal
         open={isSave}
-        // centered
         height={420}
         width={363}
         footer={false}
@@ -171,6 +174,8 @@ export default function ChangePassword() {
         accessibility={accessibility}
         passwordSet={newPassword}
         sendDataToParent={setIsSave}
+        updatePassword={updatePassword}
+        _id={user?._id}
       />
     </section>
   );

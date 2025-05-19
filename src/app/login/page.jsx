@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@nextui-org/input";
+import { notification } from "antd";
 
 import EyeSlashFilledIcon from "../../../public/assets/icon/EyeSlashFilledIcon.svg";
 import EyeFilledIcon from "../../../public/assets/icon/EyeFilledIcon.svg";
@@ -13,6 +14,8 @@ import { useUserAuth } from "@contexts/UserAuthContext";
 
 const Page = () => {
   const router = useRouter();
+
+  const [api, contextHolder] = notification.useNotification();
   const {
     login,
     isLoading,
@@ -22,12 +25,26 @@ const Page = () => {
     user,
   } = useUserAuth();
 
+  const openNotification = () => {
+    api.error({
+      message: `เข้าสู่ระบบไม่สำเร็จ กรุณากรอก ชื่อผู้ใช้ และรหัสผ่านให้ถูกต้อง`,
+      // description:
+      //   "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      placement: "top",
+      showProgress: true,
+      pauseOnHover: true,
+    });
+  };
+
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   const handleLogin = async () => {
-    await login();
+    const res = await login();
+    if (res.status === 500) {
+      openNotification();
+    }
   };
   useEffect(() => {
     if (user) {
@@ -36,6 +53,7 @@ const Page = () => {
   }, [user]);
   return (
     <div className="flex justify-center items-center h-screen">
+      {contextHolder}
       <div className="bg-revomed-white w-[53rem] h-[31rem] rounded-2xl grid grid-cols-2 border">
         <div className="col-span-1">
           <Image

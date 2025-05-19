@@ -22,6 +22,8 @@ function UserAuthContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isInvalidUsername, setIsInvalidUsername] = useState(false);
   const [isInvalidPassword, setIsInvalidPassword] = useState(false);
+  const [allUser, setAllUser] = useState([]);
+  const [userToChange, setUserToChange] = useState({});
 
   const [user, setUser] = useState(null);
   const [authUser, setAuthUser] = useState({});
@@ -38,8 +40,7 @@ function UserAuthContextProvider({ children }) {
         setUser(res.data.data);
       }
     } catch (error) {
-      // toast.error("เข้าสู่ระบบไม่สำเร็จ");
-      console.log("เข้าสู่ระบบไม่สำเร็จ");
+      return error;
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +83,74 @@ function UserAuthContextProvider({ children }) {
     }
   };
 
+  const fetchAllUser = async () => {
+    try {
+      const res = await userApi.getAllUser();
+      if (res.status === 200 || res.status === 201) {
+        setAllUser(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchUserById = async (_id) => {
+    try {
+      const res = await userApi.getUserById(_id);
+      if (res.status === 200 || res.status === 201) {
+        setUserToChange(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateUserDetail = async (_id, params) => {
+    try {
+      const res = await userApi.updateUserById(_id, params);
+      if (res.status === 200 || res.status === 201) {
+        console.log("Updated!!!");
+        router.push("/main/adminPanel");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const resetPassword = async (_id) => {
+    try {
+      const res = await userApi.resetPassword(_id);
+      if (res.status === 200 || res.status === 201) {
+        console.log(res.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const register = async (params) => {
+    try {
+      const res = await userApi.register(params);
+      if (res.status === 200 || res.status === 201) {
+        console.log(res.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatePassword = async (_id, params) => {
+    try {
+      const res = await userApi.updatePassword(_id, params);
+      if (res.status === 200 || res.status === 201) {
+        console.log("Updated!!!");
+        router.push("/main/adminPanel");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const initAccessToken = localStorage.getToken();
 
@@ -108,6 +177,14 @@ function UserAuthContextProvider({ children }) {
     fetchUser,
     setAuthUser,
     user,
+    fetchAllUser,
+    allUser,
+    fetchUserById,
+    userToChange,
+    updateUserDetail,
+    resetPassword,
+    register,
+    updatePassword,
   };
   return (
     <UserAuthContext.Provider value={value}>

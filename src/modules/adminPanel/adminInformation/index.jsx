@@ -1,20 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input, Form, Select, Space } from "antd";
 import FooterBar from "./footer";
+import { useUserAuth } from "@contexts/UserAuthContext";
 
-export default function AdminInformation(admin) {
-  const AdminData = {
-    first_name: "",
-    last_name: "",
-    phone_number: "",
+export default function AdminInformation({ _id }) {
+  const { fetchUserById, userToChange, updateUserDetail } = useUserAuth();
+  const [form] = Form.useForm();
+
+  const [adminData, setAdminData] = useState({
+    firstName: "",
+    lastName: "",
+    tel: "",
     email: "",
     role: "",
-  };
+  });
 
-  const [adminData, setAdminData] = useState(AdminData);
-  const [accessibility, setAccessibility] = useState(false);
+  useEffect(() => {
+    fetchUserById(_id);
+  }, []);
 
-  console.log(adminData);
+  useEffect(() => {
+    if (userToChange) {
+      const mappedData = {
+        firstName: userToChange.firstName || "",
+        lastName: userToChange.lastName || "",
+        tel: userToChange.tel || "",
+        email: userToChange.email || "",
+        role: userToChange.role || "",
+      };
+
+      setAdminData(mappedData);
+      form.setFieldsValue(mappedData);
+    }
+  }, [userToChange]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -38,62 +56,51 @@ export default function AdminInformation(admin) {
           Information
         </p>
         <div className="m-6 p-6 bg-white rounded-2xl">
-          <Form>
+          <Form form={form}>
             <div className="grid grid-cols-3">
-              {/* first col */}
+              {/* Firstname */}
               <div>
                 <p>Firstname</p>
                 <Form.Item
-                  name="first_name"
+                  name="firstName"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please enter your firstname",
-                    },
+                    { required: true, message: "Please enter your firstname" },
                   ]}
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="first_name"
+                    name="firstName"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Firstname..."
-                    label="Firstname"
-                    value="Supanut"
-                    disabled
                   />
                 </Form.Item>
               </div>
 
-              {/* second col */}
+              {/* Lastname */}
               <div>
                 <p>Lastname</p>
                 <Form.Item
-                  name="last_name"
+                  name="lastName"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please enter your lastname",
-                    },
+                    { required: true, message: "Please enter your lastname" },
                   ]}
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="last_name"
+                    name="lastName"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Lastname..."
-                    label="New Password"
-                    disabled
                   />
                 </Form.Item>
               </div>
 
-              {/* third col */}
+              {/* Phone */}
               <div>
                 <p>Phone Number</p>
                 <Form.Item
-                  name="phone_number"
+                  name="tel"
                   rules={[
                     {
                       required: true,
@@ -103,30 +110,22 @@ export default function AdminInformation(admin) {
                 >
                   <Input
                     onChange={handleInputChange}
-                    name="phone_number"
+                    name="tel"
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Phone Number..."
-                    label="Confirm New Password"
-                    disabled
                   />
                 </Form.Item>
               </div>
 
-              {/* fourth col */}
+              {/* Email */}
               <div>
                 <p>Email</p>
                 <Form.Item
                   name="email"
                   rules={[
-                    {
-                      type: "email",
-                      message: "The email is not valid",
-                    },
-                    {
-                      required: true,
-                      message: "Please enter your email",
-                    },
+                    { type: "email", message: "The email is not valid" },
+                    { required: true, message: "Please enter your email" },
                   ]}
                 >
                   <Input
@@ -135,53 +134,30 @@ export default function AdminInformation(admin) {
                     className="w-[95%] mt-1 p-2 px-3 bg-white border rounded-lg outline-none"
                     type="text"
                     placeholder="Email..."
-                    label="Current Password"
-                    disabled
                   />
                 </Form.Item>
               </div>
 
-              {/* fifth col */}
+              {/* Role */}
               <div>
                 <p>Role</p>
                 <Form.Item
-                  name="Role"
+                  name="role"
                   rules={[
-                    {
-                      required: true,
-                      message: "Please enter your role",
-                    },
+                    { required: true, message: "Please enter your role" },
                   ]}
                 >
                   <Select
                     onChange={handleSelectChange}
                     name="role"
-                    id="role"
                     className="w-[95%] mt-1 bg-white"
                     style={{ height: "40px", width: "95%" }}
                     placeholder="Select Role..."
-                    disabled
                     options={[
-                      {
-                        value: "Super Admin",
-                        label: "Super Admin",
-                      },
-                      {
-                        value: "Admin",
-                        label: "Admin",
-                      },
-                      {
-                        value: "Sale",
-                        label: "Sale",
-                      },
-                      {
-                        value: "Sale Manager",
-                        label: "Sale Manager",
-                      },
-                      {
-                        value: "P&D",
-                        label: "P&D",
-                      },
+                      { value: "admin", label: "Admin" },
+                      { value: "sale", label: "Sale" },
+                      { value: "sale manager", label: "Sale Manager" },
+                      { value: "p&d", label: "P&D" },
                     ]}
                   />
                 </Form.Item>
@@ -190,7 +166,12 @@ export default function AdminInformation(admin) {
           </Form>
         </div>
       </div>
-      <FooterBar accessibility={accessibility} adminData={adminData} />
+
+      <FooterBar
+        adminData={adminData}
+        updateUserDetail={updateUserDetail}
+        _id={_id}
+      />
     </section>
   );
 }

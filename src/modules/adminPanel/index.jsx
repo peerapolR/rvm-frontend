@@ -5,10 +5,13 @@ import BaseButton from "@components/BaseButton";
 import { SearchOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import SmileIcon from "@icons/ModalConfirm/SmileIcon";
 import ResetIcon from "@icons/ModalConfirm/ResetIcon";
 import TrashIconInModal from "@icons/ModalConfirm/TrashIcon";
+import formatDate from "@functions/formatDate";
+
+import { useUserAuth } from "@contexts/UserAuthContext";
 
 const useStyle = createStyles(({ css, token }) => {
   const { antCls } = token;
@@ -29,61 +32,26 @@ const useStyle = createStyles(({ css, token }) => {
 });
 
 export default function AdminPanel() {
+  const { fetchAllUser, allUser, resetPassword } = useUserAuth();
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Chaianan Phattanakarn",
-      role: "Super Admin",
-      email: "abc1@gmail.com",
-      phone_number: "0000000001",
-      password: "abcdef1",
-      create_date: "20/07/24",
-      update_date: "20/07/24",
-    },
-    {
-      key: "2",
-      name: "Supanut Wongtanom",
-      role: "Admin",
-      email: "abc2@gmail.com",
-      phone_number: "0000000002",
-      password: "abcdef2",
-      create_date: "20/07/24",
-      update_date: "20/07/24",
-    },
-    {
-      key: "3",
-      name: "Peerapol Rattanawongghun",
-      role: "Sale",
-      email: "abc3@gmail.com",
-      phone_number: "0000000003",
-      password: "abcdef3",
-      create_date: "20/07/24",
-      update_date: "20/07/24",
-    },
-    {
-      key: "4",
-      name: "Punyaporn AAA",
-      role: "Sale Manager",
-      email: "abc4@gmail.com",
-      phone_number: "0000000004",
-      password: "abcdef4",
-      create_date: "20/07/24",
-      update_date: "20/07/24",
-    },
-  ];
+  useEffect(() => {
+    fetchAllUser();
+  }, []);
 
-  const [data, setData] = useState(dataSource);
+  const [data, setData] = useState(allUser);
   const [isDelete, setIsDelete] = useState(false);
   const [isConfirmDelete, setIsConfirmDelete] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [isConfirmReset, setIsConfirmReset] = useState(false);
-  const [deletedIndex, setDeleteIndex] = useState(null)
+  const [deletedIndex, setDeleteIndex] = useState(null);
 
   const [searchedName, setSearchedName] = useState("");
   const [filteredData, setFilteredData] = useState([]);
 
-  const handleReset = () => {
+  const [idForReset, setIdForReset] = useState("");
+
+  const handleReset = (_id) => {
+    setIdForReset(_id);
     setIsReset(true);
   };
 
@@ -97,81 +65,89 @@ export default function AdminPanel() {
     const value = e.target.value.toLowerCase();
     setSearchedName(value);
     setFilteredData(
-      data.filter((item) => item.name.toLowerCase().includes(value))
+      allUser.filter((item) =>
+        `${item.firstName} ${item.lastName}`.toLowerCase().includes(value)
+      )
     );
   };
 
   const columns = [
     {
       title: "Admin Name",
-      width: 400,
-      dataIndex: "name",
+      width: 600,
       key: "name",
+      dataIndex: "name",
       fixed: "left",
       filteredValue: [searchedName],
-      onfilter: (value, record) => {
-        return String(record.name).toLowerCase().includes(value.toLowerCase());
-      },
-      render: (name) => (
-        <Link href={`/main/adminPanel/${name}`}>{name}</Link>
+      onFilter: (value, record) =>
+        `${record.firstName} ${record.lastName}`
+          .toLowerCase()
+          .includes(value.toLowerCase()),
+      render: (_, record) => (
+        <Link href={`/main/adminPanel/${record._id}`}>
+          {`${record.firstName} ${record.lastName}`}
+        </Link>
       ),
     },
     {
       title: "Role",
-      width: 200,
+      width: 300,
       dataIndex: "role",
       key: "role",
       fixed: "left",
+      sorter: (a, b) => a.role.localeCompare(b.role),
+      render: (role) =>
+        role ? role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() : "",
     },
     {
       title: "Create Date",
-      dataIndex: "create_date",
-      key: "create_date",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      sorter: (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+      render: (text) => <p>{formatDate(text)}</p>,
     },
     {
       title: "Update Date",
-      dataIndex: "update_date",
-      key: "update_date",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      sorter: (a, b) => new Date(a.updatedAt) - new Date(b.updatedAt),
+      render: (text) => <p>{formatDate(text)}</p>,
     },
     {
       title: "Password",
       key: "password",
       fixed: "right",
       width: 100,
-      render: () => (
+      render: (_, record) => (
         <BaseButton
-          onClick={handleReset}
+          onClick={() => handleReset(record._id)}
           className="bg-[#47A6FF] text-[#FCFCFC] border-0"
         >
           Reset
         </BaseButton>
       ),
     },
-    {
-      title: "Manage",
-      key: "manage",
-      fixed: "right",
-      width: 100,
-      render: (_,record) => (
-        <BaseButton
-          onClick={() => {
-            setDeleteIndex(record.key)
-            setIsDelete(true)
-          }}
-          className="bg-[#F74E3B] text-[#FCFCFC] border-0"
-        >
-          Delete
-        </BaseButton>
-      ),
-    },
+    // {
+    //   title: "Manage",
+    //   key: "manage",
+    //   fixed: "right",
+    //   width: 100,
+    //   render: (_, record) => (
+    //     <BaseButton
+    //       onClick={() => {
+    //         setDeleteIndex(record.key);
+    //         setIsDelete(true);
+    //       }}
+    //       className="bg-[#F74E3B] text-[#FCFCFC] border-0"
+    //     >
+    //       Delete
+    //     </BaseButton>
+    //   ),
+    // },
   ];
 
   const { styles } = useStyle();
   const router = useRouter();
-
-  const onAddNewAdmin = () => {
-    router.push("/main/adminPanel/newAdmin");
-  };
 
   return (
     <section>
@@ -188,7 +164,7 @@ export default function AdminPanel() {
           />
           <BaseButton
             className="w-[162px] h-[48px] py-3 px-10 text-[#FCFCFC] border-0 bg-[#004D7D]"
-            onClick={onAddNewAdmin}
+            onClick={() => router.push("/main/adminPanel/newAdmin")}
           >
             + New Admin
           </BaseButton>
@@ -203,7 +179,7 @@ export default function AdminPanel() {
           pagination={true}
           columns={columns}
           dataSource={
-            filteredData.length > 0 || searchedName ? filteredData : data
+            filteredData.length > 0 || searchedName ? filteredData : allUser
           }
           scroll={{
             x: "max-content",
@@ -246,13 +222,14 @@ export default function AdminPanel() {
               Cancel
             </BaseButton>
             <BaseButton
-              className="mt-16 w-[125px] h-[48px] py-3 px-10 text-[#FCFCFC] border-0 bg-[#004D7D] text-[16px]"
+              className="mt-16 h-[48px] py-3 px-5 text-[#FCFCFC] border-0 bg-[#004D7D] text-[16px]"
               onClick={() => {
+                resetPassword(idForReset);
                 setIsReset(false);
                 setIsConfirmReset(true);
               }}
             >
-              Reset
+              Reset Password
             </BaseButton>
           </div>
         </div>

@@ -1,13 +1,20 @@
 import BaseButton from "@components/BaseButton";
 import { useRouter } from "next/navigation";
 
-export default function FooterBar({ accessibility, passwordSet, sendDataToParent }) {
+export default function FooterBar({
+  accessibility,
+  passwordSet,
+  sendDataToParent,
+  updatePassword,
+  _id,
+}) {
   const router = useRouter();
 
-  const handleSave = () => {
-    sendDataToParent(true)
+  const handleSave = async () => {
+    await updatePassword(_id, passwordSet);
+    sendDataToParent(true);
   };
-  
+
   return (
     <footer className="min-h-20 bg-revomed-white">
       <div className="flex gap-5 justify-between mx-5 pt-4">
@@ -29,7 +36,7 @@ export default function FooterBar({ accessibility, passwordSet, sendDataToParent
             }`}
             onClick={handleSave}
           >
-            Save
+            Change Password
           </BaseButton>
         </div>
       </div>
