@@ -17,3 +17,4 @@ const IconLogoutSvg = () => {
 export default function IconLogout(props) {
   return <Icon component={IconLogoutSvg} {...props} />;
 }
+

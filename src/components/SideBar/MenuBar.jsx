@@ -8,6 +8,9 @@ import PlusIcon from "@icons/PlusIcon";
 import ListIcon from "@icons/ListIcon";
 import GroupIcon from "@icons/GroupIcon";
 import FileExportIcon from "@icons/FileExportIcon";
+
+import { UserOutlined, SwapOutlined } from "@ant-design/icons";
+
 import { usePath } from "@contexts/PathContext";
 import { useUserAuth } from "@contexts/UserAuthContext";
 
@@ -21,8 +24,22 @@ export default function MenuBar() {
   const roleAccess = {
     sale: ["1", "2", "5"],
     "sale manager": ["1", "2", "4", "41", "42", "5"],
-    "p&d": ["3", "33", "331", "332", "5", "6"],
-    admin: ["1", "2", "3", "33", "331", "332", "4", "41", "42", "5", "6"],
+    "p&d": ["3", "33", "331", "332", "5"],
+    admin: [
+      "1",
+      "2",
+      "3",
+      "33",
+      "331",
+      "332",
+      "4",
+      "41",
+      "42",
+      "5",
+      "6",
+      "7",
+      "8",
+    ],
   };
 
   // Get accessible keys for the current user role
@@ -76,7 +93,9 @@ export default function MenuBar() {
     332: "/main/ingredient",
     41: "/main/pendingProposal",
     42: "/main/allProposal",
-    6: "/main/verify",
+    6: "/main/changePassword",
+    7: "/main/adminPanel",
+    8: "/main/verify",
   };
 
   const handlePath = (e) => {
@@ -134,10 +153,12 @@ export default function MenuBar() {
       ],
     },
     {
-      key: "6",
+      key: "8",
       icon: <WarningOutlined style={{ fontSize: "22px" }} />,
       label: "P&D Verify",
     },
+    { key: "6", icon: <SwapOutlined />, label: "Change Password" },
+    { key: "7", icon: <UserOutlined />, label: "Admin Panel" },
     { key: "5", icon: <IconLogout />, label: "LogOut" },
   ];
 
