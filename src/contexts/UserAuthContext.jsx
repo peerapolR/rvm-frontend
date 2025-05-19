@@ -109,7 +109,7 @@ function UserAuthContextProvider({ children }) {
     try {
       const res = await userApi.updateUserById(_id, params);
       if (res.status === 200 || res.status === 201) {
-        console.log("Updated!!!");
+        // console.log("Updated!!!");
         router.push("/main/adminPanel");
       }
     } catch (error) {
@@ -143,7 +143,7 @@ function UserAuthContextProvider({ children }) {
     try {
       const res = await userApi.updatePassword(_id, params);
       if (res.status === 200 || res.status === 201) {
-        console.log("Updated!!!");
+        // console.log("Updated!!!");
         router.push("/main/adminPanel");
       }
     } catch (error) {
